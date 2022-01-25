@@ -8,6 +8,7 @@ public class NewBeeEntry {
 
 		new MainMenuFrame();
 
+		
 	}
 }
 
