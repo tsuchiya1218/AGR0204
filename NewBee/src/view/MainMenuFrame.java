@@ -37,13 +37,13 @@ public class MainMenuFrame extends JFrame implements ActionListener {
 		customerControl.addActionListener(this);
 		add(customerControl);
 
-		JButton touristControl = new JButton("O_UW02観光地データ追加");
-		touristControl.setBounds(100, 60, 300, 30);
-		touristControl.setActionCommand("tourist");
-		touristControl.setHorizontalAlignment(SwingConstants.LEFT);
-		touristControl.setMargin(insets);
-		touristControl.addActionListener(this);
-		add(touristControl);
+		JButton SpotControl = new JButton("O_UW02観光地データ追加");
+		SpotControl.setBounds(100, 60, 300, 30);
+		SpotControl.setActionCommand("tourist");
+		SpotControl.setHorizontalAlignment(SwingConstants.LEFT);
+		SpotControl.setMargin(insets);
+		SpotControl.addActionListener(this);
+		add(SpotControl);
 
 		JButton liveControl = new JButton("O_UW03ライブ観光データ追加");
 		liveControl.setBounds(100, 100, 300, 30);
@@ -85,13 +85,13 @@ public class MainMenuFrame extends JFrame implements ActionListener {
 		booKingControl.addActionListener(this);
 		add(booKingControl);
 
-		JButton evaluateControl = new JButton("O_UW08レビュー・評価確認");
-		evaluateControl.setBounds(100, 300, 300, 30);
-		evaluateControl.setMargin(insets);
-		evaluateControl.setHorizontalAlignment(SwingConstants.LEFT);
-		evaluateControl.setActionCommand("evaluate");
-		evaluateControl.addActionListener(this);
-		add(evaluateControl);
+		JButton reviewsControl = new JButton("O_UW08レビュー・評価確認");
+		reviewsControl.setBounds(100, 300, 300, 30);
+		reviewsControl.setMargin(insets);
+		reviewsControl.setHorizontalAlignment(SwingConstants.LEFT);
+		reviewsControl.setActionCommand("reviews");
+		reviewsControl.addActionListener(this);
+		add(reviewsControl);
 
 		JButton emptyControl = new JButton("O_UW09空き状況確認");
 		emptyControl.setBounds(100, 340, 300, 30);
@@ -116,8 +116,8 @@ public class MainMenuFrame extends JFrame implements ActionListener {
 		if (cmd.equals("customer")) {
 			NewBeeController.customerSearchDisplay();
 
-		} else if (cmd.equals("tourist")) {
-			NewBeeController.touristDisplay();
+		} else if (cmd.equals("spot")) {
+			NewBeeController.spotDisplay();
 
 		} else if (cmd.equals("live")) {
 			NewBeeController.liveDisplay();
@@ -134,8 +134,8 @@ public class MainMenuFrame extends JFrame implements ActionListener {
 		} else if (cmd.equals("booking")) {
 			NewBeeController.bookingCheckDisplay();
 
-		} else if (cmd.equals("evaluate")) {
-			NewBeeController.evaluateCheckDisplay();
+		} else if (cmd.equals("reviews")) {
+			NewBeeController.reviewsCheckDisplay();
 
 		} else if (cmd.equals("empty")) {
 			NewBeeController.emptyCheckDisplay();

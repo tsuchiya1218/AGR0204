@@ -30,7 +30,7 @@ public class EmptyCheckFrame extends JFrame implements ActionListener {
 	private JTextField txtTel;
 	private JLabel lblTelNotes;
 
-	
+
 	private JLabel lblKana;
 	private JTextField txtKana;
 	private JLabel lblKanaNotes;
@@ -45,6 +45,7 @@ public class EmptyCheckFrame extends JFrame implements ActionListener {
 	private JButton btnReturn;
 	private JButton btnOk;
 	private JButton btnCancel;
+	private JLabel lbl;
 
 	public EmptyCheckFrame() {
 
@@ -52,17 +53,21 @@ public class EmptyCheckFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 
-		btnOk = new JButton("OK");
+		btnOk = new JButton("変更");
 		btnOk.setBounds(620, 40, 90, 30);
 		btnOk.addActionListener(this);
 		add(btnOk);
+
+		lbl = new JLabel("ホテル空き状況一覧");
+		lbl.setBounds(20, 60, 180, 20);
+		add(lbl);
 
 
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(20, 100, 710, 400);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		add(scrollPane);
-		
+
 		String[] columnNames = { "ホテルID","ホテル名","確保部屋数", "部屋タイプ","残り部屋数"};
 		tableModel = new DefaultTableModel(columnNames, 0);
 		table = new JTable(tableModel);
@@ -76,10 +81,10 @@ public class EmptyCheckFrame extends JFrame implements ActionListener {
 		TableColumn column4 = columnModel.getColumn(4);
 
 		column0.setPreferredWidth(80);
-		column1.setPreferredWidth(100);
+		column1.setPreferredWidth(200);
 		column2.setPreferredWidth(100);
-		column3.setPreferredWidth(100);
-		column4.setPreferredWidth(330);
+		column3.setPreferredWidth(200);
+		column4.setPreferredWidth(130);
 
 		table.addMouseListener(new SearchMouseEvent());
 

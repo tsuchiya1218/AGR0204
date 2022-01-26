@@ -24,10 +24,19 @@ import model.Customer;
 import model.OrderControlUtility;
 import control.NewBeeController;
 
-public class BookingCheckFrame extends JFrame implements ActionListener {
+public class ReviewsCheckFrame extends JFrame implements ActionListener {
 
+	private JLabel lblTel;
 	private JTextField txtTel;
+	private JLabel lblTelNotes;
+
+	
+	private JLabel lblKana;
 	private JTextField txtKana;
+	private JLabel lblKanaNotes;
+
+	private JButton btnSearch;
+	private JButton btnDelete;
 
 	private JScrollPane scrollPane;
 	private DefaultTableModel tableModel;
@@ -37,20 +46,18 @@ public class BookingCheckFrame extends JFrame implements ActionListener {
 	private JButton btnOk;
 	private JButton btnCancel;
 
-	String orderId = null;
+	public ReviewsCheckFrame() {
 
-	public BookingCheckFrame() {
-
-		setTitle("【予約情報確認】 NEWBEE TRAVEL 業務システム");
+		setTitle("【レビュー•評価をチェック】 NEWBEE TRAVEL 業務システム");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 
-		btnOk = new JButton("確認");
+		btnOk = new JButton("OK");
 		btnOk.setBounds(620, 40, 90, 30);
 		btnOk.addActionListener(this);
 		add(btnOk);
-
-		btnCancel = new JButton("取消");
+		
+		btnCancel = new JButton("削除");
 		btnCancel.setBounds(740, 40, 90, 30);
 		btnCancel.addActionListener(this);
 		add(btnCancel);
@@ -59,8 +66,8 @@ public class BookingCheckFrame extends JFrame implements ActionListener {
 		scrollPane.setBounds(20, 100, 810, 450);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		add(scrollPane);
-
-		String[] columnNames = { "顧客名", "電話番号", "注文コード", "コース種類","予約日時","合計（税込）"};
+		
+		String[] columnNames = { "会員ID","ユーザ名","注文コード", "コース種類","レビュー•評価内容","日付"};
 		tableModel = new DefaultTableModel(columnNames, 0);
 		table = new JTable(tableModel);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -76,8 +83,8 @@ public class BookingCheckFrame extends JFrame implements ActionListener {
 		column0.setPreferredWidth(80);
 		column1.setPreferredWidth(100);
 		column2.setPreferredWidth(100);
-		column3.setPreferredWidth(330);
-		column4.setPreferredWidth(100);
+		column3.setPreferredWidth(100);
+		column4.setPreferredWidth(330);
 		column5.setPreferredWidth(100);
 
 		table.addMouseListener(new SearchMouseEvent());
@@ -103,22 +110,24 @@ public class BookingCheckFrame extends JFrame implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 
-		if (e.getSource() == btnOk) {
+		if (e.getSource() == btnDelete) {
 
-			if(orderId == null) {
-				JOptionPane.showMessageDialog(this, "確認注文を選択してください。", "【確認】", JOptionPane.INFORMATION_MESSAGE);
-			}else {
-				String result = NewBeeController.bookingCheck(orderId);
-				JOptionPane.showMessageDialog(this, result, "【確認】", JOptionPane.INFORMATION_MESSAGE);
-			}
+			txtTel.setText("");
+			txtKana.setText("");
 
+		} else if (e.getSource() == btnSearch) {
 
-		} else if (e.getSource() == btnCancel) {
+			String tel = txtTel.getText();
+			String kana = txtKana.getText();
 
-
+			// 入力値の半角スペースと全角スペースを取り除く
+			tel.replaceAll(" +", "");
+			kana.replaceAll(" +", "");
 
 			try {
-				String[][] tableData = NewBeeController.bookingOrder("");
+
+				String[] data = { tel, kana };
+				String[][] tableData = NewBeeController.customerSearch(data);
 
 				if (tableData != null) {
 
@@ -162,8 +171,17 @@ public class BookingCheckFrame extends JFrame implements ActionListener {
 			setVisible(false);
 
 			int rowIndex = table.getSelectedRow();
-			orderId = (String) table.getValueAt(rowIndex, 3);
+			String custId = (String) table.getValueAt(rowIndex, 0);
 
+			try {
+
+				Customer customer = NewBeeController.orderInputDisplay(custId);
+				new OrderInputFrame(customer);
+
+			} catch (Exception ex) {
+
+				OrderControlUtility.systemErrorMessage(ReviewsCheckFrame.this, ex);
+			}
 		}
 	}
 }

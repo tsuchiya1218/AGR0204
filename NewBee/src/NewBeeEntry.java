@@ -1,6 +1,7 @@
 
 import view.MainMenuFrame;
 
+
 public class NewBeeEntry {
 
 
@@ -8,7 +9,7 @@ public class NewBeeEntry {
 
 		new MainMenuFrame();
 
-		
+
 	}
 }
 

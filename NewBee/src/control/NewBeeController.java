@@ -14,11 +14,12 @@ import java.util.ArrayList;
 import model.Customer;
 import model.OrderDetail;
 import view.DeliveryConfirmFrame;
+import action.BookingCheckAction;
 import action.BookingCheckDisplayAction;
 import action.CustomerSearchAction;
 import action.CustomerSearchDisplayAction;
 import action.EmptyCheckDisplayAction;
-import action.EvaluateCheckDisplayAction;
+import action.ReviewsCheckDisplayAction;
 import action.HoteAddDisplayAction;
 import action.HotelDisplayAction;
 import action.HotelUpdateDisplayAction;
@@ -29,10 +30,10 @@ import action.MainMenuDisplayAction;
 import action.OrderChangeAction;
 import action.OrderChangeDisplayAction;
 import action.PrintOutAction;
-import action.TouristAddAction;
-import action.TouristAddDisplayAction;
-import action.TouristDisplayAction;
-import action.TouristUpdateDisplayAction;
+import action.SpotAddAction;
+import action.SpotAddDisplayAction;
+import action.SpotDisplayAction;
+import action.SpotUpdateDisplayAction;
 import action.VehicleAddDisplayAction;
 import action.VehicleDisplayAction;
 import action.VehicleUpdateDisplayAction;
@@ -44,18 +45,18 @@ public class NewBeeController {
 		action.execute();
 	}
 
-	public static void touristDisplay() {
-		TouristDisplayAction action = new TouristDisplayAction();
+	public static void spotDisplay() {
+		SpotDisplayAction action = new SpotDisplayAction();
 		action.execute();
 	}
 
-	public static void touristAddDisplay() {
-		TouristAddDisplayAction action = new TouristAddDisplayAction();
+	public static void spotAddDisplay() {
+		SpotAddDisplayAction action = new SpotAddDisplayAction();
 		action.execute();
 	}
 
-	public static void touristUpdateDisplay() {
-		TouristUpdateDisplayAction action = new TouristUpdateDisplayAction();
+	public static void spotUpdateDisplay() {
+		SpotUpdateDisplayAction action = new SpotUpdateDisplayAction();
 		action.execute();
 	}
 
@@ -114,8 +115,8 @@ public class NewBeeController {
 		action.execute();
 	}
 
-	public static void evaluateCheckDisplay() {
-		EvaluateCheckDisplayAction action = new EvaluateCheckDisplayAction();
+	public static void reviewsCheckDisplay() {
+		ReviewsCheckDisplayAction action = new ReviewsCheckDisplayAction();
 		action.execute();
 	}
 
@@ -130,7 +131,7 @@ public class NewBeeController {
 	}
 
 	public static String touristAdd(String[] data) {
-		TouristAddAction taa = new TouristAddAction();
+		SpotAddAction taa = new SpotAddAction();
 		return taa.execute(data);
 	}
 
@@ -154,8 +155,13 @@ public class NewBeeController {
 		return oca.execute(data);
 	}
 
-	public static String[][] bookingCheck(String[] data) {
+	public static String[][] bookingOrder(String data) {
 		CustomerSearchAction csa = new CustomerSearchAction();
+		return csa.execute(data);
+	}
+
+	public static String bookingCheck(String data) {
+		BookingCheckAction csa = new BookingCheckAction();
 		return csa.execute(data);
 	}
 
