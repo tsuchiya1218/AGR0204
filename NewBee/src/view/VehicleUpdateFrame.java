@@ -57,7 +57,7 @@ public class VehicleUpdateFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 
-		lblTel = new JLabel("移動手段ID");
+		lblTel = new JLabel("移動種類");
 		lblTel.setBounds(60, 20, 100, 20);
 		add(lblTel);
 
@@ -65,22 +65,27 @@ public class VehicleUpdateFrame extends JFrame implements ActionListener {
 		txtTel.setBounds(200, 20, 280, 20);
 		add(txtTel);
 
-		lblTelNotes = new JLabel("例：123456");
+		lblTelNotes = new JLabel("例：飛行機、JR、新幹線");
 		lblTelNotes.setBounds(200, 40, 180, 20);
 		add(lblTelNotes);
 
+		btnSearch = new JButton("一覧表示");
+		btnSearch.setBounds(40, 100, 90, 30);
+		btnSearch.addActionListener(this);
+		add(btnSearch);
+
 		btnSearch = new JButton("検索");
-		btnSearch.setBounds(20, 120, 90, 30);
+		btnSearch.setBounds(150, 100, 90, 30);
 		btnSearch.addActionListener(this);
 		add(btnSearch);
 
 		btnDelete = new JButton("入力消去");
-		btnDelete.setBounds(120, 120, 90, 30);
+		btnDelete.setBounds(260, 100, 90, 30);
 		btnDelete.addActionListener(this);
 		add(btnDelete);
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(20, 160, 460,60);
+		scrollPane.setBounds(20, 160, 560,160);
 		add(scrollPane);
 
 		btnUpdate = new JButton("更新");
@@ -88,7 +93,7 @@ public class VehicleUpdateFrame extends JFrame implements ActionListener {
 		btnUpdate.addActionListener(this);
 		add(btnUpdate);
 
-		String[] columnNames = { "ID", "種類", "出発駅", "到着駅", "出発日時","到着日時"};
+		String[] columnNames = { "ID", "種類", "便名", "出発駅", "到着駅", "出発日時","到着日時"};
 		tableModel = new DefaultTableModel(columnNames, 0);
 		table = new JTable(tableModel);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -100,19 +105,23 @@ public class VehicleUpdateFrame extends JFrame implements ActionListener {
 		TableColumn column3 = columnModel.getColumn(3);
 		TableColumn column4 = columnModel.getColumn(4);
 		TableColumn column5 = columnModel.getColumn(5);
+		TableColumn column6 = columnModel.getColumn(6);
+
+
 		column0.setPreferredWidth(60);
-		column1.setPreferredWidth(60);
+		column1.setPreferredWidth(80);
 		column2.setPreferredWidth(80);
 		column3.setPreferredWidth(80);
 		column4.setPreferredWidth(90);
 		column5.setPreferredWidth(90);
+		column6.setPreferredWidth(80);
 
 		table.addMouseListener(new SearchMouseEvent());
 
 		scrollPane.setViewportView(table);
 
 		btnReturn = new JButton("戻る");
-		btnReturn.setBounds(20, 450, 90, 30);
+		btnReturn.setBounds(20, 550, 90, 30);
 		btnReturn.addActionListener(this);
 		add(btnReturn);
 
@@ -124,7 +133,7 @@ public class VehicleUpdateFrame extends JFrame implements ActionListener {
 		super.addNotify();
 
 		Insets insets = getInsets();
-		setSize(500 + insets.left + insets.right, 500 + insets.top + insets.bottom);
+		setSize(600 + insets.left + insets.right, 600 + insets.top + insets.bottom);
 		setLocationRelativeTo(this);
 	}
 

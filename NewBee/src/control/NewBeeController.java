@@ -33,6 +33,7 @@ import action.PrintOutAction;
 import action.SpotAddAction;
 import action.SpotAddDisplayAction;
 import action.SpotDisplayAction;
+import action.SpotUpdateAction;
 import action.SpotUpdateDisplayAction;
 import action.VehicleAddDisplayAction;
 import action.VehicleDisplayAction;
@@ -130,8 +131,13 @@ public class NewBeeController {
 		return csa.execute(data);
 	}
 
-	public static String touristAdd(String[] data) {
+	public static String spotAdd(String[] data) {
 		SpotAddAction taa = new SpotAddAction();
+		return taa.execute(data);
+	}
+
+	public static String[][] spotUpdate(String[] data) {
+		SpotUpdateAction taa = new SpotUpdateAction();
 		return taa.execute(data);
 	}
 
@@ -155,10 +161,10 @@ public class NewBeeController {
 		return oca.execute(data);
 	}
 
-	public static String[][] bookingOrder(String data) {
-		CustomerSearchAction csa = new CustomerSearchAction();
-		return csa.execute(data);
-	}
+//	public static String[][] bookingOrder(String data) {
+//		CustomerSearchAction csa = new CustomerSearchAction();
+//		return csa.execute(data);
+//	}
 
 	public static String bookingCheck(String data) {
 		BookingCheckAction csa = new BookingCheckAction();

@@ -62,7 +62,7 @@ public class LiveUpdateFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 
-		lblTel = new JLabel("ライブ観光地ID");
+		lblTel = new JLabel("ライブ観光テーマ");
 		lblTel.setBounds(40, 20, 100, 20);
 		add(lblTel);
 
@@ -70,22 +70,27 @@ public class LiveUpdateFrame extends JFrame implements ActionListener {
 		txtTid.setBounds(160, 20, 280, 20);
 		add(txtTid);
 
-		lblKanaNotes = new JLabel("例：123456");
-		lblKanaNotes.setBounds(160, 50, 180, 20);
+		lblKanaNotes = new JLabel("例：世界遺産エジプト・ギザ");
+		lblKanaNotes.setBounds(160, 50, 280, 20);
 		add(lblKanaNotes);
 
 		btnUpdate = new JButton("更新");
 		btnUpdate.setBounds(450, 100, 80, 30);
 		btnUpdate.addActionListener(this);
 		add(btnUpdate);
-
-		btnSearch = new JButton("検索");
+		
+		btnSearch = new JButton("一覧表示");
 		btnSearch.setBounds(40, 100, 90, 30);
 		btnSearch.addActionListener(this);
 		add(btnSearch);
 
+		btnSearch = new JButton("検索");
+		btnSearch.setBounds(150, 100, 90, 30);
+		btnSearch.addActionListener(this);
+		add(btnSearch);
+
 		btnDelete = new JButton("入力消去");
-		btnDelete.setBounds(140, 100, 90, 30);
+		btnDelete.setBounds(260, 100, 90, 30);
 		btnDelete.addActionListener(this);
 		add(btnDelete);
 

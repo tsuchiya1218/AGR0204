@@ -65,7 +65,7 @@ public class SpotUpdateFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 
-		lblTel = new JLabel("観光地ID");
+		lblTel = new JLabel("観光地名");
 		lblTel.setBounds(40, 20, 100, 20);
 		add(lblTel);
 
@@ -73,22 +73,27 @@ public class SpotUpdateFrame extends JFrame implements ActionListener {
 		txtTid.setBounds(120, 20, 280, 20);
 		add(txtTid);
 
-		lblKanaNotes = new JLabel("例：123456");
+		lblKanaNotes = new JLabel("例：　草津温泉(一部分も可)／大阪(都道府県名も可)");
 		lblKanaNotes.setBounds(120, 50, 180, 20);
 		add(lblKanaNotes);
 
 		btnUpdate = new JButton("更新");
-		btnUpdate.setBounds(650, 120, 90, 30);
+		btnUpdate.setBounds(650, 100, 90, 30);
 		btnUpdate.addActionListener(this);
 		add(btnUpdate);
 
+		btnSearch = new JButton("一覧表示");
+		btnSearch.setBounds(40, 100, 90, 30);
+		btnSearch.addActionListener(this);
+		add(btnSearch);
+
 		btnSearch = new JButton("検索");
-		btnSearch.setBounds(40, 120, 90, 30);
+		btnSearch.setBounds(150, 100, 90, 30);
 		btnSearch.addActionListener(this);
 		add(btnSearch);
 
 		btnDelete = new JButton("入力消去");
-		btnDelete.setBounds(140, 120, 90, 30);
+		btnDelete.setBounds(260, 100, 90, 30);
 		btnDelete.addActionListener(this);
 		add(btnDelete);
 
@@ -117,6 +122,7 @@ public class SpotUpdateFrame extends JFrame implements ActionListener {
 		TableColumn column3 = columnModel.getColumn(3);
 		TableColumn column4 = columnModel.getColumn(4);
 		TableColumn column5 = columnModel.getColumn(5);
+
 		column0.setPreferredWidth(60);
 		column1.setPreferredWidth(120);
 		column2.setPreferredWidth(145);
@@ -168,7 +174,7 @@ public class SpotUpdateFrame extends JFrame implements ActionListener {
 			try {
 
 				String[] data = { tid};
-				String[][] tableData = NewBeeController.customerSearch(data);
+				String[][] tableData = NewBeeController.spotUpdate(data);
 
 				if (tableData != null) {
 

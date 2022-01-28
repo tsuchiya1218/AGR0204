@@ -30,7 +30,7 @@ public class ReviewsCheckFrame extends JFrame implements ActionListener {
 	private JTextField txtTel;
 	private JLabel lblTelNotes;
 
-	
+
 	private JLabel lblKana;
 	private JTextField txtKana;
 	private JLabel lblKanaNotes;
@@ -56,7 +56,7 @@ public class ReviewsCheckFrame extends JFrame implements ActionListener {
 		btnOk.setBounds(620, 40, 90, 30);
 		btnOk.addActionListener(this);
 		add(btnOk);
-		
+
 		btnCancel = new JButton("削除");
 		btnCancel.setBounds(740, 40, 90, 30);
 		btnCancel.addActionListener(this);
@@ -66,8 +66,8 @@ public class ReviewsCheckFrame extends JFrame implements ActionListener {
 		scrollPane.setBounds(20, 100, 810, 450);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		add(scrollPane);
-		
-		String[] columnNames = { "会員ID","ユーザ名","注文コード", "コース種類","レビュー•評価内容","日付"};
+
+		String[] columnNames = { "会員ID","ユーザ名","項目","レビュー•評価内容","日付"};
 		tableModel = new DefaultTableModel(columnNames, 0);
 		table = new JTable(tableModel);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -78,14 +78,12 @@ public class ReviewsCheckFrame extends JFrame implements ActionListener {
 		TableColumn column2 = columnModel.getColumn(2);
 		TableColumn column3 = columnModel.getColumn(3);
 		TableColumn column4 = columnModel.getColumn(4);
-		TableColumn column5 = columnModel.getColumn(5);
 
-		column0.setPreferredWidth(80);
-		column1.setPreferredWidth(100);
-		column2.setPreferredWidth(100);
-		column3.setPreferredWidth(100);
-		column4.setPreferredWidth(330);
-		column5.setPreferredWidth(100);
+		column0.setPreferredWidth(100);
+		column1.setPreferredWidth(80);
+		column2.setPreferredWidth(200);
+		column3.setPreferredWidth(350);
+		column4.setPreferredWidth(80);
 
 		table.addMouseListener(new SearchMouseEvent());
 

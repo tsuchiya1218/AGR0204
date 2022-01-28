@@ -60,7 +60,7 @@ public class BookingCheckFrame extends JFrame implements ActionListener {
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		add(scrollPane);
 
-		String[] columnNames = { "顧客名", "電話番号", "注文コード", "コース種類","予約日時","合計（税込）"};
+		String[] columnNames = { "ユーザ名", "電話番号", "注文コード", "コース種類","注文日時","合計（税込）"};
 		tableModel = new DefaultTableModel(columnNames, 0);
 		table = new JTable(tableModel);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -118,22 +118,22 @@ public class BookingCheckFrame extends JFrame implements ActionListener {
 
 
 			try {
-				String[][] tableData = NewBeeController.bookingOrder("");
-
-				if (tableData != null) {
-
-					tableModel.setRowCount(0);
-
-					for (String[] rowData : tableData) {
-
-						tableModel.addRow(rowData);
-					}
-
-				} else {
-
-					JOptionPane.showMessageDialog(this, "一致する情報は見つかりませんでした。", "【確認】", JOptionPane.INFORMATION_MESSAGE);
-					tableModel.setRowCount(0);
-				}
+//				String[][] tableData = NewBeeController.bookingOrder("");
+//
+//				if (tableData != null) {
+//
+//					tableModel.setRowCount(0);
+//
+//					for (String[] rowData : tableData) {
+//
+//						tableModel.addRow(rowData);
+//					}
+//
+//				} else {
+//
+//					JOptionPane.showMessageDialog(this, "一致する情報は見つかりませんでした。", "【確認】", JOptionPane.INFORMATION_MESSAGE);
+//					tableModel.setRowCount(0);
+//				}
 
 			} catch (Exception ex) {
 

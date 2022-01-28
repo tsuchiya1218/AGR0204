@@ -66,7 +66,7 @@ public class HotelAddFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 
-		lblId = new JLabel("ホテルID");
+		lblId = new JLabel("ホテル名");
 		lblId.setBounds(60, 20, 180, 20);
 		add(lblId);
 
@@ -74,7 +74,7 @@ public class HotelAddFrame extends JFrame implements ActionListener {
 		txtId.setBounds(200, 20, 320, 20);
 		add(txtId);
 
-		lblId = new JLabel("ホテル名");
+		lblId = new JLabel("所在地");
 		lblId.setBounds(60, 60, 180, 20);
 		add(lblId);
 
@@ -82,7 +82,7 @@ public class HotelAddFrame extends JFrame implements ActionListener {
 		txtId.setBounds(200, 60, 320, 20);
 		add(txtId);
 
-		lblAddress = new JLabel("所在地");
+		lblAddress = new JLabel("アクセス");
 		lblAddress.setBounds(60, 100, 180, 20);
 		add(lblAddress);
 
@@ -90,7 +90,7 @@ public class HotelAddFrame extends JFrame implements ActionListener {
 		txtAddress.setBounds(200, 100, 320, 20);
 		add(txtAddress);
 
-		lblAccess = new JLabel("アクセス");
+		lblAccess = new JLabel("チェックイン");
 		lblAccess.setBounds(60, 140, 180, 20);
 		add(lblAccess);
 
@@ -98,7 +98,7 @@ public class HotelAddFrame extends JFrame implements ActionListener {
 		txtAccess.setBounds(200, 140, 320, 20);
 		add(txtAccess);
 
-		lbltime = new JLabel("利用時間");
+		lbltime = new JLabel("チェックアウト");
 		lbltime.setBounds(60, 180, 180, 20);
 		add(lbltime);
 
@@ -187,7 +187,7 @@ public class HotelAddFrame extends JFrame implements ActionListener {
 
 			try {
 				if (path != null && address != null && access != null && comment != null && time != null) {
-					String result = NewBeeController.touristAdd(data);
+					String result = NewBeeController.spotAdd(data);
 
 					JOptionPane.showMessageDialog(this, result, "【確認】", JOptionPane.INFORMATION_MESSAGE);
 				} else {

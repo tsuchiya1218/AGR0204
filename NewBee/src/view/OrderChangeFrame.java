@@ -78,7 +78,7 @@ public class OrderChangeFrame extends JFrame implements ActionListener {
 		btnDelete.setBounds(120, 80, 90, 30);
 		btnDelete.addActionListener(this);
 		add(btnDelete);
-		
+
 		btnUpdate = new JButton("新規追加");
 		btnUpdate.setBounds(840, 80, 90, 30);
 		btnUpdate.addActionListener(this);
@@ -88,7 +88,7 @@ public class OrderChangeFrame extends JFrame implements ActionListener {
 		scrollPane.setBounds(20, 130, 910, 250);
 		add(scrollPane);
 
-		String[] columnNames = { "電話番号", "顧客名", "注文コード", "旅行コース","開始日","終了日","合計（税込）"};
+		String[] columnNames = { "電話番号", "ユーザ名", "注文コード", "旅行コース","開始日","終了日","合計（税込）"};
 		tableModel = new DefaultTableModel(columnNames, 0);
 		table = new JTable(tableModel);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -101,7 +101,7 @@ public class OrderChangeFrame extends JFrame implements ActionListener {
 		TableColumn column4 = columnModel.getColumn(4);
 		TableColumn column5 = columnModel.getColumn(5);
 		TableColumn column6 = columnModel.getColumn(6);
-		
+
 		column0.setPreferredWidth(80);
 		column1.setPreferredWidth(100);
 		column2.setPreferredWidth(100);
@@ -109,7 +109,7 @@ public class OrderChangeFrame extends JFrame implements ActionListener {
 		column4.setPreferredWidth(100);
 		column5.setPreferredWidth(100);
 		column6.setPreferredWidth(100);
-		
+
 		table.addMouseListener(new SearchMouseEvent());
 
 		scrollPane.setViewportView(table);

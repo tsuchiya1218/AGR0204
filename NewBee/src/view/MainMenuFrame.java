@@ -29,7 +29,7 @@ public class MainMenuFrame extends JFrame implements ActionListener {
 		setLayout(null);
 		Insets insets = new Insets(10, 80, 10, 0);
 
-		JButton customerControl = new JButton("O_UW01会員情報管理");
+		JButton customerControl = new JButton("会員情報管理");
 		customerControl.setBounds(100, 20, 300, 30);
 		customerControl.setActionCommand("customer");
 		customerControl.setHorizontalAlignment(SwingConstants.LEFT);
@@ -37,15 +37,15 @@ public class MainMenuFrame extends JFrame implements ActionListener {
 		customerControl.addActionListener(this);
 		add(customerControl);
 
-		JButton SpotControl = new JButton("O_UW02観光地データ追加");
+		JButton SpotControl = new JButton("観光地データ追加");
 		SpotControl.setBounds(100, 60, 300, 30);
-		SpotControl.setActionCommand("tourist");
+		SpotControl.setActionCommand("spot");
 		SpotControl.setHorizontalAlignment(SwingConstants.LEFT);
 		SpotControl.setMargin(insets);
 		SpotControl.addActionListener(this);
 		add(SpotControl);
 
-		JButton liveControl = new JButton("O_UW03ライブ観光データ追加");
+		JButton liveControl = new JButton("ライブ観光データ追加");
 		liveControl.setBounds(100, 100, 300, 30);
 		liveControl.setActionCommand("live");
 		liveControl.setHorizontalAlignment(SwingConstants.LEFT);
@@ -53,7 +53,7 @@ public class MainMenuFrame extends JFrame implements ActionListener {
 		liveControl.addActionListener(this);
 		add(liveControl);
 
-		JButton hotelControl = new JButton("O_UW04宿泊地データ追加");
+		JButton hotelControl = new JButton("宿泊地データ追加");
 		hotelControl.setBounds(100, 140, 300, 30);
 		hotelControl.setActionCommand("hotel");
 		hotelControl.setHorizontalAlignment(SwingConstants.LEFT);
@@ -61,7 +61,7 @@ public class MainMenuFrame extends JFrame implements ActionListener {
 		hotelControl.addActionListener(this);
 		add(hotelControl);
 
-		JButton vehicleControl = new JButton("O_UW05移動手段データ追加");
+		JButton vehicleControl = new JButton("移動手段データ追加");
 		vehicleControl.setBounds(100, 180, 300, 30);
 		vehicleControl.setActionCommand("vehicle");
 		vehicleControl.setHorizontalAlignment(SwingConstants.LEFT);
@@ -69,7 +69,7 @@ public class MainMenuFrame extends JFrame implements ActionListener {
 		vehicleControl.addActionListener(this);
 		add(vehicleControl);
 
-		JButton orderControl = new JButton("O_UW06注文情報変更");
+		JButton orderControl = new JButton("注文情報変更");
 		orderControl.setBounds(100, 220, 300, 30);
 		orderControl.setActionCommand("order");
 		orderControl.setHorizontalAlignment(SwingConstants.LEFT);
@@ -77,7 +77,7 @@ public class MainMenuFrame extends JFrame implements ActionListener {
 		orderControl.addActionListener(this);
 		add(orderControl);
 
-		JButton booKingControl = new JButton("O_UW07予約状況確認");
+		JButton booKingControl = new JButton("予約状況確認");
 		booKingControl.setBounds(100, 260, 300, 30);
 		booKingControl.setActionCommand("booking");
 		booKingControl.setMargin(insets);
@@ -85,7 +85,7 @@ public class MainMenuFrame extends JFrame implements ActionListener {
 		booKingControl.addActionListener(this);
 		add(booKingControl);
 
-		JButton reviewsControl = new JButton("O_UW08レビュー・評価確認");
+		JButton reviewsControl = new JButton("レビュー・評価確認");
 		reviewsControl.setBounds(100, 300, 300, 30);
 		reviewsControl.setMargin(insets);
 		reviewsControl.setHorizontalAlignment(SwingConstants.LEFT);
@@ -93,7 +93,7 @@ public class MainMenuFrame extends JFrame implements ActionListener {
 		reviewsControl.addActionListener(this);
 		add(reviewsControl);
 
-		JButton emptyControl = new JButton("O_UW09空き状況確認");
+		JButton emptyControl = new JButton("空き状況確認");
 		emptyControl.setBounds(100, 340, 300, 30);
 		emptyControl.setMargin(insets);
 		emptyControl.setHorizontalAlignment(SwingConstants.LEFT);
@@ -117,27 +117,35 @@ public class MainMenuFrame extends JFrame implements ActionListener {
 			NewBeeController.customerSearchDisplay();
 
 		} else if (cmd.equals("spot")) {
+
 			NewBeeController.spotDisplay();
 
 		} else if (cmd.equals("live")) {
+
 			NewBeeController.liveDisplay();
 
 		} else if (cmd.equals("hotel")) {
+
 			NewBeeController.hotelDisplay();
 
 		} else if (cmd.equals("vehicle")) {
+
 			NewBeeController.vehicleDisplay();
 
 		} else if (cmd.equals("order")) {
+
 			NewBeeController.orderChangeDisplay();
 
 		} else if (cmd.equals("booking")) {
+
 			NewBeeController.bookingCheckDisplay();
 
 		} else if (cmd.equals("reviews")) {
+
 			NewBeeController.reviewsCheckDisplay();
 
 		} else if (cmd.equals("empty")) {
+
 			NewBeeController.emptyCheckDisplay();
 
 		}

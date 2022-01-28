@@ -71,71 +71,63 @@ public class VehicleAddFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 
-		lblId = new JLabel("移動手段ID");
-		lblId.setBounds(60, 20, 180, 20);
-		add(lblId);
-
-		txtId = new JTextField();
-		txtId.setBounds(200, 20, 320, 20);
-		add(txtId);
-
-		lblType = new JLabel("移動手段種類");
-		lblType.setBounds(60, 60, 180, 20);
+		lblType = new JLabel("種類");
+		lblType.setBounds(60, 20, 180, 20);
 		add(lblType);
 
 		txtType = new JTextField();
-		txtType.setBounds(200, 60, 320, 20);
+		txtType.setBounds(200, 20, 320, 20);
 		add(txtType);
 
 		lblName = new JLabel("便名");
-		lblName.setBounds(60, 100, 180, 20);
+		lblName.setBounds(60, 60, 180, 20);
 		add(lblName);
 
 		txtName = new JTextField();
-		txtName.setBounds(200, 100, 320, 20);
+		txtName.setBounds(200, 60, 320, 20);
 		add(txtName);
 
 		lblStart = new JLabel("出発駅");
-		lblStart.setBounds(60, 140, 180, 20);
+		lblStart.setBounds(60, 100, 180, 20);
 		add(lblStart);
 
 		txtStart = new JTextField();
-		txtStart.setBounds(200, 140, 320, 20);
+		txtStart.setBounds(200, 100, 320, 20);
 		add(txtStart);
 
 		lblEnd = new JLabel("到着駅");
-		lblEnd.setBounds(60, 180, 180, 20);
+		lblEnd.setBounds(60, 140, 180, 20);
 		add(lblEnd);
 
 		txtEnd = new JTextField();
-		txtEnd.setBounds(200, 180, 320, 20);
+		txtEnd.setBounds(200, 140, 320, 20);
 		add(txtEnd);
 
 
 		lblStime = new JLabel("出発日時");
-		lblStime.setBounds(60, 220, 180, 20);
+		lblStime.setBounds(60, 180, 180, 20);
 		add(lblStime);
 
 
 		txtSTime = new JTextField();
-		txtSTime.setBounds(200, 220, 320, 20);
+		txtSTime.setBounds(200, 180, 320, 20);
 		add(txtSTime);
 
 		lblEtime = new JLabel("到着日時");
-		lblEtime.setBounds(60, 260, 180, 20);
+		lblEtime.setBounds(60, 220, 180, 20);
 		add(lblEtime);
 
 		txtETime = new JTextField();
-		txtETime.setBounds(200, 260, 320, 20);
+		txtETime.setBounds(200, 220, 320, 20);
 		add(txtETime);
 
 		btnDelete = new JButton("入力消去");
-		btnDelete.setBounds(390, 290, 90, 30);
+		btnDelete.setBounds(390, 260, 90, 30);
 		btnDelete.addActionListener(this);
 		add(btnDelete);
 
 		btnAdd = new JButton("新規追加");
-		btnAdd.setBounds(490, 290, 90, 30);
+		btnAdd.setBounds(490, 260, 90, 30);
 		btnAdd.addActionListener(this);
 		add(btnAdd);
 
@@ -193,7 +185,7 @@ public class VehicleAddFrame extends JFrame implements ActionListener {
 
 			try {
 				if (id != null && name != null && type != null && start != null && end != null && stime != null && etime != null) {
-					String result = NewBeeController.touristAdd(data);
+					String result = NewBeeController.spotAdd(data);
 
 					JOptionPane.showMessageDialog(this, result, "【確認】", JOptionPane.INFORMATION_MESSAGE);
 				} else {

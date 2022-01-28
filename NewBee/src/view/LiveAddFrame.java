@@ -155,7 +155,7 @@ public class LiveAddFrame extends JFrame implements ActionListener {
 
 			try {
 				if (path != null && address != null && access != null && comment != null && time != null) {
-					String result = NewBeeController.touristAdd(data);
+					String result = NewBeeController.spotAdd(data);
 
 					JOptionPane.showMessageDialog(this, result, "【確認】", JOptionPane.INFORMATION_MESSAGE);
 				} else {

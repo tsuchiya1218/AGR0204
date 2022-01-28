@@ -2,6 +2,7 @@
 package model;
 
 import java.net.URL;
+
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -25,6 +26,25 @@ public class OrderControlUtility {
 
 		return tableData;
 	}
+
+	public static String[][] spotToArray(ArrayList<Spot> list) {
+
+		int listSize = list.size();
+		String[][] tableData = new String[listSize][4];
+
+		for (int i = 0; i < listSize; i++) {
+
+			Spot spot = list.get(i);
+			tableData[i][0] = Integer.toString(spot.getCustId());
+			tableData[i][1] = spot.getCustName();
+			tableData[i][2] = spot.getKana();
+			tableData[i][3] = spot.getAddress();
+			tableData[i][4] = spot.getTime();
+		}
+
+		return tableData;
+	}
+
 
 	public static void systemErrorMessage(JFrame frame, Exception e) {
 

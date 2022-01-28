@@ -63,7 +63,7 @@ public class HotelUpdateFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 
-		lblTel = new JLabel("ホテルID");
+		lblTel = new JLabel("ホテル名");
 		lblTel.setBounds(40, 20, 100, 20);
 		add(lblTel);
 
@@ -71,27 +71,32 @@ public class HotelUpdateFrame extends JFrame implements ActionListener {
 		txtTid.setBounds(160, 20, 280, 20);
 		add(txtTid);
 
-		lblKanaNotes = new JLabel("例：123456");
+		lblKanaNotes = new JLabel("例：東京プラザホテル");
 		lblKanaNotes.setBounds(160, 50, 180, 20);
 		add(lblKanaNotes);
 
 		btnUpdate = new JButton("更新");
-		btnUpdate.setBounds(740, 100, 80, 30);
+		btnUpdate.setBounds(840, 100, 80, 30);
 		btnUpdate.addActionListener(this);
 		add(btnUpdate);
 
-		btnSearch = new JButton("検索");
+		btnSearch = new JButton("一覧表示");
 		btnSearch.setBounds(40, 100, 90, 30);
 		btnSearch.addActionListener(this);
 		add(btnSearch);
 
+		btnSearch = new JButton("検索");
+		btnSearch.setBounds(150, 100, 90, 30);
+		btnSearch.addActionListener(this);
+		add(btnSearch);
+
 		btnDelete = new JButton("入力消去");
-		btnDelete.setBounds(140, 100, 90, 30);
+		btnDelete.setBounds(260, 100, 90, 30);
 		btnDelete.addActionListener(this);
 		add(btnDelete);
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(20, 160, 900, 80);
+		scrollPane.setBounds(20, 160, 1000, 80);
 		add(scrollPane);
 
 		lblTourist = new JLabel("ホテル写真");
@@ -103,7 +108,7 @@ public class HotelUpdateFrame extends JFrame implements ActionListener {
 		btnImg.addActionListener(this);
 		add(btnImg);
 
-		String[] columnNames = { "ホテルID", "ホテル名", "所在地", "アクセス", "利用時間", "紹介", "部屋数"};
+		String[] columnNames = { "ホテルID", "ホテル名", "所在地", "アクセス", "チェックイン", "チェックアウト", "紹介", "部屋数"};
 		tableModel = new DefaultTableModel(columnNames, 0);
 		table = new JTable(tableModel);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -116,14 +121,16 @@ public class HotelUpdateFrame extends JFrame implements ActionListener {
 		TableColumn column4 = columnModel.getColumn(4);
 		TableColumn column5 = columnModel.getColumn(5);
 		TableColumn column6 = columnModel.getColumn(6);
+		TableColumn column7 = columnModel.getColumn(7);
 
 		column0.setPreferredWidth(80);
 		column1.setPreferredWidth(100);
 		column2.setPreferredWidth(160);
 		column3.setPreferredWidth(160);
-		column4.setPreferredWidth(80);
-		column5.setPreferredWidth(220);
-		column6.setPreferredWidth(100);
+		column4.setPreferredWidth(90);
+		column5.setPreferredWidth(90);
+		column6.setPreferredWidth(220);
+		column7.setPreferredWidth(100);
 
 
 
@@ -146,7 +153,7 @@ public class HotelUpdateFrame extends JFrame implements ActionListener {
 		super.addNotify();
 
 		Insets insets = getInsets();
-		setSize(940 + insets.left + insets.right, 700 + insets.top + insets.bottom);
+		setSize(1040 + insets.left + insets.right, 700 + insets.top + insets.bottom);
 		setLocationRelativeTo(this);
 	}
 

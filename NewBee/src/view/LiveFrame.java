@@ -30,20 +30,20 @@ public class LiveFrame extends JFrame implements ActionListener {
 
 	public LiveFrame() {
 
-		setTitle("【ライブ観光地データ】 NEWBEE TRAVEL 業務システム");
+		setTitle("【ライブ観光データ】 NEWBEE TRAVEL 業務システム");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 
 		Insets insets = new Insets(10, 80, 10, 0);
 
-		btnAdd = new JButton("ライブ観光地データ追加");
+		btnAdd = new JButton("ライブ観光データ追加");
 		btnAdd.setBounds(100, 60, 300, 30);
 		btnAdd.setHorizontalAlignment(SwingConstants.LEFT);
 		btnAdd.setMargin(insets);
 		btnAdd.addActionListener(this);
 		add(btnAdd);
 
-		btnUpdate = new JButton("ライブ観光地データ更新");
+		btnUpdate = new JButton("ライブ観光データ更新");
 		btnUpdate.setBounds(100, 120, 300, 30);
 		btnUpdate.setHorizontalAlignment(SwingConstants.LEFT);
 		btnUpdate.setMargin(insets);
