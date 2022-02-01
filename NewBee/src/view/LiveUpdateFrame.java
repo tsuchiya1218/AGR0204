@@ -127,9 +127,7 @@ public class LiveUpdateFrame extends JFrame implements ActionListener {
 
 		scrollPane.setViewportView(table);
 
-		lblImg2 = new JLabel();
-		lblImg2.setBounds(60, 290, 275, 250);
-		add(lblImg2);
+		
 
 		btnReturn = new JButton("戻る");
 		btnReturn.setBounds(20, 600, 90, 30);
@@ -165,7 +163,8 @@ public class LiveUpdateFrame extends JFrame implements ActionListener {
 			tid.replaceAll(" +", "");
 
 			try {
-
+				
+				int i = 0;
 				String[] data = { tid};
 				String[][] tableData = NewBeeController.customerSearch(data);
 
@@ -174,7 +173,7 @@ public class LiveUpdateFrame extends JFrame implements ActionListener {
 					tableModel.setRowCount(0);
 
 					for (String[] rowData : tableData) {
-						int i = 0;
+						
 						if (i < 6) {
 							tableModel.addRow(rowData);
 						} else {
@@ -224,7 +223,9 @@ public class LiveUpdateFrame extends JFrame implements ActionListener {
 	private void getImg(String imgPath) {
 
 			ImageIcon icon = new ImageIcon(imgPath);
-			lblImg2.setIcon(icon);
+			lblImg2 = new JLabel(icon);
+			lblImg2.setBounds(60, 290, 275, 250);
+			add(lblImg2);
 
 		}
 

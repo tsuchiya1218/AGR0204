@@ -1,5 +1,6 @@
 /**
  * クラス名：	CustomerSearchFrame
+
  * 概要　　：	「顧客情報検索」画面
  * 作成者名：
  * 作成日　：
@@ -14,6 +15,7 @@ package view;
 
 
 import java.awt.Insets;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -59,6 +61,9 @@ public class SpotUpdateFrame extends JFrame implements ActionListener {
 	private JButton btnUpdate;
 	private JTextField txtTid;
 
+
+	private String[][] customer;
+
 	public SpotUpdateFrame() {
 
 		setTitle("【観光地データ更新】 NEWBEE TRAVEL 業務システム");
@@ -74,7 +79,7 @@ public class SpotUpdateFrame extends JFrame implements ActionListener {
 		add(txtTid);
 
 		lblKanaNotes = new JLabel("例：　草津温泉(一部分も可)／大阪(都道府県名も可)");
-		lblKanaNotes.setBounds(120, 50, 180, 20);
+		lblKanaNotes.setBounds(120, 50, 300, 20);
 		add(lblKanaNotes);
 
 		btnUpdate = new JButton("更新");
@@ -110,7 +115,7 @@ public class SpotUpdateFrame extends JFrame implements ActionListener {
 		btnImg.addActionListener(this);
 		add(btnImg);
 
-		String[] columnNames = { "ID", "観光地名", "住所", "アクセス", "営業時間", "観光地について" };
+		String[] columnNames = { "ID", "観光地名", "住所", "アクセス", "営業時間", "概要" };
 		tableModel = new DefaultTableModel(columnNames, 0);
 		table = new JTable(tableModel);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -129,14 +134,13 @@ public class SpotUpdateFrame extends JFrame implements ActionListener {
 		column3.setPreferredWidth(145);
 		column4.setPreferredWidth(80);
 		column5.setPreferredWidth(200);
+		
 
 
 
 		scrollPane.setViewportView(table);
-
-		lblImg2 = new JLabel();
-		lblImg2.setBounds(60, 290, 480, 250);
-		add(lblImg2);
+	//	lblImg2 = new JLabel();
+		
 
 		btnReturn = new JButton("戻る");
 		btnReturn.setBounds(20, 650, 90, 30);
@@ -155,6 +159,7 @@ public class SpotUpdateFrame extends JFrame implements ActionListener {
 		setLocationRelativeTo(this);
 	}
 
+	@SuppressWarnings("unused")
 	public void actionPerformed(ActionEvent e) {
 		int defaultImg = 0; //0の場合は　写真を変更しない
 		String imgPath = null;
@@ -174,23 +179,26 @@ public class SpotUpdateFrame extends JFrame implements ActionListener {
 			try {
 
 				String[] data = { tid};
-				String[][] tableData = NewBeeController.spotUpdate(data);
+				String[][] tableData = customer = new String[][]{
+					{"1","東福寺","京都府京都市東山区本町15丁目778","JR奈良線・京阪本線「東福寺駅」下車、南東へ徒歩10分。","10：00-18：00","東山区にある臨済宗東福寺派の本山「東福寺」。足利義満が相国寺を建立した後に定められた"+"/n"+"「京都五山」の第4位に列せられる。\n"
+							+ "日本最古にして最大級の伽藍は「東福の伽藍面」と言われるほどに荘観を極めたが、度重なる兵火や失火で焼失。都度、再建を繰り返してきた。"},
+//					{"2","伊藤二郎","09024681357","東京都千代田区神田小川町2-4-1"},
+//					{"3","伊藤三郎","0314142135","東京都千代田区神田神保町1-1-1"}
+					};
+
+					
+					//NewBeeController.spotUpdate(data);
 
 				if (tableData != null) {
 
 					tableModel.setRowCount(0);
-
 					for (String[] rowData : tableData) {
-						int i = 0;
-						if (i < 6) {
 							tableModel.addRow(rowData);
-						} else {
-							imgPath = tableData[0][6];
-							getImg(imgPath);
-						}
-						i++;
 					}
-
+					ImageIcon icon = new ImageIcon("img/kyoto.png");
+					lblImg2 = new JLabel(icon);
+					lblImg2.setBounds(60, 290, 480, 250);
+					add(lblImg2);
 
 				} else {
 
@@ -228,12 +236,12 @@ public class SpotUpdateFrame extends JFrame implements ActionListener {
 		}
 	}
 
-	private void getImg(String imgPath) {
-
-			ImageIcon icon = new ImageIcon(imgPath);
-			lblImg2.setIcon(icon);
-
-		}
+//	private void getImg(String imgPath) {
+//
+//			ImageIcon icon = new ImageIcon(this.getClass().getResource(imgPath));
+//			lblImg2.setIcon(icon);
+//
+//		}
 
 	private String open() {
 		File f = null;

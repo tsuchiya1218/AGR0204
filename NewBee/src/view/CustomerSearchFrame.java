@@ -3,6 +3,7 @@ package view;
 
 import java.awt.Insets;
 
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -24,14 +25,11 @@ import control.NewBeeController;
 
 public class CustomerSearchFrame extends JFrame implements ActionListener {
 
-
 	private static final long serialVersionUID = 1L;
 	private JLabel lblTel;
 	private JTextField txtTel;
 	private JLabel lblTelNotes;
 
-	
-	
 	private JLabel lblKana;
 	private JTextField txtKana;
 	private JLabel lblKanaNotes;
@@ -43,16 +41,19 @@ public class CustomerSearchFrame extends JFrame implements ActionListener {
 	private JScrollPane scrollPane;
 	private DefaultTableModel tableModel;
 	private JTable table;
+	private String[][] customer;
 
 	private JButton btnReturn;
 
 	public CustomerSearchFrame() {
+		
+			
 
 		setTitle("【会員情報管理】 NEWBEE TRAVEL 業務システム");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 
-		lblTel = new JLabel("会員ID");
+		lblTel = new JLabel("電話番号");
 		lblTel.setBounds(20, 20, 180, 20);
 		add(lblTel);
 
@@ -60,11 +61,11 @@ public class CustomerSearchFrame extends JFrame implements ActionListener {
 		txtTel.setBounds(200, 20, 280, 20);
 		add(txtTel);
 
-		lblTelNotes = new JLabel("例：123456");
+		lblTelNotes = new JLabel("例：01012345678");
 		lblTelNotes.setBounds(200, 40, 180, 20);
 		add(lblTelNotes);
 
-		lblKana = new JLabel("氏名（全角カタカナ）");
+		lblKana = new JLabel("氏名");
 		lblKana.setBounds(20, 70, 180, 20);
 		add(lblKana);
 
@@ -72,7 +73,7 @@ public class CustomerSearchFrame extends JFrame implements ActionListener {
 		txtKana.setBounds(200, 70, 280, 20);
 		add(txtKana);
 
-		lblKanaNotes = new JLabel("例：キダ タロウ");
+		lblKanaNotes = new JLabel("例：田中");
 		lblKanaNotes.setBounds(200, 90, 180, 20);
 		add(lblKanaNotes);
 
@@ -90,7 +91,7 @@ public class CustomerSearchFrame extends JFrame implements ActionListener {
 		scrollPane.setBounds(20, 160, 500, 270);
 		add(scrollPane);
 
-		String[] columnNames = { "ID", "氏名", "電話", "住所", " " };
+		String[] columnNames = { "ID", "氏名", "電話", "住所"};
 		tableModel = new DefaultTableModel(columnNames, 0);
 		table = new JTable(tableModel);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -100,12 +101,10 @@ public class CustomerSearchFrame extends JFrame implements ActionListener {
 		TableColumn column1 = columnModel.getColumn(1);
 		TableColumn column2 = columnModel.getColumn(2);
 		TableColumn column3 = columnModel.getColumn(3);
-		TableColumn column4 = columnModel.getColumn(4);
-		column0.setPreferredWidth(40);
-		column1.setPreferredWidth(90);
-		column2.setPreferredWidth(90);
-		column3.setPreferredWidth(200);
-		column4.setPreferredWidth(80);
+		column0.setPreferredWidth(60);
+		column1.setPreferredWidth(100);
+		column2.setPreferredWidth(100);
+		column3.setPreferredWidth(240);
 		table.addMouseListener(new SearchMouseEvent());
 
 		scrollPane.setViewportView(table);
@@ -132,6 +131,7 @@ public class CustomerSearchFrame extends JFrame implements ActionListener {
 		setLocationRelativeTo(this);
 	}
 
+	@SuppressWarnings("unused")
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource() == btnDelete) {
@@ -149,9 +149,13 @@ public class CustomerSearchFrame extends JFrame implements ActionListener {
 			kana.replaceAll(" +", "");
 
 			try {
-
+				
 				String[] data = { tel, kana };
-				String[][] tableData = NewBeeController.customerSearch(data);
+				String[][] tableData = customer = new String[][]{
+					{"1","伊藤太郎","09023456781","東京都千代田区神田小川町2-1-1"},
+					{"2","伊藤二郎","09024681357","東京都千代田区神田小川町2-4-1"},
+					{"3","伊藤三郎","0314142135","東京都千代田区神田神保町1-1-1"}
+					};//NewBeeController.customerSearch(data);
 
 				if (tableData != null) {
 
@@ -159,7 +163,7 @@ public class CustomerSearchFrame extends JFrame implements ActionListener {
 
 					for (String[] rowData : tableData) {
 						tableModel.addRow(rowData);
-
+						
 					}
 
 				} else {
@@ -197,9 +201,9 @@ public class CustomerSearchFrame extends JFrame implements ActionListener {
 
 		public void mouseClicked(MouseEvent e) {
 
-
 			int rowIndex = table.getSelectedRow();
 			custId = (String) table.getValueAt(rowIndex, 0);
+			new OrderInputFrame(null);
 
 		}
 
@@ -208,4 +212,6 @@ public class CustomerSearchFrame extends JFrame implements ActionListener {
 		}
 
 	}
+
+
 }

@@ -74,7 +74,7 @@ public class OrderInputFrame extends JFrame implements ActionListener {
 		lblId.setBounds(20, 20, 100, 20);
 		add(lblId);
 
-		txtId = new JTextField(Integer.toString(customer.getCustId()));
+		txtId = new JTextField();
 		txtId.setBounds(120, 20, 360, 20);
 		txtId.setEditable(false);
 		add(txtId);
@@ -83,7 +83,7 @@ public class OrderInputFrame extends JFrame implements ActionListener {
 		lblName.setBounds(20, 40, 100, 20);
 		add(lblName);
 
-		txtName = new JTextField(customer.getCustName());
+		txtName = new JTextField();
 		txtName.setBounds(120, 40, 360, 20);
 		add(txtName);
 
@@ -91,7 +91,7 @@ public class OrderInputFrame extends JFrame implements ActionListener {
 		lblKana.setBounds(20, 60, 100, 20);
 		add(lblKana);
 
-		txtKana = new JTextField(customer.getKana());
+		txtKana = new JTextField();
 		txtKana.setBounds(120, 60, 360, 20);
 		add(txtKana);
 
@@ -99,7 +99,7 @@ public class OrderInputFrame extends JFrame implements ActionListener {
 		lblTel.setBounds(20, 80, 100, 20);
 		add(lblTel);
 
-		txtTel = new JTextField(customer.getTel());
+		txtTel = new JTextField();
 		txtTel.setBounds(120, 80, 360, 20);
 		add(txtTel);
 
@@ -107,7 +107,7 @@ public class OrderInputFrame extends JFrame implements ActionListener {
 		lblAddress.setBounds(20, 100, 100, 20);
 		add(lblAddress);
 
-		txtAddress = new JTextField(customer.getAddress());
+		txtAddress = new JTextField();
 		txtAddress.setBounds(120, 100, 360, 20);
 		add(txtAddress);
 

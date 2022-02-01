@@ -93,7 +93,7 @@ public class SpotAddFrame extends JFrame implements ActionListener {
 		txtTime.setBounds(200, 140, 320, 20);
 		add(txtTime);
 
-		lblComment = new JLabel("観光地について");
+		lblComment = new JLabel("概要");
 		lblComment.setBounds(60, 180, 180, 20);
 		add(lblComment);
 
