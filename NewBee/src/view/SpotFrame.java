@@ -18,7 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.SwingConstants;
 
-import model.OrderControlUtility;
+import model.ControlUtility;
 import control.NewBeeController;
 
 @SuppressWarnings("serial")
@@ -80,7 +80,7 @@ public class SpotFrame extends JFrame implements ActionListener {
 
 			} catch (Exception ex) {
 
-				OrderControlUtility.systemErrorMessage(this, ex);
+				ControlUtility.systemErrorMessage(this, ex);
 			}
 		}
 		setVisible(false);

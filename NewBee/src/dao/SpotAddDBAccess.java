@@ -21,7 +21,7 @@ public class SpotAddDBAccess {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
-			result = "DB接続時にエラーが発生しました。(Tourist)" + "\n" + "ご確認ください。";
+			result = "DB接続時にエラーが発生しました。(Spot)" + "\n" + "ご確認ください。";
 			e.printStackTrace();
 		}
 		return con;
@@ -46,16 +46,17 @@ public class SpotAddDBAccess {
 		int rs = -1;
 		try {
 			if (con != null) {
-				String sql = "INSERT INTO Tourist(address,access,comment,time,path) VALUES(?,?,?,?,?)";
+				String sql = "INSERT INTO Spot(name,address,access,comment,time,path) VALUES(?,?,?,?,?,?)";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, data[0]);
 				pstmt.setString(2, data[1]);
 				pstmt.setString(3, data[2]);
 				pstmt.setString(4, data[3]);
 				pstmt.setString(5, data[4]);
+				pstmt.setString(5, data[5]);
 				rs = pstmt.executeUpdate(sql);
 				if (rs == 0) {
-					result = "新規観光地は既に存在しています。" + "\n" + "ご確認ください。";
+					result = "観光地は既に存在しています。。" + "\n" + "ご確認ください。";
 				} else if (rs == 1) {
 					result = "新規完了しました。";
 				}

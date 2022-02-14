@@ -27,7 +27,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import model.Customer;
-import model.OrderControlUtility;
+import model.ControlUtility;
 import control.NewBeeController;
 
 @SuppressWarnings("serial")
@@ -175,7 +175,7 @@ public class VehicleUpdateFrame extends JFrame implements ActionListener {
 
 			} catch (Exception ex) {
 
-				OrderControlUtility.systemErrorMessage(this, ex);
+				ControlUtility.systemErrorMessage(this, ex);
 			}
 
 		} else if (e.getSource() == btnReturn) {
@@ -188,7 +188,7 @@ public class VehicleUpdateFrame extends JFrame implements ActionListener {
 
 			} catch (Exception ex) {
 
-				OrderControlUtility.systemErrorMessage(this, ex);
+				ControlUtility.systemErrorMessage(this, ex);
 			}
 		}
 		else if (e.getSource() == btnUpdate) {
@@ -211,11 +211,11 @@ public class VehicleUpdateFrame extends JFrame implements ActionListener {
 			try {
 
 				Customer customer = NewBeeController.orderInputDisplay(custId);
-				new OrderInputFrame(customer);
+				//new OrderInputFrame(customer);
 
 			} catch (Exception ex) {
 
-				OrderControlUtility.systemErrorMessage(VehicleUpdateFrame.this, ex);
+				ControlUtility.systemErrorMessage(VehicleUpdateFrame.this, ex);
 			}
 		}
 	}

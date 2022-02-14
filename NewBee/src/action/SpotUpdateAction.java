@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import dao.SpotAddDBAccess;
 import dao.SpotSearchDBAccess;
-import model.OrderControlUtility;
+import model.ControlUtility;
 import model.Spot;
 
 public class SpotUpdateAction {
@@ -15,7 +15,7 @@ public class SpotUpdateAction {
 		SpotSearchDBAccess spot = new SpotSearchDBAccess();
 		list = spot.searchSpotByCustomer(date);
 		if (list != null && list.size() != 0) {
-			return OrderControlUtility.spotToArray(list);
+			return ControlUtility.spotToArray(list);
 		} else {
 			return null;
 		}

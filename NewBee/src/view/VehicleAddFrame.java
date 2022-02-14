@@ -33,7 +33,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import model.Customer;
-import model.OrderControlUtility;
+import model.ControlUtility;
 import control.NewBeeController;
 
 @SuppressWarnings("serial")
@@ -193,7 +193,7 @@ public class VehicleAddFrame extends JFrame implements ActionListener {
 				}
 			} catch (Exception ex) {
 
-				OrderControlUtility.systemErrorMessage(this, ex);
+				ControlUtility.systemErrorMessage(this, ex);
 			}
 
 		} else if (e.getSource() == btnReturn) {
@@ -204,7 +204,7 @@ public class VehicleAddFrame extends JFrame implements ActionListener {
 
 			} catch (Exception ex) {
 
-				OrderControlUtility.systemErrorMessage(this, ex);
+				ControlUtility.systemErrorMessage(this, ex);
 			}
 		}
 	}

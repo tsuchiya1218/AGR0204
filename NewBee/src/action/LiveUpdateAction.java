@@ -1,13 +1,14 @@
 package action;
 
-import java.io.FileInputStream;
+import dao.LiveAddDBAccess;
 
-import java.util.ArrayList;
-
-import dao.CustomerSearchDBAccess;
-import model.Customer;
-import model.OrderControlUtility;
-
-public class LiveAddAction {
-
+public class LiveUpdateAction {
+	LiveAddDBAccess liveDBA = new LiveAddDBAccess();
+	public String execute(String[] data) {
+			return liveDBA.liveAdd(data);
+	}
+	
+	public String[][] execute(String data) {
+			return liveDBA.liveUpdata(data);
+	}
 }

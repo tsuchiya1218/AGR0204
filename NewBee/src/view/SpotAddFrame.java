@@ -25,7 +25,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import model.OrderControlUtility;
+import model.ControlUtility;
 import control.NewBeeController;
 
 @SuppressWarnings("serial")
@@ -185,7 +185,7 @@ public class SpotAddFrame extends JFrame implements ActionListener {
 				}
 			} catch (Exception ex) {
 
-				OrderControlUtility.systemErrorMessage(this, ex);
+				ControlUtility.systemErrorMessage(this, ex);
 			}
 
 		} else if (e.getSource() == btnReturn) {
@@ -196,7 +196,7 @@ public class SpotAddFrame extends JFrame implements ActionListener {
 
 			} catch (Exception ex) {
 
-				OrderControlUtility.systemErrorMessage(this, ex);
+				ControlUtility.systemErrorMessage(this, ex);
 			}
 		}
 	}

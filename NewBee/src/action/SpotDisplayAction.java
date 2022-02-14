@@ -9,11 +9,21 @@
 
 package action;
 
+import view.SpotAddFrame;
 import view.SpotFrame;
+import view.SpotUpdateFrame;
 
 public class SpotDisplayAction {
 
 	public void execute() {
 		new SpotFrame();
+	}
+	
+	public void executeAdd() {
+		new SpotAddFrame();
+	}
+	
+	public void executeUpdate() {
+		new SpotUpdateFrame();
 	}
 }

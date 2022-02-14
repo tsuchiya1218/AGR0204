@@ -3,27 +3,26 @@ package action;
 import java.util.ArrayList;
 
 import dao.CustomerSearchDBAccess;
+import dao.ReviewsSearchDBAccess;
 import model.Customer;
-import model.OrderControlUtility;
+import model.Reviews;
+import model.ControlUtility;
 
 public class ReviewsCheckAction {
-	public String[][] execute(String[] data) {
-		ArrayList<Customer> list = new ArrayList<Customer>();
-		CustomerSearchDBAccess customerDBA = new CustomerSearchDBAccess();
-		// data[0]＝電話番号 data[1]=カナ
-		if (!data[0].equals("") && data[1].equals("")) {
-			list = customerDBA.searchCustomerByTel(data[0]);
-		}
-		if (data[0].equals("") && !data[1].equals("")) {
-			list = customerDBA.searchCustomerByKana(data[1]);
-		}
-		if (!data[0].equals("") && !data[1].equals("")) {
-			list = customerDBA.searchCustomerByCustomer(data[0], data[1]);
-		}
-		if (list != null && list.size() != 0) {
-			return OrderControlUtility.customerToArray(list);
+	ReviewsSearchDBAccess reviewsDBA = new ReviewsSearchDBAccess();
+	public String[][] execute() {
+		ArrayList<Reviews> list = new ArrayList<Reviews>();
+		list = reviewsDBA.reviewsSearch();
+		if (list != null) {
+			return ControlUtility.reviewsToArray(list);
 		} else {
 			return null;
 		}
 	}
+	public String execute(String[] data) {
+		return reviewsDBA.reviewsCancel(data);
+}
+	public String executeOk(String[] data) {
+		return reviewsDBA.reviewsOk(data);
+}
 }

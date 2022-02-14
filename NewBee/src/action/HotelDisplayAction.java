@@ -9,11 +9,21 @@
 
 package action;
 
+import view.HotelAddFrame;
 import view.HotelFrame;
+import view.HotelUpdateFrame;
 
 public class HotelDisplayAction {
 
 	public void execute() {
 		new HotelFrame();
+	}
+	
+	public void executeAdd() {
+		new HotelAddFrame();
+	}
+	
+	public void executeUpdata() {
+		new HotelUpdateFrame();
 	}
 }

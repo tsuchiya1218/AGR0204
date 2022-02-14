@@ -9,11 +9,21 @@
 
 package action;
 
+import view.LiveAddFrame;
 import view.LiveFrame;
+import view.LiveUpdateFrame;
 
 public class LiveDisplayAction {
 
 	public void execute() {
 		new LiveFrame();
+	}
+	
+	public void executeAdd() {
+		new LiveAddFrame();
+	}
+	
+	public void executeUpdata() {
+		new LiveUpdateFrame();
 	}
 }

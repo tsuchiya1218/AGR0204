@@ -20,8 +20,10 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import model.BookingCheck;
 import model.Customer;
-import model.OrderControlUtility;
+import model.ControlUtility;
+import model.Reviews;
 import control.NewBeeController;
 
 public class ReviewsCheckFrame extends JFrame implements ActionListener {
@@ -45,32 +47,27 @@ public class ReviewsCheckFrame extends JFrame implements ActionListener {
 	private JButton btnReturn;
 	private JButton btnOk;
 	private JButton btnCancel;
-
+	String[][] tableData;
+	
 	public ReviewsCheckFrame() {
 
 		setTitle("【レビュー•評価をチェック】 NEWBEE TRAVEL 業務システム");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 
-		btnOk = new JButton("OK");
-		btnOk.setBounds(620, 40, 90, 30);
-		btnOk.addActionListener(this);
-		add(btnOk);
-
-		btnCancel = new JButton("削除");
-		btnCancel.setBounds(740, 40, 90, 30);
-		btnCancel.addActionListener(this);
-		add(btnCancel);
+		btnSearch = new JButton("レビュー•評価情報一覧");
+		btnSearch.setBounds(20, 40, 220, 30);
+		btnSearch.addActionListener(this);
+		add(btnSearch);
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(20, 100, 810, 450);
+		scrollPane.setBounds(20, 100, 660, 450);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		add(scrollPane);
 
-		String[] columnNames = { "会員ID","ユーザ名","項目","レビュー•評価内容","日付"};
+		String[] columnNames = { "ユーザーID","ユーザ名","注文コード","旅行コース","レビュー•評価内容","日付"};
 		tableModel = new DefaultTableModel(columnNames, 0);
 		table = new JTable(tableModel);
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 		DefaultTableColumnModel columnModel = (DefaultTableColumnModel) table.getColumnModel();
 		TableColumn column0 = columnModel.getColumn(0);
@@ -78,12 +75,14 @@ public class ReviewsCheckFrame extends JFrame implements ActionListener {
 		TableColumn column2 = columnModel.getColumn(2);
 		TableColumn column3 = columnModel.getColumn(3);
 		TableColumn column4 = columnModel.getColumn(4);
+		TableColumn column5 = columnModel.getColumn(5);
 
 		column0.setPreferredWidth(100);
-		column1.setPreferredWidth(80);
-		column2.setPreferredWidth(200);
-		column3.setPreferredWidth(350);
-		column4.setPreferredWidth(80);
+		column1.setPreferredWidth(100);
+		column2.setPreferredWidth(80);
+		column3.setPreferredWidth(100);
+		column4.setPreferredWidth(200);
+		column5.setPreferredWidth(80);
 
 		table.addMouseListener(new SearchMouseEvent());
 
@@ -102,30 +101,24 @@ public class ReviewsCheckFrame extends JFrame implements ActionListener {
 		super.addNotify();
 
 		Insets insets = getInsets();
-		setSize(850 + insets.left + insets.right, 700 + insets.top + insets.bottom);
+		setSize(700 + insets.left + insets.right, 700 + insets.top + insets.bottom);
 		setLocationRelativeTo(this);
 	}
 
 	public void actionPerformed(ActionEvent e) {
 
-		if (e.getSource() == btnDelete) {
-
-			txtTel.setText("");
-			txtKana.setText("");
-
-		} else if (e.getSource() == btnSearch) {
-
-			String tel = txtTel.getText();
-			String kana = txtKana.getText();
-
-			// 入力値の半角スペースと全角スペースを取り除く
-			tel.replaceAll(" +", "");
-			kana.replaceAll(" +", "");
-
+	if(e.getSource() == btnSearch) {
 			try {
 
-				String[] data = { tel, kana };
-				String[][] tableData = NewBeeController.customerSearch(data);
+				String[] data = { };
+				 tableData = new String[][]{
+					 {"001","電子","20220107","【鬼怒川温泉あけび「離れの湯」個室貸切露天風呂｜コース】ファミリー･女性同士･ご夫婦やカップルにおすすめ",
+						 "良かったと思う。","2022211"},
+					 {"002","電子","20220108","【鬼怒川温泉あけび「離れの湯」個室貸切露天風呂｜コース】ファミリー･女性同士･ご夫婦やカップルにおすすめ",
+							 "良かったと思う。","2022211"}
+					 };
+				 
+				 NewBeeController.reviewsSearch();
 
 				if (tableData != null) {
 
@@ -144,7 +137,7 @@ public class ReviewsCheckFrame extends JFrame implements ActionListener {
 
 			} catch (Exception ex) {
 
-				OrderControlUtility.systemErrorMessage(this, ex);
+				ControlUtility.systemErrorMessage(this, ex);
 			}
 
 		} else if (e.getSource() == btnReturn) {
@@ -157,7 +150,7 @@ public class ReviewsCheckFrame extends JFrame implements ActionListener {
 
 			} catch (Exception ex) {
 
-				OrderControlUtility.systemErrorMessage(this, ex);
+				ControlUtility.systemErrorMessage(this, ex);
 			}
 		}
 	}
@@ -168,17 +161,18 @@ public class ReviewsCheckFrame extends JFrame implements ActionListener {
 
 			setVisible(false);
 
-			int rowIndex = table.getSelectedRow();
-			String custId = (String) table.getValueAt(rowIndex, 0);
-
+			
 			try {
-
-				Customer customer = NewBeeController.orderInputDisplay(custId);
-				new OrderInputFrame(customer);
-
+			int rowIndex = table.getSelectedRow();
+			String tel = (String) table.getValueAt(rowIndex, 0);
+			
+			for(int i = 0;i < tableData.length; i++ ) {
+				if(tel.equals(tableData[i][0])) {
+					new ReviewsFrame(new Reviews(tableData[i][0],tableData[i][1],tableData[i][2],tableData[i][3],
+							tableData[i][4],tableData[i][5]));
+				}
+			}
 			} catch (Exception ex) {
-
-				OrderControlUtility.systemErrorMessage(ReviewsCheckFrame.this, ex);
 			}
 		}
 	}

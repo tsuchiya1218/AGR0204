@@ -8,7 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-public class OrderControlUtility {
+public class ControlUtility {
 
 	public static String[][] customerToArray(ArrayList<Customer> list) {
 
@@ -27,6 +27,25 @@ public class OrderControlUtility {
 		return tableData;
 	}
 
+	public static String[][] reviewsToArray(ArrayList<Reviews> list) {
+
+		int listSize = list.size();
+		String[][] tableData = new String[listSize][4];
+
+		for (int i = 0; i < listSize; i++) {
+
+			Reviews reviews = list.get(i);
+			tableData[i][0] = reviews.getUserId();
+			tableData[i][1] = reviews.getCustName();
+			tableData[i][2] = reviews.getItemCode();
+			tableData[i][3] = reviews.getCourse();
+			tableData[i][4] = reviews.getComment();
+			tableData[i][5] = reviews.getTime();
+		}
+
+		return tableData;
+	}
+	
 	public static String[][] spotToArray(ArrayList<Spot> list) {
 
 		int listSize = list.size();

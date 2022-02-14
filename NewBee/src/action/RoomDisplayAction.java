@@ -9,11 +9,21 @@
 
 package action;
 
-import view.EmptyCheckFrame;
+import view.RoomAddFrame;
+import view.RoomFrame;
+import view.RoomUpdateFrame;
 
-public class EmptyCheckDisplayAction {
+public class RoomDisplayAction {
 
 	public void execute() {
-		new EmptyCheckFrame();
+		new RoomFrame();
+	}
+	
+	public void executeAdd() {
+		new RoomAddFrame();
+	}
+	
+	public void executeUpdate() {
+		new RoomUpdateFrame();
 	}
 }

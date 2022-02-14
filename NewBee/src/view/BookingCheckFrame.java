@@ -4,6 +4,7 @@ package view;
 
 import java.awt.Insets;
 
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -11,33 +12,29 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import model.Customer;
-import model.OrderControlUtility;
+import model.BookingCheck;
+import model.ControlUtility;
 import control.NewBeeController;
 
 public class BookingCheckFrame extends JFrame implements ActionListener {
 
-	private JTextField txtTel;
-	private JTextField txtKana;
-
+	private static final long serialVersionUID = 1L;
 	private JScrollPane scrollPane;
 	private DefaultTableModel tableModel;
 	private JTable table;
 
 	private JButton btnReturn;
-	private JButton btnOk;
-	private JButton btnCancel;
+	private JButton btnSearch;
 
 	String orderId = null;
+	String[][] tableData;
 
 	public BookingCheckFrame() {
 
@@ -45,22 +42,18 @@ public class BookingCheckFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 
-		btnOk = new JButton("確認");
-		btnOk.setBounds(620, 40, 90, 30);
-		btnOk.addActionListener(this);
-		add(btnOk);
-
-		btnCancel = new JButton("取消");
-		btnCancel.setBounds(740, 40, 90, 30);
-		btnCancel.addActionListener(this);
-		add(btnCancel);
+		btnSearch = new JButton("予約情報一覧");
+		btnSearch.setBounds(20, 40, 200, 30);
+		btnSearch.addActionListener(this);
+		add(btnSearch);
+			
 
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(20, 100, 810, 450);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		add(scrollPane);
 
-		String[] columnNames = { "ユーザ名", "電話番号", "注文コード", "コース種類","注文日時","合計（税込）"};
+		String[] columnNames = { "電話番号","ユーザ名", "注文コード", "コース種類","注文日時","合計（税込）"};
 		tableModel = new DefaultTableModel(columnNames, 0);
 		table = new JTable(tableModel);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -103,42 +96,37 @@ public class BookingCheckFrame extends JFrame implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 
-		if (e.getSource() == btnOk) {
+		if (e.getSource() == btnSearch) {
+				try {
+					tableData = new String[][]{{"01234567890","電子","20220107",
+						"旅行コース","20220111","12000円"},
+						{"00111111111","電子","20220107",
+							"旅行コース","20220111","12000円"}
+						}; 
+						//すべての予約情報を取り出す
+						//tableData =	NewBeeController.bookingSearch();
 
-			if(orderId == null) {
-				JOptionPane.showMessageDialog(this, "確認注文を選択してください。", "【確認】", JOptionPane.INFORMATION_MESSAGE);
-			}else {
-				String result = NewBeeController.bookingCheck(orderId);
-				JOptionPane.showMessageDialog(this, result, "【確認】", JOptionPane.INFORMATION_MESSAGE);
-			}
+					if (tableData != null) {
+
+						tableModel.setRowCount(0);
+
+						for (String[] rowData : tableData) {
+
+							tableModel.addRow(rowData);
+						}
+
+					} else {
+
+						JOptionPane.showMessageDialog(this, "一致する情報は見つかりませんでした。", "【確認】", JOptionPane.INFORMATION_MESSAGE);
+						tableModel.setRowCount(0);
+					}
+
+				} catch (Exception ex) {
+
+					ControlUtility.systemErrorMessage(this, ex);
+				}
 
 
-		} else if (e.getSource() == btnCancel) {
-
-
-
-			try {
-//				String[][] tableData = NewBeeController.bookingOrder("");
-//
-//				if (tableData != null) {
-//
-//					tableModel.setRowCount(0);
-//
-//					for (String[] rowData : tableData) {
-//
-//						tableModel.addRow(rowData);
-//					}
-//
-//				} else {
-//
-//					JOptionPane.showMessageDialog(this, "一致する情報は見つかりませんでした。", "【確認】", JOptionPane.INFORMATION_MESSAGE);
-//					tableModel.setRowCount(0);
-//				}
-
-			} catch (Exception ex) {
-
-				OrderControlUtility.systemErrorMessage(this, ex);
-			}
 
 		} else if (e.getSource() == btnReturn) {
 
@@ -150,7 +138,7 @@ public class BookingCheckFrame extends JFrame implements ActionListener {
 
 			} catch (Exception ex) {
 
-				OrderControlUtility.systemErrorMessage(this, ex);
+				ControlUtility.systemErrorMessage(this, ex);
 			}
 		}
 	}
@@ -160,10 +148,18 @@ public class BookingCheckFrame extends JFrame implements ActionListener {
 		public void mouseClicked(MouseEvent e) {
 
 			setVisible(false);
-
+			try {
 			int rowIndex = table.getSelectedRow();
-			orderId = (String) table.getValueAt(rowIndex, 3);
-
+			String tel = (String) table.getValueAt(rowIndex, 0);
+			
+			for(int i = 0;i < tableData.length; i++ ) {
+				if(tel.equals(tableData[i][0])) {
+					new BookingFrame(new BookingCheck(tableData[i][0],tableData[i][1],tableData[i][2],tableData[i][3],
+							tableData[i][4],tableData[i][5]));
+				}
+			}
+			} catch (Exception ex) {
+			}
 		}
 	}
 }

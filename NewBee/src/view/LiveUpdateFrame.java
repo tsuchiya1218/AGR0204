@@ -30,13 +30,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 
-import model.OrderControlUtility;
+import model.ControlUtility;
 import control.NewBeeController;
 
 @SuppressWarnings("serial")
 public class LiveUpdateFrame extends JFrame implements ActionListener {
 
-	private JLabel lblTel;
 
 
 	private JLabel lblKanaNotes;
@@ -51,10 +50,16 @@ public class LiveUpdateFrame extends JFrame implements ActionListener {
 	private JButton btnReturn;
 
 	private JLabel lblImg2;
-	private JLabel lblTourist;
 	private JButton btnImg;
 	private JButton btnUpdate;
-	private JTextField txtTid;
+
+
+	private JLabel lblTheme;
+
+
+	private JTextField txtTheme;
+
+
 
 	public LiveUpdateFrame() {
 
@@ -62,13 +67,13 @@ public class LiveUpdateFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 
-		lblTel = new JLabel("ライブ観光テーマ");
-		lblTel.setBounds(40, 20, 100, 20);
-		add(lblTel);
+		lblTheme = new JLabel("ライブ観光テーマ");
+		lblTheme.setBounds(40, 20, 100, 20);
+		add(lblTheme);
 
-		txtTid = new JTextField();
-		txtTid.setBounds(160, 20, 280, 20);
-		add(txtTid);
+		txtTheme = new JTextField();
+		txtTheme.setBounds(160, 20, 280, 20);
+		add(txtTheme);
 
 		lblKanaNotes = new JLabel("例：世界遺産エジプト・ギザ");
 		lblKanaNotes.setBounds(160, 50, 280, 20);
@@ -78,36 +83,23 @@ public class LiveUpdateFrame extends JFrame implements ActionListener {
 		btnUpdate.setBounds(450, 100, 80, 30);
 		btnUpdate.addActionListener(this);
 		add(btnUpdate);
-		
-		btnSearch = new JButton("一覧表示");
+
+		btnSearch = new JButton("検索");
 		btnSearch.setBounds(40, 100, 90, 30);
 		btnSearch.addActionListener(this);
 		add(btnSearch);
 
-		btnSearch = new JButton("検索");
-		btnSearch.setBounds(150, 100, 90, 30);
-		btnSearch.addActionListener(this);
-		add(btnSearch);
-
 		btnDelete = new JButton("入力消去");
-		btnDelete.setBounds(260, 100, 90, 30);
+		btnDelete.setBounds(140, 100, 90, 30);
 		btnDelete.addActionListener(this);
 		add(btnDelete);
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(20, 160, 510, 80);
+		scrollPane.setBounds(20, 160, 610, 300);
 		add(scrollPane);
 
-		lblTourist = new JLabel("ライブ観光地写真");
-		lblTourist.setBounds(40, 250, 100, 20);
-		add(lblTourist);
 
-		btnImg = new JButton("写真変更");
-		btnImg.setBounds(160, 250, 100, 30);
-		btnImg.addActionListener(this);
-		add(btnImg);
-
-		String[] columnNames = { "配信者ID", "配信者", "開始日時", "紹介"};
+		String[] columnNames = { "ライブ観光ID", "ライブ観光テーマ", "開始日時", "概要","写真名"};
 		tableModel = new DefaultTableModel(columnNames, 0);
 		table = new JTable(tableModel);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -117,11 +109,13 @@ public class LiveUpdateFrame extends JFrame implements ActionListener {
 		TableColumn column1 = columnModel.getColumn(1);
 		TableColumn column2 = columnModel.getColumn(2);
 		TableColumn column3 = columnModel.getColumn(3);
+		TableColumn column4 = columnModel.getColumn(4);
 
-		column0.setPreferredWidth(60);
-		column1.setPreferredWidth(100);
-		column2.setPreferredWidth(100);
-		column3.setPreferredWidth(250);
+		column0.setPreferredWidth(100);
+		column1.setPreferredWidth(130);
+		column2.setPreferredWidth(80);
+		column3.setPreferredWidth(200);
+		column4.setPreferredWidth(100);
 
 
 
@@ -142,7 +136,7 @@ public class LiveUpdateFrame extends JFrame implements ActionListener {
 		super.addNotify();
 
 		Insets insets = getInsets();
-		setSize(550 + insets.left + insets.right, 650 + insets.top + insets.bottom);
+		setSize(650 + insets.left + insets.right, 650 + insets.top + insets.bottom);
 		setLocationRelativeTo(this);
 	}
 
@@ -153,20 +147,17 @@ public class LiveUpdateFrame extends JFrame implements ActionListener {
 
 		if (e.getSource() == btnDelete) {
 
-			txtTid.setText("");
+			txtTheme.setText("");
 
 		} else if (e.getSource() == btnSearch) {
 
-			String tid = txtTid.getText();
+			String theme = txtTheme.getText();
 
 			// 入力値の半角スペースと全角スペースを取り除く
-			tid.replaceAll(" +", "");
+			theme.replaceAll(" +", "");
 
 			try {
-				
-				int i = 0;
-				String[] data = { tid};
-				String[][] tableData = NewBeeController.customerSearch(data);
+				String[][] tableData = NewBeeController.liveSearch(theme);
 
 				if (tableData != null) {
 
@@ -174,13 +165,7 @@ public class LiveUpdateFrame extends JFrame implements ActionListener {
 
 					for (String[] rowData : tableData) {
 						
-						if (i < 6) {
 							tableModel.addRow(rowData);
-						} else {
-							imgPath = tableData[0][6];
-							getImg(imgPath);
-						}
-						i++;
 					}
 
 
@@ -192,7 +177,7 @@ public class LiveUpdateFrame extends JFrame implements ActionListener {
 
 			} catch (Exception ex) {
 
-				OrderControlUtility.systemErrorMessage(this, ex);
+				ControlUtility.systemErrorMessage(this, ex);
 			}
 
 		} else if (e.getSource() == btnReturn) {
@@ -204,7 +189,7 @@ public class LiveUpdateFrame extends JFrame implements ActionListener {
 
 			} catch (Exception ex) {
 
-				OrderControlUtility.systemErrorMessage(this, ex);
+				ControlUtility.systemErrorMessage(this, ex);
 			}
 		} else if (e.getSource() == btnUpdate) {
 			if(defaultImg == 1) {
@@ -219,15 +204,6 @@ public class LiveUpdateFrame extends JFrame implements ActionListener {
 			addPath = open();
 		}
 	}
-
-	private void getImg(String imgPath) {
-
-			ImageIcon icon = new ImageIcon(imgPath);
-			lblImg2 = new JLabel(icon);
-			lblImg2.setBounds(60, 290, 275, 250);
-			add(lblImg2);
-
-		}
 
 	private String open() {
 		File f = null;

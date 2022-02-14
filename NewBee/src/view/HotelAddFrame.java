@@ -10,10 +10,9 @@
 package view;
 
 import java.awt.Insets;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 
 import javax.swing.ImageIcon;
@@ -22,17 +21,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.table.DefaultTableColumnModel;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 
-import model.Customer;
-import model.OrderControlUtility;
+import model.ControlUtility;
 import control.NewBeeController;
 
 @SuppressWarnings("serial")
@@ -46,8 +39,6 @@ public class HotelAddFrame extends JFrame implements ActionListener {
 
 	private JTextArea txtComment;
 
-	private JLabel lbltime;
-	private JTextField txtTime;
 
 	private JButton btnReturn;
 	private JButton btnDelete;
@@ -56,9 +47,13 @@ public class HotelAddFrame extends JFrame implements ActionListener {
 	private JButton btnImg;
 
 	private JLabel lblImg2;
-	private JLabel lblId;
-	private JTextField txtId;
 	private JLabel lblComment;
+	private JLabel lblName;
+	private JTextField txtName;
+	private JLabel lblCheckIn;
+	private JTextField txtCheckIn;
+	private JLabel lblCheckOut;
+	private JTextField txtCheckOut;
 
 	public HotelAddFrame() {
 
@@ -66,48 +61,48 @@ public class HotelAddFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 
-		lblId = new JLabel("ホテル名");
-		lblId.setBounds(60, 20, 180, 20);
-		add(lblId);
+		lblName = new JLabel("ホテル名");
+		lblName.setBounds(60, 20, 180, 20);
+		add(lblName);
 
-		txtId = new JTextField();
-		txtId.setBounds(200, 20, 320, 20);
-		add(txtId);
+		txtName = new JTextField();
+		txtName.setBounds(200, 20, 320, 20);
+		add(txtName);
 
-		lblId = new JLabel("所在地");
-		lblId.setBounds(60, 60, 180, 20);
-		add(lblId);
-
-		txtId = new JTextField();
-		txtId.setBounds(200, 60, 320, 20);
-		add(txtId);
-
-		lblAddress = new JLabel("アクセス");
-		lblAddress.setBounds(60, 100, 180, 20);
+		lblAddress = new JLabel("所在地");
+		lblAddress.setBounds(60, 60, 180, 20);
 		add(lblAddress);
 
 		txtAddress = new JTextField();
-		txtAddress.setBounds(200, 100, 320, 20);
+		txtAddress.setBounds(200, 60, 320, 20);
 		add(txtAddress);
 
-		lblAccess = new JLabel("チェックイン");
-		lblAccess.setBounds(60, 140, 180, 20);
+		lblAccess = new JLabel("アクセス");
+		lblAccess.setBounds(60, 100, 180, 20);
 		add(lblAccess);
 
 		txtAccess = new JTextField();
-		txtAccess.setBounds(200, 140, 320, 20);
+		txtAccess.setBounds(200, 100, 320, 20);
 		add(txtAccess);
 
-		lbltime = new JLabel("チェックアウト");
-		lbltime.setBounds(60, 180, 180, 20);
-		add(lbltime);
+		lblCheckIn = new JLabel("チェックイン");
+		lblCheckIn.setBounds(60, 140, 180, 20);
+		add(lblCheckIn);
+
+		txtCheckIn = new JTextField();
+		txtCheckIn.setBounds(200, 140, 320, 20);
+		add(txtCheckIn);
+
+		lblCheckOut = new JLabel("チェックアウト");
+		lblCheckOut.setBounds(60, 180, 180, 20);
+		add(lblCheckOut);
 
 
-		txtTime = new JTextField();
-		txtTime.setBounds(200, 180, 320, 20);
-		add(txtTime);
+		txtCheckOut = new JTextField();
+		txtCheckOut.setBounds(200, 180, 320, 20);
+		add(txtCheckOut);
 
-		lblComment = new JLabel("紹介");
+		lblComment = new JLabel("概要");
 		lblComment.setBounds(60, 220, 180, 20);
 		add(lblComment);
 
@@ -162,10 +157,12 @@ public class HotelAddFrame extends JFrame implements ActionListener {
 
 		if (e.getSource() == btnDelete) {
 
+			txtName.setText("");
 			txtAddress.setText("");
 			txtAccess.setText("");
+			txtCheckIn.setText("");
+			txtCheckOut.setText("");
 			txtComment.setText("");
-			txtTime.setText("");
 
 		} else if (e.getSource() == btnImg) {
 
@@ -173,21 +170,25 @@ public class HotelAddFrame extends JFrame implements ActionListener {
 
 		} else if (e.getSource() == btnAdd) {
 
+			String name = txtName.getText();
 			String address = txtAddress.getText();
 			String access = txtAccess.getText();
+			String checkIn = txtCheckIn.getText();
+			String checkOut = txtCheckOut.getText();
 			String comment = txtComment.getText();
-			String time = txtTime.getText();
 
 			// 入力値の半角スペースと全角スペースを取り除く
+			name.replaceAll(" +", "");
 			address.replaceAll(" +", "");
 			access.replaceAll(" +", "");
+			checkIn.replaceAll(" +", "");
+			checkOut.replaceAll(" +", "");
 			comment.replaceAll(" +", "");
-			time.replaceAll(" +", "");
-			String[] data = { address, access, comment, time, path };
+			String[] data = { name, address, access, checkIn,checkOut,comment, path };
 
 			try {
-				if (path != null && address != null && access != null && comment != null && time != null) {
-					String result = NewBeeController.spotAdd(data);
+				if (name != null && address != null && access != null && checkIn != null && checkOut != null && comment != null && path != null) {
+					String result = NewBeeController.hotelAdd(data);
 
 					JOptionPane.showMessageDialog(this, result, "【確認】", JOptionPane.INFORMATION_MESSAGE);
 				} else {
@@ -195,7 +196,7 @@ public class HotelAddFrame extends JFrame implements ActionListener {
 				}
 			} catch (Exception ex) {
 
-				OrderControlUtility.systemErrorMessage(this, ex);
+				ControlUtility.systemErrorMessage(this, ex);
 			}
 
 		} else if (e.getSource() == btnReturn) {
@@ -206,7 +207,7 @@ public class HotelAddFrame extends JFrame implements ActionListener {
 
 			} catch (Exception ex) {
 
-				OrderControlUtility.systemErrorMessage(this, ex);
+				ControlUtility.systemErrorMessage(this, ex);
 			}
 		}
 	}

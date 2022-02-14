@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import dao.CustomerSearchDBAccess;
 import model.Customer;
-import model.OrderControlUtility;
+import model.ControlUtility;
 
 public class EmptyCheckAction {
 	public String[][] execute(String[] data) {
@@ -21,7 +21,7 @@ public class EmptyCheckAction {
 			list = customerDBA.searchCustomerByCustomer(data[0], data[1]);
 		}
 		if (list != null && list.size() != 0) {
-			return OrderControlUtility.customerToArray(list);
+			return ControlUtility.customerToArray(list);
 		} else {
 			return null;
 		}

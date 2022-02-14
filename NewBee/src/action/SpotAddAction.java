@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import dao.SpotAddDBAccess;
 import dao.SpotSearchDBAccess;
-import model.OrderControlUtility;
+import model.ControlUtility;
 import model.Spot;
 
 public class SpotAddAction {

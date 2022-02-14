@@ -1,20 +1,16 @@
 package action;
 
-import java.util.ArrayList;
 
-import dao.CustomerSearchDBAccess;
-import model.Customer;
-import model.OrderControlUtility;
+import dao.OrderUpdataDBAccess;
+
 
 public class OrderChangeAction {
-	public String[][] execute(String[] data) {
-		ArrayList<Customer> list = new ArrayList<Customer>();
-		CustomerSearchDBAccess customerDBA = new CustomerSearchDBAccess();
-		// data[0]＝電話番号
-		if (list != null && list.size() != 0) {
-			return OrderControlUtility.customerToArray(list);
-		} else {
-			return null;
-		}
+	OrderUpdataDBAccess orderDBA = new OrderUpdataDBAccess();
+	public String execute(String[] data) {
+			return orderDBA.OrderChange(data);
+	}
+	
+	public String[][] execute(String data) {
+			return orderDBA.orderSearch(data);
 	}
 }

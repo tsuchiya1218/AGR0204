@@ -11,6 +11,9 @@ import model.Customer;
 
 public class LiveAddDBAccess {
 	// DBとの接続を確立する
+	String result = null;
+
+	// DBとの接続を確立する
 	private Connection createConnection() {
 		Connection con = null;
 		try {
@@ -19,10 +22,9 @@ public class LiveAddDBAccess {
 			con = DriverManager.getConnection("jdbc:mysql://127.0.0.1/20jy0238?characterEncoding=UTF-8&useSSL=false", "root",
 					"aini389125");
 		} catch (ClassNotFoundException e) {
-			System.out.println("JDBCドライバが見つかりません");
 			e.printStackTrace();
 		} catch (SQLException e) {
-			System.out.println("DBに接続時にエラーが発生しました。");
+			result = "DB接続時にエラーが発生しました。(Spot)" + "\n" + "ご確認ください。";
 			e.printStackTrace();
 		}
 		return con;
@@ -40,38 +42,32 @@ public class LiveAddDBAccess {
 		}
 	}
 
-	public ArrayList<Customer> searchCustomerByTel(String tel) {
+	public String liveAdd(String[] data) {
+
 		Connection con = createConnection();
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		ArrayList<Customer> list = new ArrayList<Customer>();
+		int rs = -1;
 		try {
 			if (con != null) {
-				String sql = "SELECT CUSTID,CUSTNAME,KANA,ADDRESS FROM customer WHERE TEL=?";
+				String sql = "INSERT INTO Live(name,startTime,comment,img)"
+						+ " VALUES(?,?,?,?)";
 				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, tel);
-				rs = pstmt.executeQuery();
-				while (rs.next()) {
-					int custId = rs.getInt("CUSTID");
-					String custName = rs.getString("CUSTNAME");
-					String kana = rs.getString("KANA");
-					String address = rs.getString("ADDRESS");
-					Customer customer = new Customer(custId, custName, kana, tel, address);
-					list.add(customer);
+				pstmt.setString(1, data[0]);
+				pstmt.setString(2, data[1]);
+				pstmt.setString(3, data[2]);
+				pstmt.setString(4, data[3]);
+				rs = pstmt.executeUpdate(sql);
+				if (rs == 0) {
+					result = "ライブ観光地は既に存在しています。。" + "\n" + "ご確認ください。";
+				} else if (rs == 1) {
+					result = "新規完了しました。";
 				}
 			}
+
 		} catch (SQLException e) {
-			System.out.println("DB接続時にエラーが発生しました。(Customer)");
 			e.printStackTrace();
+
 		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("DB切断時にエラーが発生しました。");
-				e.printStackTrace();
-			}
 			try {
 				if (pstmt != null) {
 					pstmt.close();
@@ -80,31 +76,34 @@ public class LiveAddDBAccess {
 				System.out.println("DB切断時にエラーが発生しました。");
 				e.printStackTrace();
 			}
+
 		}
 		closeConnection(con);
-		return list;
+		return result;
 	}
 
-	public ArrayList<Customer> searchCustomerByKana(String kana) {
+	@SuppressWarnings("null")
+	public String[][] liveUpdata(String data) {
+
+		String[][] tableData = null;
+		int i = 0;
+
 		Connection con = createConnection();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		ArrayList<Customer> list = new ArrayList<Customer>();
 		try {
 			if (con != null) {
-				String sql = "SELECT CUSTID,CUSTNAME,KANA,TEL,ADDRESS FROM customer WHERE KANA LIKE ?";
+				String sql = "SELECT * FROM Live WHERE hotelName LIKE ?";
 				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, "%" + kana + "%");
-				rs = pstmt.executeQuery();
-				while (rs.next()) {
-					int custId = rs.getInt("CUSTID");
-					String custName = rs.getString("CUSTNAME");
-					String tel = rs.getString("tel");
-					String address = rs.getString("ADDRESS");
-					String custKana = rs.getString("KANA");
-					Customer customer = new Customer(custId, custName, custKana, tel, address);
-					list.add(customer);
-				}
+				pstmt.setString(1, "%"+data+"%");
+				rs = pstmt.executeQuery(sql);
+			}
+			while (rs.next()) {
+				tableData[i][0] = rs.getString("liveId");
+				tableData[i][1] = rs.getString("liveTheme");
+				tableData[i][2] = rs.getString("startTime");
+				tableData[i][3] = rs.getString("comment");
+				tableData[i][4] = rs.getString("img");
 			}
 		} catch (SQLException e) {
 			System.out.println("DB接続時にエラーが発生しました。(Customer)");
@@ -128,52 +127,7 @@ public class LiveAddDBAccess {
 			}
 		}
 		closeConnection(con);
-		return list;
+		return tableData;
 	}
 
-	public ArrayList<Customer> searchCustomerByCustomer(String tel, String kana) {
-		Connection con = createConnection();
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		ArrayList<Customer> list = new ArrayList<Customer>();
-		try {
-			if (con != null) {
-				String sql = "SELECT CUSTID,CUSTNAME,KANA,ADDRESS FROM customer WHERE TEL=? AND KANA LIKE ?";
-				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, tel);
-				pstmt.setString(2, "%" + kana + "%");
-				rs = pstmt.executeQuery();
-				while (rs.next()) {
-					int custId = rs.getInt("CUSTID");
-					String custName = rs.getString("CUSTNAME");
-					String address = rs.getString("ADDRESS");
-					String custKana = rs.getString("KANA");
-					Customer customer = new Customer(custId, custName, custKana, tel, address);
-					list.add(customer);
-				}
-			}
-		} catch (SQLException e) {
-			System.out.println("DB接続時にエラーが発生しました。(Customer)");
-			e.printStackTrace();
-		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("DB切断時にエラーが発生しました。");
-				e.printStackTrace();
-			}
-			try {
-				if (pstmt != null) {
-					pstmt.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("DB切断時にエラーが発生しました。");
-				e.printStackTrace();
-			}
-		}
-		closeConnection(con);
-		return list;
-	}
 }

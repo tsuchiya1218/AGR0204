@@ -10,6 +10,7 @@
 package view;
 
 import java.awt.Insets;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -26,8 +27,9 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import model.Customer;
-import model.OrderControlUtility;
+
+import model.OrderChange;
+import model.ControlUtility;
 import control.NewBeeController;
 
 @SuppressWarnings("serial")
@@ -37,9 +39,6 @@ public class OrderChangeFrame extends JFrame implements ActionListener {
 	private JTextField txtTel;
 	private JLabel lblTelNotes;
 
-	private JLabel lblKana;
-	private JTextField txtKana;
-	private JLabel lblKanaNotes;
 
 	private JButton btnSearch;
 	private JButton btnDelete;
@@ -49,7 +48,7 @@ public class OrderChangeFrame extends JFrame implements ActionListener {
 	private JTable table;
 
 	private JButton btnReturn;
-	private JButton btnUpdate;
+	String[][] tableData;
 
 	public OrderChangeFrame() {
 
@@ -79,19 +78,15 @@ public class OrderChangeFrame extends JFrame implements ActionListener {
 		btnDelete.addActionListener(this);
 		add(btnDelete);
 
-		btnUpdate = new JButton("新規追加");
-		btnUpdate.setBounds(840, 80, 90, 30);
-		btnUpdate.addActionListener(this);
-		add(btnUpdate);
-
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(20, 130, 910, 250);
 		add(scrollPane);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
 
 		String[] columnNames = { "電話番号", "ユーザ名", "注文コード", "旅行コース","開始日","終了日","合計（税込）"};
 		tableModel = new DefaultTableModel(columnNames, 0);
 		table = new JTable(tableModel);
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		//table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 		DefaultTableColumnModel columnModel = (DefaultTableColumnModel) table.getColumnModel();
 		TableColumn column0 = columnModel.getColumn(0);
@@ -131,6 +126,7 @@ public class OrderChangeFrame extends JFrame implements ActionListener {
 		setLocationRelativeTo(this);
 	}
 
+	@SuppressWarnings("unused")
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource() == btnDelete) {
@@ -146,8 +142,11 @@ public class OrderChangeFrame extends JFrame implements ActionListener {
 
 			try {
 
-				String[] data = { tel};
-				String[][] tableData = NewBeeController.orderChange(data);
+				String data = tel;
+				tableData = new String[][]{{"01234567890","電子","20200107",
+					"【鬼怒川温泉あけび「離れの湯」個室貸切露天風呂｜コース】ファミリー･女性同士･ご夫婦やカップルにおすすめ","20220111","20220115","12000円"}}; 
+					//顧客情報を返す
+					NewBeeController.orderSearch(tel);						
 
 				if (tableData != null) {
 
@@ -166,7 +165,7 @@ public class OrderChangeFrame extends JFrame implements ActionListener {
 
 			} catch (Exception ex) {
 
-				OrderControlUtility.systemErrorMessage(this, ex);
+				ControlUtility.systemErrorMessage(this, ex);
 			}
 
 		} else if (e.getSource() == btnReturn) {
@@ -179,7 +178,7 @@ public class OrderChangeFrame extends JFrame implements ActionListener {
 
 			} catch (Exception ex) {
 
-				OrderControlUtility.systemErrorMessage(this, ex);
+				ControlUtility.systemErrorMessage(this, ex);
 			}
 		}
 	}
@@ -190,17 +189,20 @@ public class OrderChangeFrame extends JFrame implements ActionListener {
 
 			setVisible(false);
 
-			int rowIndex = table.getSelectedRow();
-			String custId = (String) table.getValueAt(rowIndex, 0);
-
+			
 			try {
-
-				Customer customer = NewBeeController.orderInputDisplay(custId);
-				new OrderInputFrame(customer);
-
+			int rowIndex = table.getSelectedRow();
+			String tel = (String) table.getValueAt(rowIndex, 0);
+			
+			for(int i = 0;i < tableData.length; i++ ) {
+				if(tel.equals(tableData[i][0])) {
+					new OrderFrame(new OrderChange(tableData[i][0],tableData[i][1],tableData[i][2],tableData[i][3],
+							tableData[i][4],tableData[i][5],tableData[i][6]));
+				}
+			}
 			} catch (Exception ex) {
 
-				OrderControlUtility.systemErrorMessage(OrderChangeFrame.this, ex);
+				ControlUtility.systemErrorMessage(OrderChangeFrame.this, ex);
 			}
 		}
 	}

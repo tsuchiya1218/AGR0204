@@ -93,7 +93,7 @@ public class MainMenuFrame extends JFrame implements ActionListener {
 		reviewsControl.addActionListener(this);
 		add(reviewsControl);
 
-		JButton emptyControl = new JButton("空き状況確認");
+		JButton emptyControl = new JButton("部屋データ追加");
 		emptyControl.setBounds(100, 340, 300, 30);
 		emptyControl.setMargin(insets);
 		emptyControl.setHorizontalAlignment(SwingConstants.LEFT);
@@ -146,7 +146,7 @@ public class MainMenuFrame extends JFrame implements ActionListener {
 
 		} else if (cmd.equals("empty")) {
 
-			NewBeeController.emptyCheckDisplay();
+			NewBeeController.roomDisplay();
 
 		}
 

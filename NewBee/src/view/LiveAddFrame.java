@@ -25,23 +25,16 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import model.OrderControlUtility;
+import model.ControlUtility;
 import control.NewBeeController;
 
 
+@SuppressWarnings("serial")
 public class LiveAddFrame extends JFrame implements ActionListener {
 
-	private JLabel lblAddress;
-	private JTextField txtAddress;
-
-	private JLabel lblAccess;
-	private JTextField txtAccess;
 
 	private JLabel lblComment;
 	private JTextArea txtComment;
-
-	private JLabel lbltime;
-	private JTextField txtTime;
 
 	private JButton btnReturn;
 	private JButton btnDelete;
@@ -50,7 +43,10 @@ public class LiveAddFrame extends JFrame implements ActionListener {
 	private JButton btnImg;
 
 	private JLabel lblImg2;
-	private JLabel lbltimeText;
+	private JLabel lblName;
+	private JTextField txtName;
+	private JLabel lblStartTime;
+	private JTextField txtStratTime;
 
 	public LiveAddFrame() {
 
@@ -58,25 +54,25 @@ public class LiveAddFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 
-		lblAddress = new JLabel("配信者");
-		lblAddress.setBounds(60, 20, 180, 20);
-		add(lblAddress);
+		lblName = new JLabel("ライブ観光テーマ");
+		lblName.setBounds(60, 20, 180, 20);
+		add(lblName);
 
 
-		txtAddress = new JTextField();
-		txtAddress.setBounds(200, 20, 320, 20);
-		add(txtAddress);
+		txtName = new JTextField();
+		txtName.setBounds(200, 20, 320, 20);
+		add(txtName);
 
-		lblAccess = new JLabel("開始日時");
-		lblAccess.setBounds(60, 60, 180, 20);
-		add(lblAccess);
+		lblStartTime = new JLabel("開始日時");
+		lblStartTime.setBounds(60, 60, 180, 20);
+		add(lblStartTime);
 
-		txtAccess = new JTextField();
-		txtAccess.setBounds(200, 60, 320, 20);
-		add(txtAccess);
+		txtStratTime = new JTextField();
+		txtStratTime.setBounds(200, 60, 320, 20);
+		add(txtStratTime);
 
 
-		lblComment = new JLabel("紹介");
+		lblComment = new JLabel("概要");
 		lblComment.setBounds(60, 100, 180, 20);
 		add(lblComment);
 
@@ -130,10 +126,9 @@ public class LiveAddFrame extends JFrame implements ActionListener {
 
 		if (e.getSource() == btnDelete) {
 
-			txtAddress.setText("");
-			txtAccess.setText("");
+			txtName.setText("");
+			txtStratTime.setText("");
 			txtComment.setText("");
-			txtTime.setText("");
 
 		} else if (e.getSource() == btnImg) {
 
@@ -141,21 +136,19 @@ public class LiveAddFrame extends JFrame implements ActionListener {
 
 		} else if (e.getSource() == btnAdd) {
 
-			String address = txtAddress.getText();
-			String access = txtAccess.getText();
+			String name = txtName.getText();
+			String startTime = txtStratTime.getText();
 			String comment = txtComment.getText();
-			String time = txtTime.getText();
 
 			// 入力値の半角スペースと全角スペースを取り除く
-			address.replaceAll(" +", "");
-			access.replaceAll(" +", "");
+			name.replaceAll(" +", "");
+			startTime.replaceAll(" +", "");
 			comment.replaceAll(" +", "");
-			time.replaceAll(" +", "");
-			String[] data = { address, access, comment, time, path };
+			String[] data = { name, startTime, comment,path };
 
 			try {
-				if (path != null && address != null && access != null && comment != null && time != null) {
-					String result = NewBeeController.spotAdd(data);
+				if (name != null && startTime != null && comment != null && path != null) {
+					String result = NewBeeController.liveAdd(data);
 
 					JOptionPane.showMessageDialog(this, result, "【確認】", JOptionPane.INFORMATION_MESSAGE);
 				} else {
@@ -163,7 +156,7 @@ public class LiveAddFrame extends JFrame implements ActionListener {
 				}
 			} catch (Exception ex) {
 
-				OrderControlUtility.systemErrorMessage(this, ex);
+				ControlUtility.systemErrorMessage(this, ex);
 			}
 
 		} else if (e.getSource() == btnReturn) {
@@ -174,7 +167,7 @@ public class LiveAddFrame extends JFrame implements ActionListener {
 
 			} catch (Exception ex) {
 
-				OrderControlUtility.systemErrorMessage(this, ex);
+				ControlUtility.systemErrorMessage(this, ex);
 			}
 		}
 	}

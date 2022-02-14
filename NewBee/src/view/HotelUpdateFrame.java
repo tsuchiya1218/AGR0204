@@ -9,11 +9,11 @@
 
 package view;
 
+
+
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 
 import javax.swing.ImageIcon;
@@ -30,14 +30,12 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import model.Customer;
-import model.OrderControlUtility;
+import model.ControlUtility;
 import control.NewBeeController;
 
 @SuppressWarnings("serial")
 public class HotelUpdateFrame extends JFrame implements ActionListener {
 
-	private JLabel lblTel;
 
 
 	private JLabel lblKanaNotes;
@@ -57,19 +55,25 @@ public class HotelUpdateFrame extends JFrame implements ActionListener {
 	private JButton btnUpdate;
 	private JTextField txtTid;
 
+
+	private JLabel lblName;
+
+
+	private JTextField txtName;
+
 	public HotelUpdateFrame() {
 
 		setTitle("【ホテルデータ更新】 NEWBEE TRAVEL 業務システム");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 
-		lblTel = new JLabel("ホテル名");
-		lblTel.setBounds(40, 20, 100, 20);
-		add(lblTel);
+		lblName = new JLabel("ホテル名");
+		lblName.setBounds(40, 20, 100, 20);
+		add(lblName);
 
-		txtTid = new JTextField();
-		txtTid.setBounds(160, 20, 280, 20);
-		add(txtTid);
+		txtName = new JTextField();
+		txtName.setBounds(160, 20, 280, 20);
+		add(txtName);
 
 		lblKanaNotes = new JLabel("例：東京プラザホテル");
 		lblKanaNotes.setBounds(160, 50, 180, 20);
@@ -80,35 +84,22 @@ public class HotelUpdateFrame extends JFrame implements ActionListener {
 		btnUpdate.addActionListener(this);
 		add(btnUpdate);
 
-		btnSearch = new JButton("一覧表示");
+
+		btnSearch = new JButton("検索");
 		btnSearch.setBounds(40, 100, 90, 30);
 		btnSearch.addActionListener(this);
 		add(btnSearch);
 
-		btnSearch = new JButton("検索");
-		btnSearch.setBounds(150, 100, 90, 30);
-		btnSearch.addActionListener(this);
-		add(btnSearch);
-
 		btnDelete = new JButton("入力消去");
-		btnDelete.setBounds(260, 100, 90, 30);
+		btnDelete.setBounds(140, 100, 90, 30);
 		btnDelete.addActionListener(this);
 		add(btnDelete);
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(20, 160, 1000, 80);
+		scrollPane.setBounds(20, 160, 900, 250);
 		add(scrollPane);
 
-		lblTourist = new JLabel("ホテル写真");
-		lblTourist.setBounds(40, 250, 100, 20);
-		add(lblTourist);
-
-		btnImg = new JButton("写真変更");
-		btnImg.setBounds(160, 250, 100, 30);
-		btnImg.addActionListener(this);
-		add(btnImg);
-
-		String[] columnNames = { "ホテルID", "ホテル名", "所在地", "アクセス", "チェックイン", "チェックアウト", "紹介", "部屋数"};
+		String[] columnNames = { "ホテルID", "ホテル名", "所在地", "アクセス", "チェックイン", "チェックアウト", "紹介","写真名"};
 		tableModel = new DefaultTableModel(columnNames, 0);
 		table = new JTable(tableModel);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -125,11 +116,11 @@ public class HotelUpdateFrame extends JFrame implements ActionListener {
 
 		column0.setPreferredWidth(80);
 		column1.setPreferredWidth(100);
-		column2.setPreferredWidth(160);
-		column3.setPreferredWidth(160);
+		column2.setPreferredWidth(120);
+		column3.setPreferredWidth(120);
 		column4.setPreferredWidth(90);
 		column5.setPreferredWidth(90);
-		column6.setPreferredWidth(220);
+		column6.setPreferredWidth(200);
 		column7.setPreferredWidth(100);
 
 
@@ -153,7 +144,7 @@ public class HotelUpdateFrame extends JFrame implements ActionListener {
 		super.addNotify();
 
 		Insets insets = getInsets();
-		setSize(1040 + insets.left + insets.right, 700 + insets.top + insets.bottom);
+		setSize(940 + insets.left + insets.right, 700 + insets.top + insets.bottom);
 		setLocationRelativeTo(this);
 	}
 
@@ -168,15 +159,14 @@ public class HotelUpdateFrame extends JFrame implements ActionListener {
 
 		} else if (e.getSource() == btnSearch) {
 
-			String tid = txtTid.getText();
+			String name = txtName.getText();
 
 			// 入力値の半角スペースと全角スペースを取り除く
-			tid.replaceAll(" +", "");
+			name.replaceAll(" +", "");
 
 			try {
 
-				String[] data = { tid};
-				String[][] tableData = NewBeeController.customerSearch(data);
+				String[][] tableData = NewBeeController.hotelSearch(name);
 
 				if (tableData != null) {
 
@@ -202,7 +192,7 @@ public class HotelUpdateFrame extends JFrame implements ActionListener {
 
 			} catch (Exception ex) {
 
-				OrderControlUtility.systemErrorMessage(this, ex);
+				ControlUtility.systemErrorMessage(this, ex);
 			}
 
 		} else if (e.getSource() == btnReturn) {
@@ -214,7 +204,7 @@ public class HotelUpdateFrame extends JFrame implements ActionListener {
 
 			} catch (Exception ex) {
 
-				OrderControlUtility.systemErrorMessage(this, ex);
+				ControlUtility.systemErrorMessage(this, ex);
 			}
 		} else if (e.getSource() == btnUpdate) {
 			if(defaultImg == 1) {

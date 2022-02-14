@@ -4,6 +4,7 @@ package view;
 import java.awt.Insets;
 
 
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -20,7 +21,7 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import model.OrderControlUtility;
+import model.ControlUtility;
 import control.NewBeeController;
 
 public class CustomerSearchFrame extends JFrame implements ActionListener {
@@ -41,7 +42,6 @@ public class CustomerSearchFrame extends JFrame implements ActionListener {
 	private JScrollPane scrollPane;
 	private DefaultTableModel tableModel;
 	private JTable table;
-	private String[][] customer;
 
 	private JButton btnReturn;
 
@@ -90,6 +90,7 @@ public class CustomerSearchFrame extends JFrame implements ActionListener {
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(20, 160, 500, 270);
 		add(scrollPane);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
 
 		String[] columnNames = { "ID", "氏名", "電話", "住所"};
 		tableModel = new DefaultTableModel(columnNames, 0);
@@ -151,7 +152,7 @@ public class CustomerSearchFrame extends JFrame implements ActionListener {
 			try {
 				
 				String[] data = { tel, kana };
-				String[][] tableData = customer = new String[][]{
+				String[][] tableData  = new String[][]{
 					{"1","伊藤太郎","09023456781","東京都千代田区神田小川町2-1-1"},
 					{"2","伊藤二郎","09024681357","東京都千代田区神田小川町2-4-1"},
 					{"3","伊藤三郎","0314142135","東京都千代田区神田神保町1-1-1"}
@@ -173,7 +174,7 @@ public class CustomerSearchFrame extends JFrame implements ActionListener {
 
 			} catch (Exception ex) {
 
-				OrderControlUtility.systemErrorMessage(this, ex);
+				ControlUtility.systemErrorMessage(this, ex);
 			}
 
 		} else if (e.getSource() == btnReturn) {
@@ -186,7 +187,7 @@ public class CustomerSearchFrame extends JFrame implements ActionListener {
 
 			} catch (Exception ex) {
 
-				OrderControlUtility.systemErrorMessage(this, ex);
+				ControlUtility.systemErrorMessage(this, ex);
 			}
 
 		} else if (e.getSource() == btnFreeze) {
@@ -203,12 +204,8 @@ public class CustomerSearchFrame extends JFrame implements ActionListener {
 
 			int rowIndex = table.getSelectedRow();
 			custId = (String) table.getValueAt(rowIndex, 0);
-			new OrderInputFrame(null);
+			//new OrderInputFrame(null);
 
-		}
-
-		public String getCustId() {
-			return custId;
 		}
 
 	}
