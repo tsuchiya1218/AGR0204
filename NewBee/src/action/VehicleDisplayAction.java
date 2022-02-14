@@ -9,11 +9,19 @@
 
 package action;
 
+import view.VehicleAddFrame;
 import view.VehicleFrame;
+import view.VehicleUpdateFrame;
 
 public class VehicleDisplayAction {
 
 	public void execute() {
 		new VehicleFrame();
+	}
+	public void executeAdd() {
+		new VehicleAddFrame();
+	}
+	public void executeUpdate() {
+		new VehicleUpdateFrame();
 	}
 }

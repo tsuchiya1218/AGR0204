@@ -145,7 +145,7 @@ public class ReviewsFrame extends JFrame implements ActionListener {
 			try {
 				//userIdとitemCodeを渡して、レビューをキャンセルする。
 				String[] data = {txtUserId.getText(),txtItemCode.getText()};
-				String result = NewBeeController.reviewsCancelDisplay(data);
+				String result = NewBeeController.reviewsCancel(data);
 				JOptionPane.showMessageDialog(this, result, "【確認】", JOptionPane.INFORMATION_MESSAGE);
 			} catch (Exception ex) {
 
@@ -156,7 +156,7 @@ public class ReviewsFrame extends JFrame implements ActionListener {
 			try {
 			//userIdとitemCodeを渡して、レビューを許可する。
 				String[] data = {txtUserId.getText(),txtItemCode.getText()};
-				String result = NewBeeController.reviewsOkDisplay(data);
+				String result = NewBeeController.reviewsOk(data);
 				JOptionPane.showMessageDialog(this, result, "【確認】", JOptionPane.INFORMATION_MESSAGE);
 			} catch (Exception ex) {
 

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 
 
+
 import model.Customer;
 import action.BookingCheckAction;
 import action.BookingCheckDisplayAction;
@@ -32,9 +33,8 @@ import action.ReviewsCheckAction;
 import action.SpotAddAction;
 import action.SpotDisplayAction;
 import action.SpotUpdateAction;
-import action.VehicleAddDisplayAction;
 import action.VehicleDisplayAction;
-import action.VehicleUpdateDisplayAction;
+import action.VehicleUpdateAction;
 
 public class NewBeeController {
 
@@ -94,6 +94,10 @@ public class NewBeeController {
 		RoomUpdateAction raa = new RoomUpdateAction();
 		return raa.execute(data);
 	}
+	public static String roomUpdate(String[] data) {
+		RoomUpdateAction raa = new RoomUpdateAction();
+		return raa.executeUptade(data);
+	}
 	public static String[][] roomSearch(String data) {
 		HotelUpdateAction csa = new HotelUpdateAction();
 		return csa.execute(data);
@@ -114,18 +118,34 @@ public class NewBeeController {
 		action.executeUpdata();
 	}
 
+	
+	
 	public static void vehicleDisplay() {
 		VehicleDisplayAction action = new VehicleDisplayAction();
 		action.execute();
 	}
 	public static void vehicleAddDisplay() {
-		VehicleAddDisplayAction action = new VehicleAddDisplayAction();
-		action.execute();
+		VehicleDisplayAction action = new VehicleDisplayAction();
+		action.executeAdd();
 	}
 	public static void vehicleUpdateDisplay() {
-		VehicleUpdateDisplayAction action = new VehicleUpdateDisplayAction();
-		action.execute();
+		VehicleDisplayAction action = new VehicleDisplayAction();
+		action.executeUpdate();
 	}
+	public static String vehicleAdd(String[] data) {
+		VehicleUpdateAction vua = new VehicleUpdateAction();
+		return vua.execute(data);
+	}
+	public static String vehicleUpdate(String[] data) {
+		VehicleUpdateAction vua = new VehicleUpdateAction();
+		return vua.executeUpdate(data);
+	}
+	public static String[][] vehicleSearch(String data) {
+		VehicleUpdateAction vua = new VehicleUpdateAction();
+		return vua.execute(data);
+	}
+	
+	
 
 	public static void orderChangeDisplay() {
 		OrderChangeDisplayAction action = new OrderChangeDisplayAction();
@@ -147,11 +167,11 @@ public class NewBeeController {
 		ReviewsCheckAction csa = new ReviewsCheckAction();
 		return csa.execute();
 	}
-	public static String reviewsCancelDisplay(String[] data) {
+	public static String reviewsCancel(String[] data) {
 		ReviewsCheckAction csa = new ReviewsCheckAction();
 		return csa.execute(data);
 	}
-	public static String reviewsOkDisplay(String[] data) {
+	public static String reviewsOk(String[] data) {
 		ReviewsCheckAction csa = new ReviewsCheckAction();
 		return csa.executeOk(data);
 	}
@@ -187,10 +207,6 @@ public class NewBeeController {
 		return haa.execute(data);
 	}
 
-	public static String[][] vehicleAdd(String[] data) {
-		CustomerSearchAction csa = new CustomerSearchAction();
-		return csa.execute(data);
-	}
 
 	public static String[][] orderSearch(String data) {
 		OrderChangeAction oca = new OrderChangeAction();

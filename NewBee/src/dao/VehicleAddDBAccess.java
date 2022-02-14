@@ -1,13 +1,16 @@
 package dao;
 
 import java.sql.Connection;
-
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
-public class OrderUpdataDBAccess {
+import model.Customer;
+
+public class VehicleAddDBAccess {
+	// DBとの接続を確立する
 	String result = null;
 
 	// DBとの接続を確立する
@@ -21,7 +24,7 @@ public class OrderUpdataDBAccess {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
-			result = "DB接続時にエラーが発生しました。(Order)" + "\n" + "ご確認ください。";
+			result = "DB接続時にエラーが発生しました。(Transportation)" + "\n" + "ご確認ください。";
 			e.printStackTrace();
 		}
 		return con;
@@ -39,25 +42,27 @@ public class OrderUpdataDBAccess {
 		}
 	}
 
-	public String OrderChange(String[] data) {
+	public String vehicleUpdate(String[] data) {
 
 		Connection con = createConnection();
 		PreparedStatement pstmt = null;
 		int rs = -1;
 		try {
 			if (con != null) {
-				String sql = "UPDATE Order SET startTime = ?, endTime = ? , num = ? WHERE tel = ? AND orderCode = ?";
+				String sql = "UPDATE Transportation SET dstation = ? , "
+						+ "astation = ?, dtime = ?, atime = ? WHERE name = ?)"
+						+ " VALUES(?,?,?,?,?,?)";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, data[0]);
 				pstmt.setString(2, data[1]);
 				pstmt.setString(3, data[2]);
 				pstmt.setString(4, data[3]);
-				pstmt.setString(5, data[4]);
+				pstmt.setString(3, data[4]);
 				rs = pstmt.executeUpdate(sql);
 				if (rs == 0) {
-					result = "変更失敗しました。" + "\n" + "ご確認ください。";
+					result = "既に存在しています。" + "\n" + "ご確認ください。";
 				} else if (rs == 1) {
-					result = "変更完了しました。";
+					result = "新規完了しました。";
 				}
 			}
 
@@ -79,8 +84,50 @@ public class OrderUpdataDBAccess {
 		return result;
 	}
 
+	public String vehicleAdd(String[] data) {
+
+		Connection con = createConnection();
+		PreparedStatement pstmt = null;
+		int rs = -1;
+		try {
+			if (con != null) {
+				String sql = "INSERT INTO Transportation(name,dstation,astation,dtime,atime,ttypeid)"
+						+ " VALUES(?,?,?,?,?,?)";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, data[0]);
+				pstmt.setString(2, data[1]);
+				pstmt.setString(3, data[2]);
+				pstmt.setString(4, data[3]);
+				pstmt.setString(3, data[4]);
+				pstmt.setString(4, data[5]);
+				rs = pstmt.executeUpdate(sql);
+				if (rs == 0) {
+					result = "既に存在しています。" + "\n" + "ご確認ください。";
+				} else if (rs == 1) {
+					result = "新規完了しました。";
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("DB切断時にエラーが発生しました。");
+				e.printStackTrace();
+			}
+
+		}
+		closeConnection(con);
+		return result;
+	}
+	
 	@SuppressWarnings("null")
-	public String[][] orderSearch(String data) {
+	public String[][] vehicleSearch(String data) {
 
 		String[][] tableData = null;
 		int i = 0;
@@ -90,22 +137,21 @@ public class OrderUpdataDBAccess {
 		ResultSet rs = null;
 		try {
 			if (con != null) {
-				String sql = "SELECT * FROM Order WHERE tel = ?";
+				String sql = "SELECT * FROM Transportation WHERE name LIKE ?";
 				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, data);
+				pstmt.setString(1, "%"+data+"%");
 				rs = pstmt.executeQuery(sql);
 			}
 			while (rs.next()) {
-				tableData[i][0] = rs.getString("tel");
-				tableData[i][1] = rs.getString("name");
-				tableData[i][2] = rs.getString("orderCode");
-				tableData[i][3] = rs.getString("course");
-				tableData[i][4] = rs.getString("startDate");
-				tableData[i][5] = rs.getString("endDate");
-				tableData[i][6] = rs.getString("num");
+				tableData[i][0] = rs.getString("name");
+				tableData[i][1] = rs.getString("dstation");
+				tableData[i][2] = rs.getString("astation");
+				tableData[i][3] = rs.getString("dtime");
+				tableData[i][4] = rs.getString("atime");
+				tableData[i][5] = rs.getString("ttypeid");
 			}
 		} catch (SQLException e) {
-			System.out.println("DB接続時にエラーが発生しました。(Order)");
+			System.out.println("DB接続時にエラーが発生しました。(Customer)");
 			e.printStackTrace();
 		} finally {
 			try {

@@ -27,6 +27,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import model.Customer;
+import model.RoomDetailed;
+import model.VehicleDetailed;
 import model.ControlUtility;
 import control.NewBeeController;
 
@@ -50,6 +52,9 @@ public class VehicleUpdateFrame extends JFrame implements ActionListener {
 	private JTable table;
 
 	private JButton btnReturn;
+	private JLabel lblName;
+	private JTextField txtName;
+	String[][] tableData;
 
 	public VehicleUpdateFrame() {
 
@@ -57,30 +62,25 @@ public class VehicleUpdateFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 
-		lblTel = new JLabel("移動種類");
-		lblTel.setBounds(60, 20, 100, 20);
-		add(lblTel);
+		lblName = new JLabel("便名");
+		lblName.setBounds(20, 20, 80, 20);
+		add(lblName);
 
-		txtTel = new JTextField();
-		txtTel.setBounds(200, 20, 280, 20);
-		add(txtTel);
+		txtName = new JTextField();
+		txtName.setBounds(200, 20, 280, 20);
+		add(txtName);
 
-		lblTelNotes = new JLabel("例：飛行機、JR、新幹線");
+		lblTelNotes = new JLabel("例：AA176、のぞみ1号");
 		lblTelNotes.setBounds(200, 40, 180, 20);
 		add(lblTelNotes);
 
-		btnSearch = new JButton("一覧表示");
-		btnSearch.setBounds(40, 100, 90, 30);
-		btnSearch.addActionListener(this);
-		add(btnSearch);
-
 		btnSearch = new JButton("検索");
-		btnSearch.setBounds(150, 100, 90, 30);
+		btnSearch.setBounds(20, 100, 90, 30);
 		btnSearch.addActionListener(this);
 		add(btnSearch);
 
 		btnDelete = new JButton("入力消去");
-		btnDelete.setBounds(260, 100, 90, 30);
+		btnDelete.setBounds(120, 100, 90, 30);
 		btnDelete.addActionListener(this);
 		add(btnDelete);
 
@@ -88,12 +88,7 @@ public class VehicleUpdateFrame extends JFrame implements ActionListener {
 		scrollPane.setBounds(20, 160, 560,160);
 		add(scrollPane);
 
-		btnUpdate = new JButton("更新");
-		btnUpdate.setBounds(400, 120, 80, 30);
-		btnUpdate.addActionListener(this);
-		add(btnUpdate);
-
-		String[] columnNames = { "ID", "種類", "便名", "出発駅", "到着駅", "出発日時","到着日時"};
+		String[] columnNames = { "便名", "出発駅", "到着駅", "出発日時","到着日時" ,"種類ID"};
 		tableModel = new DefaultTableModel(columnNames, 0);
 		table = new JTable(tableModel);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -105,16 +100,14 @@ public class VehicleUpdateFrame extends JFrame implements ActionListener {
 		TableColumn column3 = columnModel.getColumn(3);
 		TableColumn column4 = columnModel.getColumn(4);
 		TableColumn column5 = columnModel.getColumn(5);
-		TableColumn column6 = columnModel.getColumn(6);
 
 
-		column0.setPreferredWidth(60);
-		column1.setPreferredWidth(80);
-		column2.setPreferredWidth(80);
-		column3.setPreferredWidth(80);
+		column0.setPreferredWidth(110);
+		column1.setPreferredWidth(90);
+		column2.setPreferredWidth(90);
+		column3.setPreferredWidth(90);
 		column4.setPreferredWidth(90);
 		column5.setPreferredWidth(90);
-		column6.setPreferredWidth(80);
 
 		table.addMouseListener(new SearchMouseEvent());
 
@@ -141,22 +134,20 @@ public class VehicleUpdateFrame extends JFrame implements ActionListener {
 
 		if (e.getSource() == btnDelete) {
 
-			txtTel.setText("");
-			txtKana.setText("");
+			txtName.setText("");
 
 		} else if (e.getSource() == btnSearch) {
 
-			String tel = txtTel.getText();
-			String kana = txtKana.getText();
-
+			String name = txtName.getText();
 			// 入力値の半角スペースと全角スペースを取り除く
-			tel.replaceAll(" +", "");
-			kana.replaceAll(" +", "");
+			name.replaceAll(" +", "");
 
 			try {
 
-				String[] data = { tel, kana };
-				String[][] tableData = NewBeeController.customerSearch(data);
+				String data = name;
+				tableData = new String[][]{{"1","2","3","1","2","3"},{"2","2","3","1","2","3"}}; 
+						
+						NewBeeController.vehicleSearch(data);
 
 				if (tableData != null) {
 
@@ -191,12 +182,6 @@ public class VehicleUpdateFrame extends JFrame implements ActionListener {
 				ControlUtility.systemErrorMessage(this, ex);
 			}
 		}
-		else if (e.getSource() == btnUpdate) {
-
-			// 更新データをdbに渡すメソッド
-
-
-		}
 	}
 
 	private class SearchMouseEvent extends MouseAdapter {
@@ -205,17 +190,18 @@ public class VehicleUpdateFrame extends JFrame implements ActionListener {
 
 			setVisible(false);
 
-			int rowIndex = table.getSelectedRow();
-			String custId = (String) table.getValueAt(rowIndex, 0);
-
+			
 			try {
-
-				Customer customer = NewBeeController.orderInputDisplay(custId);
-				//new OrderInputFrame(customer);
-
+			int rowIndex = table.getSelectedRow();
+			String vehicleName = (String) table.getValueAt(rowIndex, 0);
+			
+			for(int i = 0;i < tableData.length; i++ ) {
+				if(vehicleName.equals(tableData[i][0])) {
+					new VehicleDetailedFrame(new VehicleDetailed(tableData[i][0],tableData[i][1],tableData[i][2],tableData[i][3],
+							tableData[i][4],tableData[i][5]));
+				}
+			}
 			} catch (Exception ex) {
-
-				ControlUtility.systemErrorMessage(VehicleUpdateFrame.this, ex);
 			}
 		}
 	}

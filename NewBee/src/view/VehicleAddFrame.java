@@ -9,30 +9,17 @@
 
 package view;
 
-import java.awt.Component;
+
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.table.DefaultTableColumnModel;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 
-import model.Customer;
 import model.ControlUtility;
 import control.NewBeeController;
 
@@ -44,10 +31,8 @@ public class VehicleAddFrame extends JFrame implements ActionListener {
 	private JButton btnDelete;
 	private JButton btnAdd;
 
-	private JLabel lblId;
-	private JTextField txtId;
-	private JLabel lblType;
-	private JTextField txtType;
+	private JLabel lblTypeId;
+	private JTextField txtTypeId;
 	private JLabel lblStart;
 	private JTextField txtStart;
 	private JLabel lblEnd;
@@ -71,13 +56,13 @@ public class VehicleAddFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 
-		lblType = new JLabel("種類");
-		lblType.setBounds(60, 20, 180, 20);
-		add(lblType);
+		lblTypeId = new JLabel("種類ID");
+		lblTypeId.setBounds(60, 20, 180, 20);
+		add(lblTypeId);
 
-		txtType = new JTextField();
-		txtType.setBounds(200, 20, 320, 20);
-		add(txtType);
+		txtTypeId = new JTextField();
+		txtTypeId.setBounds(200, 20, 320, 20);
+		add(txtTypeId);
 
 		lblName = new JLabel("便名");
 		lblName.setBounds(60, 60, 180, 20);
@@ -122,12 +107,12 @@ public class VehicleAddFrame extends JFrame implements ActionListener {
 		add(txtETime);
 
 		btnDelete = new JButton("入力消去");
-		btnDelete.setBounds(390, 260, 90, 30);
+		btnDelete.setBounds(60, 260, 90, 30);
 		btnDelete.addActionListener(this);
 		add(btnDelete);
 
 		btnAdd = new JButton("新規追加");
-		btnAdd.setBounds(490, 260, 90, 30);
+		btnAdd.setBounds(170, 260, 90, 30);
 		btnAdd.addActionListener(this);
 		add(btnAdd);
 
@@ -155,9 +140,8 @@ public class VehicleAddFrame extends JFrame implements ActionListener {
 
 		if (e.getSource() == btnDelete) {
 
-			txtId.setText("");
 			txtName.setText("");
-			txtType.setText("");
+			txtTypeId.setText("");
 			txtStart.setText("");
 			txtEnd.setText("");
 			txtSTime.setText("");
@@ -165,27 +149,26 @@ public class VehicleAddFrame extends JFrame implements ActionListener {
 
 		} else if (e.getSource() == btnAdd) {
 
-			String id = txtId.getText();
 			String name = txtName.getText();
-			String type = txtType.getText();
+			String typeId = txtTypeId.getText();
 			String start = txtStart.getText();
 			String end = txtEnd.getText();
 			String stime = txtSTime.getText();
 			String etime = txtETime.getText();
 
 			// 入力値の半角スペースと全角スペースを取り除く
-			id.replaceAll(" +", "");
 			name.replaceAll(" +", "");
-			type.replaceAll(" +", "");
+			typeId.replaceAll(" +", "");
 			start.replaceAll(" +", "");
 			end.replaceAll(" +", "");
 			stime.replaceAll(" +", "");
 			etime.replaceAll(" +", "");
-			String[] data = {id, name, type, start, end, stime, etime};
+			String[] data = { name, start, end, stime, etime, typeId};
 
 			try {
-				if (id != null && name != null && type != null && start != null && end != null && stime != null && etime != null) {
-					String result = NewBeeController.spotAdd(data);
+				if (name != null && typeId != null && start != null && end != null && stime != null && etime != null) {
+					//DBに追加メソッド
+					String result = NewBeeController.vehicleAdd(data);
 
 					JOptionPane.showMessageDialog(this, result, "【確認】", JOptionPane.INFORMATION_MESSAGE);
 				} else {

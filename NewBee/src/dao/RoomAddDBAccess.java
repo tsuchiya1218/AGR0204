@@ -81,6 +81,44 @@ public class RoomAddDBAccess {
 		return result;
 	}
 	
+	public String roomUpdate(String[] data) {
+		Connection con = createConnection();
+		PreparedStatement pstmt = null;
+		int rs = -1;
+		try {
+			if (con != null) {
+				//SQL修正する必要がある
+				String sql = "UPDATE Room SET count = ? , remaind = ? WHERE type = ? AND hotelid = ?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, data[0]);
+				pstmt.setString(1, data[1]);
+				pstmt.setString(1, data[2]);
+				pstmt.setString(1, data[3]);
+				rs = pstmt.executeUpdate(sql);
+				if (rs == 0) {
+					result =  "更新失敗しました。" + "\n" + "ご確認ください。";
+				} else if (rs == 1) {
+					result = "更新完了しました。";
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("DB接続時にエラーが発生しました。(Customer)");
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("DB切断時にエラーが発生しました。");
+				e.printStackTrace();
+			}
+		}
+		closeConnection(con);
+		return result;
+	}
+	
+	
 	public String[][] roomSearch(String data) {
 
 		String[][] tableData = null;

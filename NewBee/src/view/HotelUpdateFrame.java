@@ -166,23 +166,19 @@ public class HotelUpdateFrame extends JFrame implements ActionListener {
 
 			try {
 
-				String[][] tableData = NewBeeController.hotelSearch(name);
+				String[][] tableData = 
+						
+						
+						
+						NewBeeController.hotelSearch(name);
 
 				if (tableData != null) {
 
 					tableModel.setRowCount(0);
 
 					for (String[] rowData : tableData) {
-						int i = 0;
-						if (i < 6) {
 							tableModel.addRow(rowData);
-						} else {
-							imgPath = tableData[0][6];
-							getImg(imgPath);
-						}
-						i++;
 					}
-
 
 				} else {
 

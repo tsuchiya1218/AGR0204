@@ -156,7 +156,8 @@ public class CustomerSearchFrame extends JFrame implements ActionListener {
 					{"1","伊藤太郎","09023456781","東京都千代田区神田小川町2-1-1"},
 					{"2","伊藤二郎","09024681357","東京都千代田区神田小川町2-4-1"},
 					{"3","伊藤三郎","0314142135","東京都千代田区神田神保町1-1-1"}
-					};//NewBeeController.customerSearch(data);
+					};//
+					NewBeeController.customerSearch(data);
 
 				if (tableData != null) {
 

@@ -14,4 +14,9 @@ public class RoomUpdateAction {
 	public String[][] execute(String data) {
 		return  room.roomSearch(data);
 	}
+
+	public String executeUptade(String[] data) {
+		// TODO 自動生成されたメソッド・スタブ
+		return  room.roomUpdate(data);
+	}
 }

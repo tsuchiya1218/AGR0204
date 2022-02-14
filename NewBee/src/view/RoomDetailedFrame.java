@@ -66,6 +66,12 @@ public class RoomDetailedFrame extends JFrame implements ActionListener {
 	private JButton btnOrderCancel;
 	private JButton btnRoomRegister;
 	private JTextArea txtComment;
+	private JLabel lblSum;
+	private JTextField txtSum;
+	private JLabel lblTpye;
+	private JTextField txtTpye;
+	private JLabel lblType;
+	private JTextField txtType;
 
 	public RoomDetailedFrame(RoomDetailed roomDetailed) {
 
@@ -100,22 +106,22 @@ public class RoomDetailedFrame extends JFrame implements ActionListener {
 		txtKana.setEditable(false);
 		add(txtKana);
 
-		lblTel = new JLabel("確保部屋数");
-		lblTel.setBounds(20, 110, 100, 20);
-		add(lblTel);
+		lblSum = new JLabel("確保部屋数");
+		lblSum.setBounds(20, 110, 100, 20);
+		add(lblSum);
 
-		txtTel = new JTextField(roomDetailed.getRoomNum());
-		txtTel.setBounds(120, 110, 360, 20);
-		add(txtTel);
+		txtSum = new JTextField(roomDetailed.getRoomNum());
+		txtSum.setBounds(120, 110, 360, 20);
+		add(txtSum);
 
-		lblAddress = new JLabel("部屋タイプ");
-		lblAddress.setBounds(20, 140, 100, 20);
-		add(lblAddress);
+		lblType = new JLabel("部屋タイプ");
+		lblType.setBounds(20, 140, 100, 20);
+		add(lblType);
 
-		txtAddress = new JTextField(roomDetailed.getRoomType());
-		txtAddress.setBounds(120, 140, 360, 20);
-		txtAddress.setEditable(false);
-		add(txtAddress);
+		txtType = new JTextField(roomDetailed.getRoomType());
+		txtType.setBounds(120, 140, 360, 20);
+		txtType.setEditable(false);
+		add(txtType);
 		
 		lblAddress = new JLabel("概要");
 		lblAddress.setBounds(20, 170, 100, 20);
@@ -161,11 +167,21 @@ public class RoomDetailedFrame extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource() == btnRoomRegister) {
+			String id = txtId.getText();
+			String type = txtType.getText();
+			String sum = txtSum.getText();
+			String num = txtNum.getText();
+			// 入力値の半角スペースと全角スペースを取り除く
+			sum.replaceAll(" +", "");
+			num.replaceAll(" +", "");
+			type.replaceAll(" +", "");
+			id.replaceAll(" +", "");
 
+			String[] data = {id,type,sum,num};
 			try {
 				//hotelIdとroomIdを渡して、部屋情報を変更する。
-				//String[][] tableData = NewBeeController.itemMenuDisplay();
-
+				String result = NewBeeController.roomUpdate(data);
+				JOptionPane.showMessageDialog(this, result, "【確認】", JOptionPane.INFORMATION_MESSAGE);
 			} catch (Exception ex) {
 
 				ControlUtility.systemErrorMessage(this, ex);

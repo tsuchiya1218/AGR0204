@@ -104,7 +104,7 @@ public class BookingCheckFrame extends JFrame implements ActionListener {
 							"旅行コース","20220111","12000円"}
 						}; 
 						//すべての予約情報を取り出す
-						//tableData =	NewBeeController.bookingSearch();
+						tableData =	NewBeeController.bookingSearch();
 
 					if (tableData != null) {
 
