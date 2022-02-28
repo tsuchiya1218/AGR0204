@@ -79,14 +79,13 @@ public class OrderChangeFrame extends JFrame implements ActionListener {
 		add(btnDelete);
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(20, 130, 910, 250);
+		scrollPane.setBounds(20, 130, 580, 250);
 		add(scrollPane);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
 
-		String[] columnNames = { "電話番号", "ユーザ名", "注文コード", "旅行コース","開始日","終了日","合計（税込）"};
+		String[] columnNames = { "電話番号", "ユーザ名", "注文コード","開始日","終了日","合計（税込）"};
 		tableModel = new DefaultTableModel(columnNames, 0);
 		table = new JTable(tableModel);
-		//table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 		DefaultTableColumnModel columnModel = (DefaultTableColumnModel) table.getColumnModel();
 		TableColumn column0 = columnModel.getColumn(0);
@@ -95,15 +94,13 @@ public class OrderChangeFrame extends JFrame implements ActionListener {
 		TableColumn column3 = columnModel.getColumn(3);
 		TableColumn column4 = columnModel.getColumn(4);
 		TableColumn column5 = columnModel.getColumn(5);
-		TableColumn column6 = columnModel.getColumn(6);
 
 		column0.setPreferredWidth(80);
 		column1.setPreferredWidth(100);
 		column2.setPreferredWidth(100);
-		column3.setPreferredWidth(330);
+		column3.setPreferredWidth(100);
 		column4.setPreferredWidth(100);
 		column5.setPreferredWidth(100);
-		column6.setPreferredWidth(100);
 
 		table.addMouseListener(new SearchMouseEvent());
 
@@ -122,7 +119,7 @@ public class OrderChangeFrame extends JFrame implements ActionListener {
 		super.addNotify();
 
 		Insets insets = getInsets();
-		setSize(950 + insets.left + insets.right, 500 + insets.top + insets.bottom);
+		setSize(600 + insets.left + insets.right, 500 + insets.top + insets.bottom);
 		setLocationRelativeTo(this);
 	}
 
@@ -143,18 +140,23 @@ public class OrderChangeFrame extends JFrame implements ActionListener {
 			try {
 
 				String data = tel;
-				tableData = new String[][]{{"01234567890","電子","20200107",
-					"【鬼怒川温泉あけび「離れの湯」個室貸切露天風呂｜コース】ファミリー･女性同士･ご夫婦やカップルにおすすめ","20220111","20220115","12000円"}}; 
-					//顧客情報を返す
-					NewBeeController.orderSearch(tel);						
+				//顧客情報を返す
+				tableData =	NewBeeController.orderSearch(tel);						
 
 				if (tableData != null) {
 
 					tableModel.setRowCount(0);
 
+					int i = 0;
 					for (String[] rowData : tableData) {
-
-						tableModel.addRow(rowData);
+						
+						if(tableData[i][0] == null) {
+							break;
+						}else {
+							tableModel.addRow(rowData);
+						}
+						i++;
+						
 					}
 
 				} else {

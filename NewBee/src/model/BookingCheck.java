@@ -5,22 +5,22 @@ import java.io.Serializable;
 public class BookingCheck implements Serializable  {
 	private static final long serialVersionUID = 1L;
 	private String custName;
-	private String type;
+	private String date;
 	private String tel;
 	private String orderCode;
-	private String num;
-	private String orderTime;
+	private String price;
+	private String itemid;
 
 
 	public BookingCheck(String tel, String custName, String orderCode, 
-			String type, String orderTime, String num) {
+			String date, String price ,String itemid) {
 		// TODO 自動生成されたコンストラクター・スタブ
 		this.tel = tel;
 		this.custName = custName;
 		this.orderCode = orderCode;
-		this.type = type;
-		this.orderTime = orderTime;
-		this.num = num;
+		this.setDate(date);
+		this.setPrice(price);
+		this.setItemid(itemid);
 	}
 	
 	public String getCustName() {
@@ -33,14 +33,6 @@ public class BookingCheck implements Serializable  {
 	}
 
 
-	public String getType() {
-		return type;
-	}
-
-
-	public void setType(String type) {
-		this.type = type;
-	}
 
 
 	public String getTel() {
@@ -63,23 +55,30 @@ public class BookingCheck implements Serializable  {
 	}
 
 
-	public String getNum() {
-		return num;
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 
-	public void setNum(String num) {
-		this.num = num;
+	public String getPrice() {
+		return price;
+	}
+
+	public void setPrice(String price) {
+		this.price = price;
 	}
 
 
-	public String getOrderTime() {
-		return orderTime;
+	public String getItemid() {
+		return itemid;
 	}
 
-
-	public void setOrderTime(String orderTime) {
-		this.orderTime = orderTime;
+	public void setItemid(String itemid) {
+		this.itemid = itemid;
 	}
 
 

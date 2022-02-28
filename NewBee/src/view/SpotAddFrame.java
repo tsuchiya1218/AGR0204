@@ -10,9 +10,11 @@
 package view;
 
 import java.awt.Insets;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -50,41 +52,52 @@ public class SpotAddFrame extends JFrame implements ActionListener {
 	private JButton btnImg;
 
 	private JLabel lblImg2;
-	private JLabel lbltimeText;
 	private JLabel lblName;
 	private JTextField txtName;
+	private JLabel lblAreaId;
+	private JTextField txtAreaId;
+	String img = null;
 
 	public SpotAddFrame() {
+
 
 		setTitle("【観光地データ追加】 NEWBEE TRAVEL 業務システム");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 
+		lblAreaId= new JLabel("エリアID");
+		lblAreaId.setBounds(60, 20, 180, 20);
+		add(lblAreaId);
+
+		txtAreaId = new JTextField();
+		txtAreaId.setBounds(200, 20, 320, 20);
+		add(txtAreaId);
+
 		lblName= new JLabel("観光地名");
-		lblName.setBounds(60, 20, 180, 20);
+		lblName.setBounds(60, 50, 180, 20);
 		add(lblName);
 
 		txtName = new JTextField();
-		txtName.setBounds(200, 20, 320, 20);
+		txtName.setBounds(200, 50, 320, 20);
 		add(txtName);
 
 		lblAddress = new JLabel("住所");
-		lblAddress.setBounds(60, 60, 180, 20);
+		lblAddress.setBounds(60, 80, 180, 20);
 		add(lblAddress);
 
 		txtAddress = new JTextField();
-		txtAddress.setBounds(200, 60, 320, 20);
+		txtAddress.setBounds(200, 80, 320, 20);
 		add(txtAddress);
 
 		lblAccess = new JLabel("アクセス	");
-		lblAccess.setBounds(60, 100, 180, 20);
+		lblAccess.setBounds(60, 110, 180, 20);
 		add(lblAccess);
 
 		txtAccess = new JTextField();
-		txtAccess.setBounds(200, 100, 320, 20);
+		txtAccess.setBounds(200, 110, 320, 20);
 		add(txtAccess);
 
-		lbltime = new JLabel("営業時間");
+		lbltime = new JLabel("利用時間");
 		lbltime.setBounds(60, 140, 180, 20);
 		add(lbltime);
 
@@ -94,20 +107,22 @@ public class SpotAddFrame extends JFrame implements ActionListener {
 		add(txtTime);
 
 		lblComment = new JLabel("概要");
-		lblComment.setBounds(60, 180, 180, 20);
+		lblComment.setBounds(60, 170, 180, 20);
 		add(lblComment);
 
 		txtComment = new JTextArea();
-		txtComment.setBounds(200, 180, 320, 80);
+		txtComment.setBounds(200, 170, 320, 80);
+		txtComment.setLineWrap(true);
+		txtComment.setWrapStyleWord(true);
 		add(txtComment);
 
 		btnDelete = new JButton("入力消去");
-		btnDelete.setBounds(390, 280, 90, 30);
+		btnDelete.setBounds(390, 260, 90, 30);
 		btnDelete.addActionListener(this);
 		add(btnDelete);
 
 		btnAdd = new JButton("新規追加");
-		btnAdd.setBounds(490, 280, 90, 30);
+		btnAdd.setBounds(490, 260, 90, 30);
 		btnAdd.addActionListener(this);
 		add(btnAdd);
 
@@ -117,11 +132,11 @@ public class SpotAddFrame extends JFrame implements ActionListener {
 		add(btnReturn);
 
 		lblImg = new JLabel("写真");
-		lblImg.setBounds(60, 280, 180, 20);
+		lblImg.setBounds(60, 260, 180, 20);
 		add(lblImg);
 
 		btnImg = new JButton("写真選択");
-		btnImg.setBounds(200, 280, 90, 30);
+		btnImg.setBounds(200, 260, 90, 30);
 		btnImg.addActionListener(this);
 		add(btnImg);
 
@@ -143,39 +158,44 @@ public class SpotAddFrame extends JFrame implements ActionListener {
 
 	@SuppressWarnings("unused")
 	public void actionPerformed(ActionEvent e) {
-		String path = null;
+
 
 		if (e.getSource() == btnDelete) {
 
+			txtAreaId.setText("");
 			txtName.setText("");
 			txtAddress.setText("");
 			txtAccess.setText("");
-			txtComment.setText("");
 			txtTime.setText("");
+			txtComment.setText("");
 
 		} else if (e.getSource() == btnImg) {
 
-			path = open();
+			img = open();
+			String[] str = img.split(":");
+			img = str[1];
 
 		} else if (e.getSource() == btnAdd) {
 
+			String areaId = txtAreaId.getText();
 			String name = txtName.getText();
 			String address = txtAddress.getText();
 			String access = txtAccess.getText();
-			String comment = txtComment.getText();
 			String time = txtTime.getText();
+			String comment = txtComment.getText();
 
 			// 入力値の半角スペースと全角スペースを取り除く
+			areaId.replaceAll(" +", "");
 			name.replaceAll(" +", "");
 			address.replaceAll(" +", "");
 			access.replaceAll(" +", "");
 			comment.replaceAll(" +", "");
 			time.replaceAll(" +", "");
 
-			String[] data = {name, address, access, comment, time, path };
+			String[] data = {name, img , address , access , time , comment , areaId};
 
 			try {
-				if (path != null && address != null && access != null && comment != null && time != null) {
+				if (areaId != null && name != null && address != null && access != null && comment != null && time != null && img != null) {
 
 					String result = NewBeeController.spotAdd(data);
 
@@ -210,8 +230,15 @@ public class SpotAddFrame extends JFrame implements ActionListener {
 		if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 			f = fc.getSelectedFile();
 			// アイコンをラベルに設定
-			ImageIcon icon = new ImageIcon(f.getPath());
-			lblImg2.setIcon(icon);
+			ImageIcon icon;
+			try {
+				icon = new ImageIcon(f.getCanonicalPath());
+				lblImg2.setIcon(icon);
+			} catch (IOException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+
 		}
 		String path = String.valueOf(f);
 		return path;

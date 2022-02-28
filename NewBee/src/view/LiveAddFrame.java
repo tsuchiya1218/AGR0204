@@ -10,6 +10,7 @@
 package view;
 
 import java.awt.Insets;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -29,12 +30,19 @@ import model.ControlUtility;
 import control.NewBeeController;
 
 
-@SuppressWarnings("serial")
 public class LiveAddFrame extends JFrame implements ActionListener {
 
+	private JLabel lblAddress;
+	private JTextField txtAddress;
+
+	private JLabel lblAccess;
+	private JTextField txtAccess;
 
 	private JLabel lblComment;
 	private JTextArea txtComment;
+
+	private JLabel lbltime;
+	private JTextField txtTime;
 
 	private JButton btnReturn;
 	private JButton btnDelete;
@@ -43,10 +51,15 @@ public class LiveAddFrame extends JFrame implements ActionListener {
 	private JButton btnImg;
 
 	private JLabel lblImg2;
+	private JLabel lbltimeText;
+	private JLabel lblId;
+	private JTextField txtId;
+	String path = null;
 	private JLabel lblName;
 	private JTextField txtName;
-	private JLabel lblStartTime;
-	private JTextField txtStratTime;
+	private JLabel lblTime;
+	private JLabel lblPrice;
+	private JTextField txtPrice;
 
 	public LiveAddFrame() {
 
@@ -54,39 +67,57 @@ public class LiveAddFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 
-		lblName = new JLabel("ライブ観光テーマ");
-		lblName.setBounds(60, 20, 180, 20);
+		lblId = new JLabel("観光地ID");
+		lblId.setBounds(60, 20, 180, 20);
+		add(lblId);
+
+		txtId = new JTextField();
+		txtId.setBounds(200, 20, 320, 20);
+		add(txtId);
+
+		lblName = new JLabel("配信者");
+		lblName.setBounds(60, 50, 180, 20);
 		add(lblName);
 
 
 		txtName = new JTextField();
-		txtName.setBounds(200, 20, 320, 20);
+		txtName.setBounds(200, 50, 320, 20);
 		add(txtName);
 
-		lblStartTime = new JLabel("開始日時");
-		lblStartTime.setBounds(60, 60, 180, 20);
-		add(lblStartTime);
+		lblTime = new JLabel("開始日時");
+		lblTime.setBounds(60, 80, 180, 20);
+		add(lblTime);
 
-		txtStratTime = new JTextField();
-		txtStratTime.setBounds(200, 60, 320, 20);
-		add(txtStratTime);
+		txtTime = new JTextField();
+		txtTime.setBounds(200, 80, 320, 20);
+		add(txtTime);
 
 
 		lblComment = new JLabel("概要");
-		lblComment.setBounds(60, 100, 180, 20);
+		lblComment.setBounds(60, 110, 180, 20);
 		add(lblComment);
 
 		txtComment = new JTextArea();
-		txtComment.setBounds(200, 100, 320, 80);
+		txtComment.setBounds(200, 110, 320, 90);
+		txtComment.setLineWrap(true);
+		txtComment.setWrapStyleWord(true);
 		add(txtComment);
 
+		lblPrice = new JLabel("代金");
+		lblPrice.setBounds(60, 210, 180, 20);
+		add(lblPrice);
+
+		txtPrice = new JTextField();
+		txtPrice.setBounds(200, 210, 320, 20);
+		add(txtPrice);
+
 		btnDelete = new JButton("入力消去");
-		btnDelete.setBounds(390, 210, 90, 30);
+		btnDelete.setBounds(390, 240, 90, 30);
 		btnDelete.addActionListener(this);
 		add(btnDelete);
 
 		btnAdd = new JButton("新規追加");
-		btnAdd.setBounds(490, 210, 90, 30);
+		btnAdd.setBounds(490, 240, 90, 30);
 		btnAdd.addActionListener(this);
 		add(btnAdd);
 
@@ -96,11 +127,11 @@ public class LiveAddFrame extends JFrame implements ActionListener {
 		add(btnReturn);
 
 		lblImg = new JLabel("写真");
-		lblImg.setBounds(60, 210, 180, 20);
+		lblImg.setBounds(60, 240, 180, 20);
 		add(lblImg);
 
 		btnImg = new JButton("写真選択");
-		btnImg.setBounds(200, 210, 90, 30);
+		btnImg.setBounds(200, 240, 90, 30);
 		btnImg.addActionListener(this);
 		add(btnImg);
 
@@ -122,32 +153,40 @@ public class LiveAddFrame extends JFrame implements ActionListener {
 
 	@SuppressWarnings("unused")
 	public void actionPerformed(ActionEvent e) {
-		String path = null;
+
 
 		if (e.getSource() == btnDelete) {
 
+			txtId.setText("");
 			txtName.setText("");
-			txtStratTime.setText("");
 			txtComment.setText("");
+			txtTime.setText("");
+			txtPrice.setText("");
 
 		} else if (e.getSource() == btnImg) {
 
 			path = open();
+			String[] str = path.split(":");
+			path = str[1];
 
 		} else if (e.getSource() == btnAdd) {
 
+			String id = txtId.getText();
 			String name = txtName.getText();
-			String startTime = txtStratTime.getText();
 			String comment = txtComment.getText();
+			String time = txtTime.getText();
+			String price = txtPrice.getText();
 
 			// 入力値の半角スペースと全角スペースを取り除く
+			id.replaceAll(" +", "");
 			name.replaceAll(" +", "");
-			startTime.replaceAll(" +", "");
 			comment.replaceAll(" +", "");
-			String[] data = { name, startTime, comment,path };
+			time.replaceAll(" +", "");
+			price.replaceAll(" +", "");
+			String[] data = { name, comment, time, path , id , price};
 
 			try {
-				if (name != null && startTime != null && comment != null && path != null) {
+				if (path != null && name != null && id != null && comment != null && time != null && price != null) {
 					String result = NewBeeController.liveAdd(data);
 
 					JOptionPane.showMessageDialog(this, result, "【確認】", JOptionPane.INFORMATION_MESSAGE);
@@ -158,6 +197,7 @@ public class LiveAddFrame extends JFrame implements ActionListener {
 
 				ControlUtility.systemErrorMessage(this, ex);
 			}
+
 
 		} else if (e.getSource() == btnReturn) {
 			setVisible(false);

@@ -4,7 +4,6 @@ package view;
 import java.awt.Insets;
 
 
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -22,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import model.ControlUtility;
+import model.Customer;
 import control.NewBeeController;
 
 public class CustomerSearchFrame extends JFrame implements ActionListener {
@@ -43,56 +43,45 @@ public class CustomerSearchFrame extends JFrame implements ActionListener {
 	private DefaultTableModel tableModel;
 	private JTable table;
 
+
 	private JButton btnReturn;
+	String[][] tableData;
 
 	public CustomerSearchFrame() {
-		
-			
+
+
 
 		setTitle("【会員情報管理】 NEWBEE TRAVEL 業務システム");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 
-		lblTel = new JLabel("電話番号");
-		lblTel.setBounds(20, 20, 180, 20);
-		add(lblTel);
-
-		txtTel = new JTextField();
-		txtTel.setBounds(200, 20, 280, 20);
-		add(txtTel);
-
-		lblTelNotes = new JLabel("例：01012345678");
-		lblTelNotes.setBounds(200, 40, 180, 20);
-		add(lblTelNotes);
-
-		lblKana = new JLabel("氏名");
-		lblKana.setBounds(20, 70, 180, 20);
+		lblKana = new JLabel("ユーザー名");
+		lblKana.setBounds(20, 20, 100, 20);
 		add(lblKana);
 
 		txtKana = new JTextField();
-		txtKana.setBounds(200, 70, 280, 20);
+		txtKana.setBounds(120, 20, 280, 20);
 		add(txtKana);
 
 		lblKanaNotes = new JLabel("例：田中");
-		lblKanaNotes.setBounds(200, 90, 180, 20);
+		lblKanaNotes.setBounds(120, 40, 180, 20);
 		add(lblKanaNotes);
 
 		btnSearch = new JButton("検索");
-		btnSearch.setBounds(20, 120, 90, 30);
+		btnSearch.setBounds(20, 80, 90, 30);
 		btnSearch.addActionListener(this);
 		add(btnSearch);
 
 		btnDelete = new JButton("入力消去");
-		btnDelete.setBounds(120, 120, 90, 30);
+		btnDelete.setBounds(120, 80, 90, 30);
 		btnDelete.addActionListener(this);
 		add(btnDelete);
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(20, 160, 500, 270);
+		scrollPane.setBounds(20, 140, 500, 290);
 		add(scrollPane);
-		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
 
-		String[] columnNames = { "ID", "氏名", "電話", "住所"};
+		String[] columnNames = { "ID", "ユーザー名", "メールアドレス","電話番号", "住所"};
 		tableModel = new DefaultTableModel(columnNames, 0);
 		table = new JTable(tableModel);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -102,10 +91,12 @@ public class CustomerSearchFrame extends JFrame implements ActionListener {
 		TableColumn column1 = columnModel.getColumn(1);
 		TableColumn column2 = columnModel.getColumn(2);
 		TableColumn column3 = columnModel.getColumn(3);
+		TableColumn column4 = columnModel.getColumn(4);
 		column0.setPreferredWidth(60);
 		column1.setPreferredWidth(100);
 		column2.setPreferredWidth(100);
-		column3.setPreferredWidth(240);
+		column3.setPreferredWidth(100);
+		column4.setPreferredWidth(140);
 		table.addMouseListener(new SearchMouseEvent());
 
 		scrollPane.setViewportView(table);
@@ -115,10 +106,7 @@ public class CustomerSearchFrame extends JFrame implements ActionListener {
 		btnReturn.addActionListener(this);
 		add(btnReturn);
 
-		btnFreeze = new JButton("禁止");
-		btnFreeze.setBounds(400, 120, 90, 30);
-		btnFreeze.addActionListener(this);
-		add(btnFreeze);
+
 
 		setVisible(true);
 	}
@@ -135,37 +123,27 @@ public class CustomerSearchFrame extends JFrame implements ActionListener {
 	@SuppressWarnings("unused")
 	public void actionPerformed(ActionEvent e) {
 
-		if (e.getSource() == btnDelete) {
+if (e.getSource() == btnDelete) {
 
-			txtTel.setText("");
 			txtKana.setText("");
 
 		} else if (e.getSource() == btnSearch) {
-
-			String tel = txtTel.getText();
 			String kana = txtKana.getText();
 
 			// 入力値の半角スペースと全角スペースを取り除く
-			tel.replaceAll(" +", "");
 			kana.replaceAll(" +", "");
 
 			try {
-				
-				String[] data = { tel, kana };
-				String[][] tableData  = new String[][]{
-					{"1","伊藤太郎","09023456781","東京都千代田区神田小川町2-1-1"},
-					{"2","伊藤二郎","09024681357","東京都千代田区神田小川町2-4-1"},
-					{"3","伊藤三郎","0314142135","東京都千代田区神田神保町1-1-1"}
-					};//
-					NewBeeController.customerSearch(data);
 
+				String data = kana;
+				 tableData = NewBeeController.customerSearch(data);
 				if (tableData != null) {
 
 					tableModel.setRowCount(0);
 
 					for (String[] rowData : tableData) {
 						tableModel.addRow(rowData);
-						
+
 					}
 
 				} else {
@@ -194,20 +172,27 @@ public class CustomerSearchFrame extends JFrame implements ActionListener {
 		} else if (e.getSource() == btnFreeze) {
 			// cusidをdbに渡すメソッド
 
-			btnFreeze.setEnabled(false);
+
 		}
 	}
 
 	private class SearchMouseEvent extends MouseAdapter {
-		String custId;
 
 		public void mouseClicked(MouseEvent e) {
-
 			int rowIndex = table.getSelectedRow();
-			custId = (String) table.getValueAt(rowIndex, 0);
-			//new OrderInputFrame(null);
+			String custId = (String) table.getValueAt(rowIndex, 0);
+
+			for(int i = 0; i < tableData.length; i++) {
+
+				if(custId.equals(tableData[i][0])) {
+					new CustomerDetailFrame(new Customer(tableData[i][0],tableData[i][1]
+							,tableData[i][2],tableData[i][3],tableData[i][4]));
+				}
+			}
+			setVisible(false);
 
 		}
+
 
 	}
 

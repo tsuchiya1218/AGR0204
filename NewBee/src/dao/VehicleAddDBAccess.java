@@ -19,12 +19,15 @@ public class VehicleAddDBAccess {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			// &useSSL=false URLにつけると例外を消せる
-			con = DriverManager.getConnection("jdbc:mysql://127.0.0.1/20jy0238?characterEncoding=UTF-8&useSSL=false", "root",
-					"aini389125");
+			con = DriverManager.getConnection("jdbc:mysql://10.42.129.142/20gr24?characterEncoding=UTF-8&useSSL=false", "20gr24",
+					"20gr24");
 		} catch (ClassNotFoundException e) {
+			result = ":管理者まで連絡してください。";
+			System.out.println("JDBCドライバが見つかりません");
 			e.printStackTrace();
 		} catch (SQLException e) {
-			result = "DB接続時にエラーが発生しました。(Transportation)" + "\n" + "ご確認ください。";
+			result = ":管理者まで連絡してください。";
+			System.out.println("DBに接続時にエラーが発生しました。");
 			e.printStackTrace();
 		}
 		return con;
@@ -58,7 +61,7 @@ public class VehicleAddDBAccess {
 				pstmt.setString(3, data[2]);
 				pstmt.setString(4, data[3]);
 				pstmt.setString(3, data[4]);
-				rs = pstmt.executeUpdate(sql);
+				rs = pstmt.executeUpdate();
 				if (rs == 0) {
 					result = "既に存在しています。" + "\n" + "ご確認ください。";
 				} else if (rs == 1) {
@@ -87,20 +90,33 @@ public class VehicleAddDBAccess {
 	public String vehicleAdd(String[] data) {
 
 		Connection con = createConnection();
+		int itemId = (int)System.currentTimeMillis()/1000;
 		PreparedStatement pstmt = null;
 		int rs = -1;
 		try {
 			if (con != null) {
-				String sql = "INSERT INTO Transportation(name,dstation,astation,dtime,atime,ttypeid)"
-						+ " VALUES(?,?,?,?,?,?)";
+
+				PreparedStatement pstmt2 = null;
+				String itemSql = "INSERT INTO Item VALUES(?,?,?)";
+				pstmt2 = con.prepareStatement(itemSql);
+				pstmt2.setInt(1,itemId);
+				pstmt2.setString(2, "4");
+				pstmt2.setString(3, data[5]);
+				rs = pstmt2.executeUpdate();
+
+
+
+				String sql = "INSERT INTO Transportation(itemid,name,dstation,astation,dtime,atime,ttypeid)"
+						+ " VALUES(?,?,?,?,?,?,?)";
 				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, data[0]);
-				pstmt.setString(2, data[1]);
-				pstmt.setString(3, data[2]);
-				pstmt.setString(4, data[3]);
-				pstmt.setString(3, data[4]);
-				pstmt.setString(4, data[5]);
-				rs = pstmt.executeUpdate(sql);
+				pstmt.setInt(1, itemId);
+				pstmt.setString(2, data[0]);
+				pstmt.setString(3, data[1]);
+				pstmt.setString(4, data[2]);
+				pstmt.setString(5, data[3]);
+				pstmt.setString(6, data[4]);
+				pstmt.setString(7, data[6]);
+				rs = pstmt.executeUpdate();
 				if (rs == 0) {
 					result = "既に存在しています。" + "\n" + "ご確認ください。";
 				} else if (rs == 1) {
@@ -125,11 +141,11 @@ public class VehicleAddDBAccess {
 		closeConnection(con);
 		return result;
 	}
-	
+
 	@SuppressWarnings("null")
 	public String[][] vehicleSearch(String data) {
 
-		String[][] tableData = null;
+		String[][] tableData = new String[10][7];
 		int i = 0;
 
 		Connection con = createConnection();
@@ -137,10 +153,11 @@ public class VehicleAddDBAccess {
 		ResultSet rs = null;
 		try {
 			if (con != null) {
-				String sql = "SELECT * FROM Transportation WHERE name LIKE ?";
+				String sql = "SELECT name,dstation,astation,dtime,atime,ttypeid,item.price FROM Transportation INNER JOIN item ON item.itemid = transportation.itemid"
+						+ " WHERE name LIKE ?";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, "%"+data+"%");
-				rs = pstmt.executeQuery(sql);
+				rs = pstmt.executeQuery();
 			}
 			while (rs.next()) {
 				tableData[i][0] = rs.getString("name");
@@ -149,6 +166,7 @@ public class VehicleAddDBAccess {
 				tableData[i][3] = rs.getString("dtime");
 				tableData[i][4] = rs.getString("atime");
 				tableData[i][5] = rs.getString("ttypeid");
+				tableData[i][6] = rs.getString("price");
 			}
 		} catch (SQLException e) {
 			System.out.println("DB接続時にエラーが発生しました。(Customer)");

@@ -49,11 +49,11 @@ public class BookingCheckFrame extends JFrame implements ActionListener {
 			
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(20, 100, 810, 450);
+		scrollPane.setBounds(20, 100, 510, 450);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		add(scrollPane);
 
-		String[] columnNames = { "電話番号","ユーザ名", "注文コード", "コース種類","注文日時","合計（税込）"};
+		String[] columnNames = { "電話番号","ユーザ名", "注文コード","注文日時","合計（税込）"};
 		tableModel = new DefaultTableModel(columnNames, 0);
 		table = new JTable(tableModel);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -64,14 +64,12 @@ public class BookingCheckFrame extends JFrame implements ActionListener {
 		TableColumn column2 = columnModel.getColumn(2);
 		TableColumn column3 = columnModel.getColumn(3);
 		TableColumn column4 = columnModel.getColumn(4);
-		TableColumn column5 = columnModel.getColumn(5);
 
-		column0.setPreferredWidth(80);
+		column0.setPreferredWidth(100);
 		column1.setPreferredWidth(100);
 		column2.setPreferredWidth(100);
-		column3.setPreferredWidth(330);
+		column3.setPreferredWidth(110);
 		column4.setPreferredWidth(100);
-		column5.setPreferredWidth(100);
 
 		table.addMouseListener(new SearchMouseEvent());
 
@@ -90,7 +88,7 @@ public class BookingCheckFrame extends JFrame implements ActionListener {
 		super.addNotify();
 
 		Insets insets = getInsets();
-		setSize(850 + insets.left + insets.right, 700 + insets.top + insets.bottom);
+		setSize(550 + insets.left + insets.right, 700 + insets.top + insets.bottom);
 		setLocationRelativeTo(this);
 	}
 
@@ -98,21 +96,23 @@ public class BookingCheckFrame extends JFrame implements ActionListener {
 
 		if (e.getSource() == btnSearch) {
 				try {
-					tableData = new String[][]{{"01234567890","電子","20220107",
-						"旅行コース","20220111","12000円"},
-						{"00111111111","電子","20220107",
-							"旅行コース","20220111","12000円"}
-						}; 
-						//すべての予約情報を取り出す
 						tableData =	NewBeeController.bookingSearch();
+					
 
 					if (tableData != null) {
 
 						tableModel.setRowCount(0);
 
+						int i = 0;
 						for (String[] rowData : tableData) {
-
-							tableModel.addRow(rowData);
+							
+							if(tableData[i][0] == null) {
+								break;
+							}else {
+								tableModel.addRow(rowData);
+							}
+							i++;
+							
 						}
 
 					} else {
@@ -151,9 +151,10 @@ public class BookingCheckFrame extends JFrame implements ActionListener {
 			try {
 			int rowIndex = table.getSelectedRow();
 			String tel = (String) table.getValueAt(rowIndex, 0);
+			String code = (String) table.getValueAt(rowIndex, 3);
 			
 			for(int i = 0;i < tableData.length; i++ ) {
-				if(tel.equals(tableData[i][0])) {
+				if(tel.equals(tableData[i][0]) && code.equals(tableData[i][3])) {
 					new BookingFrame(new BookingCheck(tableData[i][0],tableData[i][1],tableData[i][2],tableData[i][3],
 							tableData[i][4],tableData[i][5]));
 				}

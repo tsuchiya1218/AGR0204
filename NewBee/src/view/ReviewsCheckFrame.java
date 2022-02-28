@@ -3,7 +3,6 @@
 package view;
 
 import java.awt.Insets;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -20,11 +19,9 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import model.BookingCheck;
-import model.Customer;
+import control.NewBeeController;
 import model.ControlUtility;
 import model.Reviews;
-import control.NewBeeController;
 
 public class ReviewsCheckFrame extends JFrame implements ActionListener {
 
@@ -65,7 +62,8 @@ public class ReviewsCheckFrame extends JFrame implements ActionListener {
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		add(scrollPane);
 
-		String[] columnNames = { "ユーザーID","ユーザ名","注文コード","旅行コース","レビュー•評価内容","日付"};
+		
+		String[] columnNames = { "ユーザーID","ユーザ名","注文コード","レビュー•評価内容","日付"};
 		tableModel = new DefaultTableModel(columnNames, 0);
 		table = new JTable(tableModel);
 
@@ -75,14 +73,12 @@ public class ReviewsCheckFrame extends JFrame implements ActionListener {
 		TableColumn column2 = columnModel.getColumn(2);
 		TableColumn column3 = columnModel.getColumn(3);
 		TableColumn column4 = columnModel.getColumn(4);
-		TableColumn column5 = columnModel.getColumn(5);
 
 		column0.setPreferredWidth(100);
 		column1.setPreferredWidth(100);
-		column2.setPreferredWidth(80);
-		column3.setPreferredWidth(100);
-		column4.setPreferredWidth(200);
-		column5.setPreferredWidth(80);
+		column2.setPreferredWidth(100);
+		column3.setPreferredWidth(260);
+		column4.setPreferredWidth(100);
 
 		table.addMouseListener(new SearchMouseEvent());
 
@@ -110,15 +106,7 @@ public class ReviewsCheckFrame extends JFrame implements ActionListener {
 	if(e.getSource() == btnSearch) {
 			try {
 
-				String[] data = { };
-				 tableData = new String[][]{
-					 {"001","電子","20220107","【鬼怒川温泉あけび「離れの湯」個室貸切露天風呂｜コース】ファミリー･女性同士･ご夫婦やカップルにおすすめ",
-						 "良かったと思う。","2022211"},
-					 {"002","電子","20220108","【鬼怒川温泉あけび「離れの湯」個室貸切露天風呂｜コース】ファミリー･女性同士･ご夫婦やカップルにおすすめ",
-							 "良かったと思う。","2022211"}
-					 };
-				 
-				 NewBeeController.reviewsSearch();
+				 tableData = NewBeeController.reviewsSearch();
 
 				if (tableData != null) {
 
@@ -169,7 +157,7 @@ public class ReviewsCheckFrame extends JFrame implements ActionListener {
 			for(int i = 0;i < tableData.length; i++ ) {
 				if(tel.equals(tableData[i][0])) {
 					new ReviewsFrame(new Reviews(tableData[i][0],tableData[i][1],tableData[i][2],tableData[i][3],
-							tableData[i][4],tableData[i][5]));
+							tableData[i][4]));
 				}
 			}
 			} catch (Exception ex) {

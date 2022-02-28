@@ -9,30 +9,22 @@
 
 package view;
 
-import java.awt.Component;
-
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import control.NewBeeController;
-import model.BookingCheck;
-import model.Customer;
-import model.Item;
-import model.OrderChange;
 import model.ControlUtility;
-import model.Reviews;
+import model.Customer;
 import model.RoomDetailed;
 
 @SuppressWarnings("serial")
@@ -72,6 +64,8 @@ public class RoomDetailedFrame extends JFrame implements ActionListener {
 	private JTextField txtTpye;
 	private JLabel lblType;
 	private JTextField txtType;
+	private JLabel lblRId;
+	private JTextField txtRId;
 
 	public RoomDetailedFrame(RoomDetailed roomDetailed) {
 
@@ -97,14 +91,14 @@ public class RoomDetailedFrame extends JFrame implements ActionListener {
 		txtName.setEditable(false);
 		add(txtName);
 
-		lblKana = new JLabel("部屋ID");
-		lblKana.setBounds(20, 80, 100, 20);
-		add(lblKana);
+		lblRId = new JLabel("部屋ID");
+		lblRId.setBounds(20, 80, 100, 20);
+		add(lblRId);
 
-		txtKana = new JTextField(roomDetailed.getRoomId());
-		txtKana.setBounds(120, 80, 360, 20);
-		txtKana.setEditable(false);
-		add(txtKana);
+		txtRId = new JTextField(roomDetailed.getRoomId());
+		txtRId.setBounds(120, 80, 360, 20);
+		txtRId.setEditable(false);
+		add(txtRId);
 
 		lblSum = new JLabel("確保部屋数");
 		lblSum.setBounds(20, 110, 100, 20);
@@ -122,7 +116,7 @@ public class RoomDetailedFrame extends JFrame implements ActionListener {
 		txtType.setBounds(120, 140, 360, 20);
 		txtType.setEditable(false);
 		add(txtType);
-		
+
 		lblAddress = new JLabel("概要");
 		lblAddress.setBounds(20, 170, 100, 20);
 		add(lblAddress);
@@ -132,8 +126,8 @@ public class RoomDetailedFrame extends JFrame implements ActionListener {
 		txtComment.setLineWrap(true);
 		txtComment.setWrapStyleWord(true);
 		add(txtComment);
-		
-		
+
+
 		lblNum = new JLabel("残り部屋数");
 		lblNum.setBounds(20, 260, 100, 20);
 		add(lblNum);
@@ -146,7 +140,7 @@ public class RoomDetailedFrame extends JFrame implements ActionListener {
 		btnRoomRegister.setBounds(20, 450, 90, 30);
 		btnRoomRegister.addActionListener(this);
 		add(btnRoomRegister);
-		
+
 		btnReturn = new JButton("戻る");
 		btnReturn.setBounds(120, 450, 90, 30);
 		btnReturn.addActionListener(this);
@@ -167,17 +161,20 @@ public class RoomDetailedFrame extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource() == btnRoomRegister) {
-			String id = txtId.getText();
-			String type = txtType.getText();
+			String hid = txtId.getText();
+			String rId = txtRId.getText();
 			String sum = txtSum.getText();
+			String comment = txtComment.getText();
 			String num = txtNum.getText();
+
 			// 入力値の半角スペースと全角スペースを取り除く
 			sum.replaceAll(" +", "");
 			num.replaceAll(" +", "");
-			type.replaceAll(" +", "");
-			id.replaceAll(" +", "");
+			rId.replaceAll(" +", "");
+			comment.replaceAll(" +", "");
+			hid.replaceAll(" +", "");
 
-			String[] data = {id,type,sum,num};
+			String[] data = {sum,num,comment,hid,rId};
 			try {
 				//hotelIdとroomIdを渡して、部屋情報を変更する。
 				String result = NewBeeController.roomUpdate(data);
@@ -198,134 +195,6 @@ public class RoomDetailedFrame extends JFrame implements ActionListener {
 			} catch (Exception ex) {
 
 				ControlUtility.systemErrorMessage(this, ex);
-			}
-		}
-	}
-
-	private class ConfirmDialog extends JDialog implements ActionListener {
-
-		private JLabel lblIdCap;
-		private JLabel lblId;
-
-		private JLabel lblNameCap;
-		private JLabel lblName;
-
-		private JLabel lblTelCap;
-		private JLabel lblTel;
-
-		private JLabel lblKanaCap;
-		private JLabel lblKana;
-
-		private JLabel lblAddressCap;
-		private JLabel lblAddress;
-
-		private JLabel lblMessage;
-
-		private JButton btnDecide;
-		private JButton btnReturn;
-
-		public ConfirmDialog() {
-
-			setTitle("【顧客情報変更確認】");
-			setModalityType(JDialog.DEFAULT_MODALITY_TYPE);
-			setLayout(null);
-
-			lblIdCap = new JLabel("ID");
-			lblIdCap.setBounds(20, 20, 100, 20);
-			add(lblIdCap);
-
-			lblId = new JLabel("：　" + txtId.getText());
-			lblId.setBounds(120, 20, 360, 20);
-			add(lblId);
-
-			lblNameCap = new JLabel("氏名");
-			lblNameCap.setBounds(20, 40, 100, 20);
-			add(lblNameCap);
-
-			lblName = new JLabel("：　" + txtName.getText());
-			lblName.setBounds(120, 40, 360, 20);
-			add(lblName);
-
-			lblKanaCap = new JLabel("カナ");
-			lblKanaCap.setBounds(20, 60, 100, 20);
-			add(lblKanaCap);
-
-			lblKana = new JLabel("：　" + txtKana.getText());
-			lblKana.setBounds(120, 60, 360, 20);
-			add(lblKana);
-
-			lblTelCap = new JLabel("電話番号");
-			lblTelCap.setBounds(20, 80, 100, 20);
-			add(lblTelCap);
-
-			lblTel = new JLabel("：　" + txtTel.getText());
-			lblTel.setBounds(120, 80, 360, 20);
-			add(lblTel);
-
-			lblAddressCap = new JLabel("住所");
-			lblAddressCap.setBounds(20, 100, 100, 20);
-			add(lblAddressCap);
-
-			lblAddress = new JLabel("：　" + txtAddress.getText());
-			lblAddress.setBounds(120, 100, 360, 20);
-			add(lblAddress);
-
-			lblMessage = new JLabel("※この内容でよろしければ、[確定]ボタンを押してください。");
-			lblMessage.setBounds(20, 130, 460, 20);
-			add(lblMessage);
-
-			btnDecide = new JButton("確定");
-			btnDecide.setBounds(20, 160, 90, 30);
-			btnDecide.addActionListener(this);
-			add(btnDecide);
-
-			btnReturn = new JButton("戻る");
-			btnReturn.setBounds(120, 160, 90, 30);
-			btnReturn.addActionListener(this);
-			add(btnReturn);
-		}
-
-		public void addNotify() {
-
-			super.addNotify();
-
-			Insets insets = getInsets();
-			setSize(500 + insets.left + insets.right, 210 + insets.top + insets.bottom);
-			setLocationRelativeTo(this);
-		}
-
-		public void actionPerformed(ActionEvent e) {
-
-			setVisible(false);
-
-			if (e.getSource() == btnDecide) {
-
-				try {
-
-					String custId = txtId.getText();
-					int intCustId = Integer.parseInt(custId);
-					String custName = txtName.getText();
-					String kana = txtKana.getText();
-					String tel = txtTel.getText();
-					String address = txtAddress.getText();
-
-					Customer customer = new Customer(intCustId, custName, kana, tel, address);
-
-					int count = NewBeeController.customerModify(customer);
-
-					if (count != 0) {
-
-						JOptionPane.showMessageDialog(this, "顧客情報を更新しました。", "【顧客情報変更完了】", JOptionPane.INFORMATION_MESSAGE);
-
-					} else {
-
-						throw new Exception("顧客情報更新処理に失敗しました！");
-					}
-
-				} catch (Exception ex) {
-
-					ControlUtility.systemErrorMessage(RoomDetailedFrame.this, ex);
-				}
 			}
 		}
 	}

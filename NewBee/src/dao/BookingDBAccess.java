@@ -8,25 +8,27 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import model.Customer;
+import model.Reviews;
 
 public class BookingDBAccess {
 	// DBとの接続を確立する
-	String result;
+	String result = null;
+
+	// DBとの接続を確立する
 	private Connection createConnection() {
 		Connection con = null;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			// &useSSL=false URLにつけると例外を消せる
-			con = DriverManager.getConnection("jdbc:mysql://127.0.0.1/20jy0238?characterEncoding=UTF-8&useSSL=false", "root",
-					"aini3895");
+			con = DriverManager.getConnection("jdbc:mysql://10.42.129.142/20gr24?characterEncoding=UTF-8&useSSL=false", "20gr24",
+					"20gr24");
 		} catch (ClassNotFoundException e) {
-			result = ":管理者まで連絡してください。";
 			System.out.println("JDBCドライバが見つかりません");
 			e.printStackTrace();
 		} catch (SQLException e) {
-			result = ":管理者まで連絡してください。";
 			System.out.println("DBに接続時にエラーが発生しました。");
 			e.printStackTrace();
+			result = "DB接続時にエラーが発生しました。(Room)" + "\n" + "ご確認ください。";
 		}
 		return con;
 	}
@@ -46,7 +48,7 @@ public class BookingDBAccess {
 	@SuppressWarnings("null")
 	public String[][] bookingAll() {
 
-		String[][] tableData = null;
+		String[][] tableData = new String[10][6];
 		int i = 0;
 
 		Connection con = createConnection();
@@ -54,20 +56,21 @@ public class BookingDBAccess {
 		ResultSet rs = null;
 		try {
 			if (con != null) {
-				String sql = "SELECT * FROM booking";
+				String sql = "SELECT customer.tel ,customer.name , order_code.orderid ,order_code.orderdate ,item.price ,customer.customerid ,order_detail.itemid FROM order_code INNER JOIN customer ON order_code.customerid = customer.customerid INNER JOIN Order_detail ON Order_detail.orderid = order_code.orderid INNER JOIN item ON item.itemid = order_detail.itemid";
 				pstmt = con.prepareStatement(sql);
-				rs = pstmt.executeQuery(sql);
+				rs = pstmt.executeQuery();
 			}
 			while (rs.next()) {
 				tableData[i][0] = rs.getString("tel");
 				tableData[i][1] = rs.getString("name");
-				tableData[i][2] = rs.getString("orderCode");
-				tableData[i][3] = rs.getString("type");
-				tableData[i][4] = rs.getString("time");
-				tableData[i][5] = rs.getString("num");
+				tableData[i][2] = rs.getString("orderid");
+				tableData[i][3] = rs.getString("orderdate");
+				tableData[i][4] = rs.getString("price");
+				tableData[i][5] = rs.getString("itemid");
+				i++;
 			}
 		} catch (SQLException e) {
-			System.out.println("DB接続時にエラーが発生しました。(Customer)");
+			System.out.println("DB接続時にエラーが発生しました。(order)");
 			e.printStackTrace();
 		} finally {
 			try {
@@ -99,15 +102,15 @@ public class BookingDBAccess {
 		int rs = -1;
 		try {
 			if (con != null) {
-				String sql ="DELETE Order where orderCode = ? AND tel = ?";
+				String sql ="DELETE FROM Order_detail where itemid = ? AND orderid = ?";
 						
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, data[0]);
-				pstmt.setString(1, data[1]);
-				rs = pstmt.executeUpdate(sql);
+				pstmt.setString(2, data[1]);
+				rs = pstmt.executeUpdate();
 			}
 			if (rs == 1) {
-				result = "キャンセルしました。";
+				result = "取消しました。";
 			} else {
 				result = ":管理者まで連絡してください。";
 			}
@@ -137,11 +140,11 @@ public class BookingDBAccess {
 		int rs = -1;
 		try {
 			if (con != null) {
-				String sql = "UPDATE Order SET flag = 1 where orderCode = ? AND tel = ?";
+				String sql = "UPDATE Order_detail SET flag = 1 where itemid = ? AND orderid = ?";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, data[0] );
 				pstmt.setString(2, data[1]);
-				rs = pstmt.executeUpdate(sql);
+				rs = pstmt.executeUpdate();
 			}
 			if (rs == 1) {
 				result = "注文登録しました。";

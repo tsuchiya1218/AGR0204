@@ -11,22 +11,26 @@ import model.Customer;
 import model.Spot;
 
 public class SpotSearchDBAccess {
+	String result;
 	// DBとの接続を確立する
 	private Connection createConnection() {
 		Connection con = null;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			// &useSSL=false URLにつけると例外を消せる
-			con = DriverManager.getConnection("jdbc:mysql://127.0.0.1/20jy0238?characterEncoding=UTF-8&useSSL=false", "root",
-					"aini389125");
+			con = DriverManager.getConnection("jdbc:mysql://10.42.129.142/20gr24?characterEncoding=UTF-8&useSSL=false", "20gr24",
+					"20gr24");
 		} catch (ClassNotFoundException e) {
+			result = ":管理者まで連絡してください。";
 			System.out.println("JDBCドライバが見つかりません");
 			e.printStackTrace();
 		} catch (SQLException e) {
+			result = ":管理者まで連絡してください。";
 			System.out.println("DBに接続時にエラーが発生しました。");
 			e.printStackTrace();
 		}
 		return con;
+		
 	}
 
 	// DBとの接続を閉じる
@@ -41,79 +45,77 @@ public class SpotSearchDBAccess {
 		}
 	}
 
-	public ArrayList<Spot> searchSpotByCustomer(String[] tel) {
+	public String spotAdd(String[] data) {
+
+
+		Connection con = createConnection();
+		PreparedStatement pstmt = null;
+		int rs = -1;
+		try {
+			if (con != null) {
+				String sql = "insert into spot values(?,?,?,?,?,?,?,?)";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1,(int)System.currentTimeMillis()/1000);
+				pstmt.setString(2,data[0]);
+				pstmt.setString(3,data[1]);
+				pstmt.setString(4,data[2]);
+				pstmt.setString(5,data[3]);
+				pstmt.setString(6,data[4]);
+				pstmt.setString(7,data[5]);
+				pstmt.setInt(8,Integer.parseInt(data[6]));
+				rs = pstmt.executeUpdate();
+				if (rs == 0) {
+					result = "error" + "\n" + "ご確認ください。";
+				} else if (rs == 1) {
+					result = "処理完了しました。";
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("DB切断時にエラーが発生しました。");
+				e.printStackTrace();
+			}
+
+		}
+		closeConnection(con);
+		return result;
+	}
+
+
+	public ArrayList<Spot> spotSearch(String data) {
+
 		Connection con = createConnection();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		ArrayList<Spot> list = new ArrayList<Spot>();
-
-		Spot customer = new Spot(11111, "草津温泉", "群馬県吾妻郡草津町",
-				" JR東日本吾妻線：長野原草津口駅", "9:00-17:00","1.jpg");
-		list.add(customer);
-//		try {
-//			if (con != null) {
-//				String sql = "SELECT CUSTID,CUSTNAME,KANA,ADDRESS FROM customer WHERE TEL=? AND KANA LIKE ?";
-//				pstmt = con.prepareStatement(sql);
-//				pstmt.setString(1, tel);
-//				pstmt.setString(2, "%" + kana + "%");
-//				rs = pstmt.executeQuery();
-//				while (rs.next()) {
-//					int custId = rs.getInt("CUSTID");
-//					String custName = rs.getString("CUSTNAME");
-//					String address = rs.getString("ADDRESS");
-//					String custKana = rs.getString("KANA");
-//					Customer customer = new Customer(custId, custName, custKana, tel, address);
-//					list.add(customer);
-//				}
-//			}
-//		} catch (SQLException e) {
-//			System.out.println("DB接続時にエラーが発生しました。(Customer)");
-//			e.printStackTrace();
-//		} finally {
-//			try {
-//				if (rs != null) {
-//					rs.close();
-//				}
-//			} catch (SQLException e) {
-//				System.out.println("DB切断時にエラーが発生しました。");
-//				e.printStackTrace();
-//			}
-//			try {
-//				if (pstmt != null) {
-//					pstmt.close();
-//				}
-//			} catch (SQLException e) {
-//				System.out.println("DB切断時にエラーが発生しました。");
-//				e.printStackTrace();
-//			}
-//		}
-//		closeConnection(con);
-		return list;
-	}
-
-	public ArrayList<Customer> searchCustomerByCustomer(String tel, String kana) {
-		Connection con = createConnection();
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		ArrayList<Customer> list = new ArrayList<Customer>();
 		try {
 			if (con != null) {
-				String sql = "SELECT CUSTID,CUSTNAME,KANA,ADDRESS FROM customer WHERE TEL=? AND KANA LIKE ?";
+				String sql = "SELECT * FROM spot WHERE name LIKE ?";
 				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, tel);
-				pstmt.setString(2, "%" + kana + "%");
+				pstmt.setString(1, "%"+data+"%");
 				rs = pstmt.executeQuery();
-				while (rs.next()) {
-					int custId = rs.getInt("CUSTID");
-					String custName = rs.getString("CUSTNAME");
-					String address = rs.getString("ADDRESS");
-					String custKana = rs.getString("KANA");
-					Customer customer = new Customer(custId, custName, custKana, tel, address);
-					list.add(customer);
-				}
+			}
+			while (rs.next()) {
+				String spotId = rs.getString("spotid");
+				String name = rs.getString("name");
+				String img = rs.getString("img");
+				String address = rs.getString("address");
+				String access = rs.getString("access");
+				String time = rs.getString("time");
+				String comment = rs.getString("comment");
+				Spot spot = new Spot( spotId, name, address, access, time, comment, img);
+				list.add(spot);
 			}
 		} catch (SQLException e) {
-			System.out.println("DB接続時にエラーが発生しました。(Customer)");
+			System.out.println("DB接続時にエラーが発生しました。(spot)");
 			e.printStackTrace();
 		} finally {
 			try {
@@ -135,5 +137,45 @@ public class SpotSearchDBAccess {
 		}
 		closeConnection(con);
 		return list;
+	}
+
+
+	public String spotUpdate(String[] data) {
+		Connection con = createConnection();
+		PreparedStatement pstmt = null;
+		int rs = -1;
+		try {
+			if (con != null) {
+				//SQL修正する必要がある
+				String sql = "UPDATE spot SET name = ? , address = ? , access = ? , time = ? , comment = ? WHERE spotid = ?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, data[0]);
+				pstmt.setString(2, data[1]);
+				pstmt.setString(3, data[2]);
+				pstmt.setString(4, data[3]);
+				pstmt.setString(5, data[4]);
+				pstmt.setInt(6, Integer.parseInt(data[5]));
+				rs = pstmt.executeUpdate();
+				if (rs == 0) {
+					result =  "更新失敗しました。" + "\n" + "ご確認ください。";
+				} else if (rs == 1) {
+					result = "更新完了しました。";
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("DB接続時にエラーが発生しました。(Live)");
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("DB切断時にエラーが発生しました。");
+				e.printStackTrace();
+			}
+		}
+		closeConnection(con);
+		return result;
 	}
 }

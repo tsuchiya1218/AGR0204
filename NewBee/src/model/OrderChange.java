@@ -6,25 +6,25 @@ public class OrderChange implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String startTime;
 	private String custName;
-	private String course;
+	private String price;
 	private String tel;
 	private String orderCode;
-	private String num;
 	private String endTime;
+	private String itemId;
 
 	public OrderChange() {
 
 	}
 
 	public OrderChange(String tel, String custName, String orderCode, 
-			String course, String startTime, String endTime, String num) {
+			 String startTime, String endTime,String price, String itemId) {
 		this.tel = tel;
 		this.custName = custName;
 		this.orderCode = orderCode;
-		this.course = course;
+		this.price = price;
 		this.startTime = startTime;
 		this.endTime = endTime;
-		this.num = num;
+		this.setItemId(itemId);
 	}
 
 	public String getStartTime() {
@@ -43,12 +43,12 @@ public class OrderChange implements Serializable {
 		this.custName = custName;
 	}
 
-	public String getCourse() {
-		return course;
+	public String getPrice() {
+		return price;
 	}
 
-	public void setCourse(String course) {
-		this.course = course;
+	public void setPrice(String price) {
+		this.price = price;
 	}
 
 	public String getTel() {
@@ -67,13 +67,7 @@ public class OrderChange implements Serializable {
 		this.orderCode = orderCode;
 	}
 
-	public String getNum() {
-		return num;
-	}
 
-	public void setNum(String num) {
-		this.num = num;
-	}
 
 	public String getEndTime() {
 		return endTime;
@@ -85,6 +79,14 @@ public class OrderChange implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public String getItemId() {
+		return itemId;
+	}
+
+	public void setItemId(String itemId) {
+		this.itemId = itemId;
 	}
 
 

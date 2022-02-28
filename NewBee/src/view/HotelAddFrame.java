@@ -9,6 +9,7 @@
 
 package view;
 
+
 import java.awt.Insets;
 
 import java.awt.event.ActionEvent;
@@ -28,7 +29,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import model.ControlUtility;
 import control.NewBeeController;
 
-@SuppressWarnings("serial")
 public class HotelAddFrame extends JFrame implements ActionListener {
 
 	private JLabel lblAddress;
@@ -54,6 +54,10 @@ public class HotelAddFrame extends JFrame implements ActionListener {
 	private JTextField txtCheckIn;
 	private JLabel lblCheckOut;
 	private JTextField txtCheckOut;
+
+	String path = null;
+	private JLabel lblSpotId;
+	private JTextField txtSpotId;
 
 	public HotelAddFrame() {
 
@@ -110,14 +114,17 @@ public class HotelAddFrame extends JFrame implements ActionListener {
 		txtComment.setBounds(200, 220, 320, 80);
 		add(txtComment);
 
+		lblSpotId= new JLabel("観光地ID");
+		lblSpotId.setBounds(60, 320, 180, 20);
+		add(lblSpotId);
 
 		btnDelete = new JButton("入力消去");
-		btnDelete.setBounds(390, 320, 90, 30);
+		btnDelete.setBounds(390, 360, 90, 30);
 		btnDelete.addActionListener(this);
 		add(btnDelete);
 
 		btnAdd = new JButton("新規追加");
-		btnAdd.setBounds(490, 320, 90, 30);
+		btnAdd.setBounds(490, 360, 90, 30);
 		btnAdd.addActionListener(this);
 		add(btnAdd);
 
@@ -127,16 +134,16 @@ public class HotelAddFrame extends JFrame implements ActionListener {
 		add(btnReturn);
 
 		lblImg = new JLabel("写真");
-		lblImg.setBounds(60, 320, 180, 20);
+		lblImg.setBounds(60, 360, 180, 20);
 		add(lblImg);
 
 		btnImg = new JButton("写真選択");
-		btnImg.setBounds(200, 320, 90, 30);
+		btnImg.setBounds(200, 360, 90, 30);
 		btnImg.addActionListener(this);
 		add(btnImg);
 
 		lblImg2 = new JLabel();
-		lblImg2.setBounds(60, 420, 300, 250);
+		lblImg2.setBounds(60,450, 300, 250);
 		add(lblImg2);
 
 		setVisible(true);
@@ -151,9 +158,8 @@ public class HotelAddFrame extends JFrame implements ActionListener {
 		setLocationRelativeTo(this);
 	}
 
-	@SuppressWarnings("unused")
 	public void actionPerformed(ActionEvent e) {
-		String path = null;
+
 
 		if (e.getSource() == btnDelete) {
 
@@ -167,6 +173,8 @@ public class HotelAddFrame extends JFrame implements ActionListener {
 		} else if (e.getSource() == btnImg) {
 
 			path = open();
+			String[] str = path.split(":");
+			path = str[1];
 
 		} else if (e.getSource() == btnAdd) {
 
@@ -176,6 +184,7 @@ public class HotelAddFrame extends JFrame implements ActionListener {
 			String checkIn = txtCheckIn.getText();
 			String checkOut = txtCheckOut.getText();
 			String comment = txtComment.getText();
+			String spotId = txtSpotId.getText();
 
 			// 入力値の半角スペースと全角スペースを取り除く
 			name.replaceAll(" +", "");
@@ -184,7 +193,8 @@ public class HotelAddFrame extends JFrame implements ActionListener {
 			checkIn.replaceAll(" +", "");
 			checkOut.replaceAll(" +", "");
 			comment.replaceAll(" +", "");
-			String[] data = { name, address, access, checkIn,checkOut,comment, path };
+			spotId.replaceAll(" +", "");
+			String[] data = { name, address ,comment , access, checkIn,checkOut, path ,spotId};
 
 			try {
 				if (name != null && address != null && access != null && checkIn != null && checkOut != null && comment != null && path != null) {

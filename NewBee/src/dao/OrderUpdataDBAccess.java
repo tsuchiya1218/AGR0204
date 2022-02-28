@@ -16,13 +16,15 @@ public class OrderUpdataDBAccess {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			// &useSSL=false URLにつけると例外を消せる
-			con = DriverManager.getConnection("jdbc:mysql://127.0.0.1/20jy0238?characterEncoding=UTF-8&useSSL=false", "root",
-					"aini389125");
+			con = DriverManager.getConnection("jdbc:mysql://10.42.129.142/20gr24?characterEncoding=UTF-8&useSSL=false", "20gr24",
+					"20gr24");
 		} catch (ClassNotFoundException e) {
+			System.out.println("JDBCドライバが見つかりません");
 			e.printStackTrace();
 		} catch (SQLException e) {
-			result = "DB接続時にエラーが発生しました。(Order)" + "\n" + "ご確認ください。";
+			System.out.println("DBに接続時にエラーが発生しました。");
 			e.printStackTrace();
+			result = "DB接続時にエラーが発生しました。(Room)" + "\n" + "ご確認ください。";
 		}
 		return con;
 	}
@@ -46,14 +48,13 @@ public class OrderUpdataDBAccess {
 		int rs = -1;
 		try {
 			if (con != null) {
-				String sql = "UPDATE Order SET startTime = ?, endTime = ? , num = ? WHERE tel = ? AND orderCode = ?";
+				String sql = "UPDATE Order_detail SET starttime = ?, endtime = ? WHERE itemid = ? AND orderid = ?";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, data[0]);
 				pstmt.setString(2, data[1]);
 				pstmt.setString(3, data[2]);
 				pstmt.setString(4, data[3]);
-				pstmt.setString(5, data[4]);
-				rs = pstmt.executeUpdate(sql);
+				rs = pstmt.executeUpdate();
 				if (rs == 0) {
 					result = "変更失敗しました。" + "\n" + "ご確認ください。";
 				} else if (rs == 1) {
@@ -82,7 +83,7 @@ public class OrderUpdataDBAccess {
 	@SuppressWarnings("null")
 	public String[][] orderSearch(String data) {
 
-		String[][] tableData = null;
+		String[][] tableData = new String[20][7];
 		int i = 0;
 
 		Connection con = createConnection();
@@ -90,19 +91,19 @@ public class OrderUpdataDBAccess {
 		ResultSet rs = null;
 		try {
 			if (con != null) {
-				String sql = "SELECT * FROM Order WHERE tel = ?";
+				String sql = "SELECT customer.tel ,customer.name , order_code.orderid ,order_detail.starttime ,order_detail.endtime , item.price ,order_detail.itemid FROM order_code INNER JOIN customer ON order_code.customerid = customer.customerid INNER JOIN Order_detail ON Order_detail.orderid = order_code.orderid INNER JOIN item ON item.itemid = order_detail.itemid WHERE customer.tel = ?";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, data);
-				rs = pstmt.executeQuery(sql);
+				rs = pstmt.executeQuery();
 			}
 			while (rs.next()) {
 				tableData[i][0] = rs.getString("tel");
 				tableData[i][1] = rs.getString("name");
-				tableData[i][2] = rs.getString("orderCode");
-				tableData[i][3] = rs.getString("course");
-				tableData[i][4] = rs.getString("startDate");
-				tableData[i][5] = rs.getString("endDate");
-				tableData[i][6] = rs.getString("num");
+				tableData[i][2] = rs.getString("orderid");
+				tableData[i][3] = rs.getString("starttime");
+				tableData[i][4] = rs.getString("endtime");
+				tableData[i][5] = rs.getString("price");
+				tableData[i][6] = rs.getString("itemid");
 			}
 		} catch (SQLException e) {
 			System.out.println("DB接続時にエラーが発生しました。(Order)");

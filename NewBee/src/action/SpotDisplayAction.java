@@ -18,11 +18,9 @@ public class SpotDisplayAction {
 	public void execute() {
 		new SpotFrame();
 	}
-	
 	public void executeAdd() {
 		new SpotAddFrame();
 	}
-	
 	public void executeUpdate() {
 		new SpotUpdateFrame();
 	}

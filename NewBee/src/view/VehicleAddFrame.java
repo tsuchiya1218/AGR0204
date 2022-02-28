@@ -49,6 +49,8 @@ public class VehicleAddFrame extends JFrame implements ActionListener {
 
 
 	private JTextField txtName;
+	private JLabel lblPrice;
+	private JTextField txtPrice;
 
 	public VehicleAddFrame() {
 
@@ -72,7 +74,7 @@ public class VehicleAddFrame extends JFrame implements ActionListener {
 		txtName.setBounds(200, 60, 320, 20);
 		add(txtName);
 
-		lblStart = new JLabel("出発駅");
+		lblStart = new JLabel("出発");
 		lblStart.setBounds(60, 100, 180, 20);
 		add(lblStart);
 
@@ -80,7 +82,7 @@ public class VehicleAddFrame extends JFrame implements ActionListener {
 		txtStart.setBounds(200, 100, 320, 20);
 		add(txtStart);
 
-		lblEnd = new JLabel("到着駅");
+		lblEnd = new JLabel("到着");
 		lblEnd.setBounds(60, 140, 180, 20);
 		add(lblEnd);
 
@@ -106,13 +108,21 @@ public class VehicleAddFrame extends JFrame implements ActionListener {
 		txtETime.setBounds(200, 220, 320, 20);
 		add(txtETime);
 
+		lblPrice = new JLabel("単価");
+		lblPrice.setBounds(60, 260, 180, 20);
+		add(lblPrice);
+
+		txtPrice = new JTextField();
+		txtPrice.setBounds(200, 260, 320, 20);
+		add(txtPrice);
+
 		btnDelete = new JButton("入力消去");
-		btnDelete.setBounds(60, 260, 90, 30);
+		btnDelete.setBounds(60, 300, 90, 30);
 		btnDelete.addActionListener(this);
 		add(btnDelete);
 
 		btnAdd = new JButton("新規追加");
-		btnAdd.setBounds(170, 260, 90, 30);
+		btnAdd.setBounds(170, 300, 90, 30);
 		btnAdd.addActionListener(this);
 		add(btnAdd);
 
@@ -146,6 +156,7 @@ public class VehicleAddFrame extends JFrame implements ActionListener {
 			txtEnd.setText("");
 			txtSTime.setText("");
 			txtETime.setText("");
+			txtPrice.setText("");
 
 		} else if (e.getSource() == btnAdd) {
 
@@ -155,6 +166,7 @@ public class VehicleAddFrame extends JFrame implements ActionListener {
 			String end = txtEnd.getText();
 			String stime = txtSTime.getText();
 			String etime = txtETime.getText();
+			String price = txtPrice.getText();
 
 			// 入力値の半角スペースと全角スペースを取り除く
 			name.replaceAll(" +", "");
@@ -163,7 +175,9 @@ public class VehicleAddFrame extends JFrame implements ActionListener {
 			end.replaceAll(" +", "");
 			stime.replaceAll(" +", "");
 			etime.replaceAll(" +", "");
-			String[] data = { name, start, end, stime, etime, typeId};
+			price.replaceAll(" +", "");
+
+			String[] data = { name, start, end, stime, etime, price,typeId};
 
 			try {
 				if (name != null && typeId != null && start != null && end != null && stime != null && etime != null) {

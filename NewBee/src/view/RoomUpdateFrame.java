@@ -3,7 +3,6 @@
 package view;
 
 import java.awt.Insets;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -20,16 +19,12 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import model.Customer;
-import model.ControlUtility;
-import model.Reviews;
-import model.RoomDetailed;
 import control.NewBeeController;
+import model.ControlUtility;
+import model.RoomDetailed;
 
 public class RoomUpdateFrame extends JFrame implements ActionListener {
 
-	private JLabel lblTel;
-	private JTextField txtTel;
 	private JLabel lblTelNotes;
 
 
@@ -41,9 +36,6 @@ public class RoomUpdateFrame extends JFrame implements ActionListener {
 	private JTable table;
 
 	private JButton btnReturn;
-	private JButton btnOk;
-	private JButton btnCancel;
-	private JLabel lbl;
 	private JLabel lblName;
 	private JTextField txtName;
 	private String[][] tableData;
@@ -89,13 +81,13 @@ public class RoomUpdateFrame extends JFrame implements ActionListener {
 		TableColumn column5 = columnModel.getColumn(5);
 		TableColumn column6 = columnModel.getColumn(6);
 
-		column0.setPreferredWidth(80);
+		column0.setPreferredWidth(100);
 		column1.setPreferredWidth(100);
-		column2.setPreferredWidth(80);
+		column2.setPreferredWidth(100);
 		column3.setPreferredWidth(100);
 		column4.setPreferredWidth(100);
-		column5.setPreferredWidth(100);
-		column5.setPreferredWidth(200);
+		column5.setPreferredWidth(160);
+		column6.setPreferredWidth(100);
 
 		table.addMouseListener(new SearchMouseEvent());
 
@@ -134,23 +126,21 @@ public class RoomUpdateFrame extends JFrame implements ActionListener {
 			try {
 
 				String data = name;
-				tableData = new String[][]{
-					 {"001","ホテルリブマックス","1","50",
-						 "ツイン","エアコン、セミダブルベッド（幅120cm）、液晶テレビ、セーフティボックス、小型冷蔵庫、緑茶セット、"
-						 		+ "バスアメニティ付きのバスルームが備わっています。無料の有線インターネットを利用できます。","33"},
-					 {"001","ホテルリブマックス","2","30",
-							 "ダブル","エアコン、セミダブルベッド（幅120cm）、液晶テレビ、セーフティボックス、小型冷蔵庫、緑茶セット、"
-							 		+ "バスアメニティ付きのバスルームが備わっています。無料の有線インターネットを利用できます。","15"}
-					 };						
-						NewBeeController.roomSearch(data);
-
+				tableData = NewBeeController.roomSearch(data);
 				if (tableData != null) {
 
 					tableModel.setRowCount(0);
 
+					int i = 0;
 					for (String[] rowData : tableData) {
-
-						tableModel.addRow(rowData);
+						
+						if(tableData[i][0] == null) {
+							break;
+						}else {
+							tableModel.addRow(rowData);
+						}
+						i++;
+						
 					}
 
 				} else {

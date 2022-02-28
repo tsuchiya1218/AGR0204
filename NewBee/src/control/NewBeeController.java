@@ -9,7 +9,7 @@
 
 package control;
 
-import java.util.ArrayList;
+
 
 
 
@@ -42,6 +42,15 @@ public class NewBeeController {
 		CustomerSearchDisplayAction action = new CustomerSearchDisplayAction();
 		action.execute();
 	}
+	public static String customerUpdate(String data) {
+		CustomerSearchAction csa = new CustomerSearchAction();
+		return csa.executeUpdate(data);
+	}
+	public static String[][] customerSearch(String data) {
+		CustomerSearchAction csa = new CustomerSearchAction();
+		return csa.execute(data);
+	}
+
 
 	public static void spotDisplay() {
 		SpotDisplayAction action = new SpotDisplayAction();
@@ -70,14 +79,19 @@ public class NewBeeController {
 	}
 	public static String[][] liveSearch(String data) {
 		LiveUpdateAction lua = new LiveUpdateAction();
-		return lua.execute(data);
+		return lua.executeSearch(data);
 	}
 	public static String liveAdd(String[] data) {
 		LiveUpdateAction lua = new LiveUpdateAction();
-		return lua.execute(data);
+		return lua.executeAdd(data);
 	}
-	
-	
+	public static String liveUpdate(String[] data) {
+		LiveUpdateAction raa = new LiveUpdateAction();
+		return raa.executeUpdate(data);
+	}
+
+
+
 	public static void roomAddDisplay() {
 		RoomDisplayAction action = new RoomDisplayAction();
 		action.executeAdd();
@@ -99,12 +113,12 @@ public class NewBeeController {
 		return raa.executeUptade(data);
 	}
 	public static String[][] roomSearch(String data) {
-		HotelUpdateAction csa = new HotelUpdateAction();
+		RoomUpdateAction csa = new RoomUpdateAction();
 		return csa.execute(data);
 	}
-	
-	
-	
+
+
+
 	public static void hotelDisplay() {
 		HotelDisplayAction action = new HotelDisplayAction();
 		action.execute();
@@ -117,9 +131,21 @@ public class NewBeeController {
 		HotelDisplayAction action = new HotelDisplayAction();
 		action.executeUpdata();
 	}
+	public static String hotelAdd(String[] data) {
+		HotelUpdateAction haa = new HotelUpdateAction();
+		return haa.execute(data);
+	}
+	public static String[][] hotelSearch(String data) {
+		HotelUpdateAction csa = new HotelUpdateAction();
+		return csa.executeSearch(data);
+	}
+	public static String hotelUpdate(String[] data) {
+		HotelUpdateAction haa = new HotelUpdateAction();
+		return haa.executeUpdate(data);
+	}
 
-	
-	
+
+
 	public static void vehicleDisplay() {
 		VehicleDisplayAction action = new VehicleDisplayAction();
 		action.execute();
@@ -144,8 +170,8 @@ public class NewBeeController {
 		VehicleUpdateAction vua = new VehicleUpdateAction();
 		return vua.execute(data);
 	}
-	
-	
+
+
 
 	public static void orderChangeDisplay() {
 		OrderChangeDisplayAction action = new OrderChangeDisplayAction();
@@ -157,8 +183,8 @@ public class NewBeeController {
 		action.execute();
 	}
 
-	
-	
+
+
 	public static void reviewsCheckDisplay() {
 		ReviewsCheckDisplayAction action = new ReviewsCheckDisplayAction();
 		action.execute();
@@ -175,37 +201,29 @@ public class NewBeeController {
 		ReviewsCheckAction csa = new ReviewsCheckAction();
 		return csa.executeOk(data);
 	}
-	
-	
 
-	public static String[][] customerSearch(String[] data) {
-		CustomerSearchAction csa = new CustomerSearchAction();
-		return csa.execute(data);
-	}
-	
-	public static String[][] hotelSearch(String data) {
-		HotelUpdateAction csa = new HotelUpdateAction();
-		return csa.execute(data);
-	}
+
+
+
+
+
 
 	public static String spotAdd(String[] data) {
 		SpotAddAction taa = new SpotAddAction();
 		return taa.execute(data);
 	}
-	
 
-
-	public static String[][] spotUpdate(String[] data) {
+	public static String[][] spotSearch(String data) {
 		SpotUpdateAction taa = new SpotUpdateAction();
 		return taa.execute(data);
 	}
-
-	
-
-	public static String hotelAdd(String[] data) {
-		HotelUpdateAction haa = new HotelUpdateAction();
-		return haa.execute(data);
+	public static String spotUpdate(String[] data) {
+		SpotUpdateAction raa = new SpotUpdateAction();
+		return raa.executeUpdate(data);
 	}
+
+
+
 
 
 	public static String[][] orderSearch(String data) {
@@ -217,11 +235,7 @@ public class NewBeeController {
 		OrderChangeAction oca = new OrderChangeAction();
 		return oca.execute(data);
 	}
-	
-//	public static String[][] bookingOrder(String data) {
-//		CustomerSearchAction csa = new CustomerSearchAction();
-//		return csa.execute(data);
-//	}
+
 
 	public static String executeCancel(String[] data) {
 		BookingCheckAction bca = new BookingCheckAction();
@@ -232,31 +246,18 @@ public class NewBeeController {
 		BookingCheckAction bca = new BookingCheckAction();
 		return bca.executeRegister(data);
 	}
-	
+
 	public static String[][] bookingSearch() {
 		BookingCheckAction bca = new BookingCheckAction();
 		return bca.execute();
 	}
 
-	public static String[][] evaluateCheck(String[] data) {
-		CustomerSearchAction csa = new CustomerSearchAction();
-		return csa.execute(data);
-	}
-
-	public static String[][] emptyCheck(String[] data) {
-		CustomerSearchAction csa = new CustomerSearchAction();
-		return csa.execute(data);
-	}
 
 	public static void mainMenuDisplay() {
 		MainMenuDisplayAction action = new MainMenuDisplayAction();
 		action.execute();
 	}
 
-	public static Customer orderInputDisplay(String custId) throws Exception {
-		Customer customer = new Customer(9999, "ダミー顧客", "ダミーコキャク", "99999999999", "東京都千代田区神田小川町9-9-9");
-		return customer;
-	}
 
 
 

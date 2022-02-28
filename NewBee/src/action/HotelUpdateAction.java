@@ -8,8 +8,11 @@ public class HotelUpdateAction {
 	public String execute(String[] data) {
 			return hotelDBA.hotelAdd(data);
 	}
-	
-	public String[][] execute(String data) {
-			return hotelDBA.hotelUpdata(data);
+
+	public String[][] executeSearch(String data) {
+			return hotelDBA.hotelSearch(data);
 	}
+	public String executeUpdate(String[] data) {
+		return hotelDBA.hotelUpdata(data);
+}
 }

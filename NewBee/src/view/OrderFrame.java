@@ -55,9 +55,12 @@ public class OrderFrame extends JFrame implements ActionListener {
 	private JLabel lblStartTime;
 
 	private JTextField txtTel;
+	private String itemId;
 
 	public OrderFrame(OrderChange orderchange) {
 
+		itemId = orderchange.getItemId();
+		
 		setTitle("【注文内容変更】 NewBee 業務システム");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
@@ -89,17 +92,6 @@ public class OrderFrame extends JFrame implements ActionListener {
 		txtOrderCode.setEditable(false);
 		add(txtOrderCode);
 
-		lblType = new JLabel("コース種類");
-		lblType.setBounds(20, 110, 100, 20);
-		add(lblType);
-
-		txtType = new JTextArea(orderchange.getCourse());
-		txtType.setBounds(120, 110, 360, 60);
-		txtType.setLineWrap(true);
-		txtType.setWrapStyleWord(true);
-		txtType.setEditable(false);
-		add(txtType);
-
 		lblStartTime = new JLabel("開始日");
 		lblStartTime.setBounds(20, 180, 100, 20);
 		add(lblStartTime);
@@ -119,7 +111,7 @@ public class OrderFrame extends JFrame implements ActionListener {
 		lblNum = new JLabel("合計（税込）");
 		lblNum.setBounds(20, 240, 100, 20);
 
-		txtNum = new JTextField(orderchange.getNum());
+		txtNum = new JTextField(orderchange.getPrice());
 		txtNum.setBounds(120, 240, 360, 20);
 		add(txtNum);
 
@@ -149,17 +141,13 @@ public class OrderFrame extends JFrame implements ActionListener {
 		if (e.getSource() == btnOrderRegister) {
 			String startTime = txtStartTime.getText();
 			String endTime = txtEndTime.getText();
-			String num = txtNum.getText();
-			String tel = txtTel.getText();
 			String orderCode = txtOrderCode.getText();
 
 			// 入力値の半角スペースと全角スペースを取り除く
 			startTime.replaceAll(" +", "");
 			endTime.replaceAll(" +", "");
-			num.replaceAll(" +", "");
-			tel.replaceAll(" +", "");
 			orderCode.replaceAll(" +", "");
-			String[] data = { startTime, endTime, num, tel, orderCode};
+			String[] data = { startTime, endTime, itemId,orderCode};
 
 			try {
 				

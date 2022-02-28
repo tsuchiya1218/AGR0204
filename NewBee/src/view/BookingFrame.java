@@ -50,6 +50,7 @@ public class BookingFrame extends JFrame implements ActionListener {
 	private JTextField txtType;
 	private JLabel lblTime;
 	private JTextField txtTime;
+	private String itemId;
 
 	public BookingFrame(BookingCheck bookingCheck) {
 
@@ -57,6 +58,8 @@ public class BookingFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 
+		itemId = bookingCheck.getItemid();
+		
 		lblTel = new JLabel("電話番号");
 		lblTel.setBounds(20, 20, 100, 20);
 		add(lblTel);
@@ -67,46 +70,37 @@ public class BookingFrame extends JFrame implements ActionListener {
 		add(txtTel);
 
 		lblName = new JLabel("ユーザ名");
-		lblName.setBounds(20, 50, 100, 20);
+		lblName.setBounds(20, 60, 100, 20);
 		add(lblName);
 
 		txtName = new JTextField(bookingCheck.getCustName());
-		txtName.setBounds(120, 50, 360, 20);
+		txtName.setBounds(120, 60, 360, 20);
 		txtName.setEditable(false);
 		add(txtName);
 
 		lblOrderCode = new JLabel("注文コード");
-		lblOrderCode.setBounds(20, 80, 100, 20);
+		lblOrderCode.setBounds(20, 100, 100, 20);
 		add(lblOrderCode);
 
 		txtOrderCode = new JTextField(bookingCheck.getOrderCode());
-		txtOrderCode.setBounds(120, 80, 360, 20);
+		txtOrderCode.setBounds(120, 100, 360, 20);
 		txtOrderCode.setEditable(false);
 		add(txtOrderCode);
-
-		lblType = new JLabel("コース種類");
-		lblType.setBounds(20, 110, 100, 20);
-		add(lblType);
-
-		txtType = new JTextField(bookingCheck.getType());
-		txtType.setBounds(120, 110, 360, 20);
-		txtType.setEditable(false);
-		add(txtType);
 
 		lblTime = new JLabel("注文日時");
 		lblTime.setBounds(20, 140, 100, 20);
 		add(lblTime);
 
-		txtTime = new JTextField(bookingCheck.getOrderTime());
+		txtTime = new JTextField(bookingCheck.getDate());
 		txtTime.setBounds(120, 140, 360, 20);
 		txtTime.setEditable(false);
 		add(txtTime);
 		
 		lblNum = new JLabel("合計（税込）");
-		lblNum.setBounds(20, 170, 100, 20);
+		lblNum.setBounds(20, 180, 100, 20);
 		add(lblNum);
 
-		txtNum = new JTextField(bookingCheck.getNum());
+		txtNum = new JTextField(bookingCheck.getPrice()+"円");
 		txtNum.setBounds(120, 170, 360, 20);
 		txtNum.setEditable(false);
 		add(txtNum);
@@ -143,7 +137,7 @@ public class BookingFrame extends JFrame implements ActionListener {
 		if (e.getSource() == btnOrderCancel) {
 			try {
 				//telを渡して、注文をキャンセルする。
-				String[] data = {txtTel.getText(),txtOrderCode.getText()};
+				String[] data = {itemId,txtOrderCode.getText()};
 				String result = NewBeeController.executeCancel(data);
 				JOptionPane.showMessageDialog(this, result, "【確認】", JOptionPane.INFORMATION_MESSAGE);
 
@@ -155,7 +149,7 @@ public class BookingFrame extends JFrame implements ActionListener {
 		} else if (e.getSource() == btnOrderRegister) {
 			
 			try {
-				String[] data = {txtTel.getText(),txtOrderCode.getText()};
+				String[] data = {itemId,txtOrderCode.getText()};
 				String result = NewBeeController.executeRegister(data);
 				JOptionPane.showMessageDialog(this, result, "【確認】", JOptionPane.INFORMATION_MESSAGE);
 			} catch (Exception ex) {

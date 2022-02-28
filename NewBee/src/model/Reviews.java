@@ -4,74 +4,64 @@ import java.io.Serializable;
 
 public class Reviews implements Serializable{
 	private static final long serialVersionUID = 1L;
-	private String userId;
-	private String custName;
-	private String itemCode;
-	private String course;
-	private String Comment;
-	private String time;
+	private String customerId;
+	private String customerName;
+	private String orderId;
+	private String review;
+	private String date;
 
-	public Reviews(String userId, String custName, String itemCode, 
-			String course, String Comment, String time) {
-		this.userId = userId;
-		this.custName = custName;
-		this.itemCode = itemCode;
-		this.course = course;
-		this.setComment(Comment);
-		this.time = time;
-	}
-	
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
-	public String getCustName() {
-		return custName;
-	}
-
-	public void setCustName(String custName) {
-		this.custName = custName;
-	}
-
-	public String getItemCode() {
-		return itemCode;
-	}
-
-	public void setItemCode(String orderCode) {
-		this.itemCode = orderCode;
-	}
-
-	public String getCourse() {
-		return course;
-	}
-
-	public void setCourse(String course) {
-		this.course = course;
+	public Reviews(String customerId, String customerName,
+			String orderId, String review, String date) {
+		this.customerId = customerId;
+		this.customerName = customerName;
+		this.orderId = orderId;
+		this.review = review;
+		this.date = date;
 	}
 
 
-	public String getTime() {
-		return time;
+	public String getCustomerId() {
+		return customerId;
 	}
 
-	public void setTime(String time) {
-		this.time = time;
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public String getCustomerName() {
+		return customerName;
 	}
 
-	public String getComment() {
-		return Comment;
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
 	}
 
-	public void setComment(String comment) {
-		Comment = comment;
+	public String getOrderId() {
+		return orderId;
 	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
+	public String getReview() {
+		return review;
+	}
+
+	public void setReview(String review) {
+		this.review = review;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+
+
+
 
 }

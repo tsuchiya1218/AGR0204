@@ -85,10 +85,10 @@ public class VehicleUpdateFrame extends JFrame implements ActionListener {
 		add(btnDelete);
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(20, 160, 560,160);
+		scrollPane.setBounds(20, 160, 660,300);
 		add(scrollPane);
 
-		String[] columnNames = { "便名", "出発駅", "到着駅", "出発日時","到着日時" ,"種類ID"};
+		String[] columnNames = { "便名", "出発駅", "到着駅", "出発日時","到着日時" ,"種類ID","価格"};
 		tableModel = new DefaultTableModel(columnNames, 0);
 		table = new JTable(tableModel);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -100,6 +100,7 @@ public class VehicleUpdateFrame extends JFrame implements ActionListener {
 		TableColumn column3 = columnModel.getColumn(3);
 		TableColumn column4 = columnModel.getColumn(4);
 		TableColumn column5 = columnModel.getColumn(5);
+		TableColumn column6 = columnModel.getColumn(6);
 
 
 		column0.setPreferredWidth(110);
@@ -108,6 +109,7 @@ public class VehicleUpdateFrame extends JFrame implements ActionListener {
 		column3.setPreferredWidth(90);
 		column4.setPreferredWidth(90);
 		column5.setPreferredWidth(90);
+		column6.setPreferredWidth(100);
 
 		table.addMouseListener(new SearchMouseEvent());
 
@@ -126,7 +128,7 @@ public class VehicleUpdateFrame extends JFrame implements ActionListener {
 		super.addNotify();
 
 		Insets insets = getInsets();
-		setSize(600 + insets.left + insets.right, 600 + insets.top + insets.bottom);
+		setSize(700 + insets.left + insets.right, 600 + insets.top + insets.bottom);
 		setLocationRelativeTo(this);
 	}
 
@@ -145,9 +147,7 @@ public class VehicleUpdateFrame extends JFrame implements ActionListener {
 			try {
 
 				String data = name;
-				tableData = new String[][]{{"1","2","3","1","2","3"},{"2","2","3","1","2","3"}}; 
-						
-						NewBeeController.vehicleSearch(data);
+				tableData = NewBeeController.vehicleSearch(data);
 
 				if (tableData != null) {
 
@@ -190,15 +190,15 @@ public class VehicleUpdateFrame extends JFrame implements ActionListener {
 
 			setVisible(false);
 
-			
+
 			try {
 			int rowIndex = table.getSelectedRow();
 			String vehicleName = (String) table.getValueAt(rowIndex, 0);
-			
+
 			for(int i = 0;i < tableData.length; i++ ) {
 				if(vehicleName.equals(tableData[i][0])) {
 					new VehicleDetailedFrame(new VehicleDetailed(tableData[i][0],tableData[i][1],tableData[i][2],tableData[i][3],
-							tableData[i][4],tableData[i][5]));
+							tableData[i][4],tableData[i][5],tableData[i][6]));
 				}
 			}
 			} catch (Exception ex) {

@@ -4,46 +4,46 @@ import java.io.Serializable;
 
 public class Customer implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private int custId;
-	private String custName;
-	private String kana;
-	private String tel;
+	private String name;
+	private String email;
 	private String address;
+	private String tel;
+	private String customerid;
 
 	public Customer() {
 
 	}
 
-	public Customer(int custId, String custName, String kana, String tel, String address) {
-		this.custId = custId;
-		this.custName = custName;
-		this.kana = kana;
-		this.tel = tel;
+	public Customer(String customerid,String name, String email, String address, String tel) {
+		this.name = name;
+		this.email = email;
 		this.address = address;
+		this.tel = tel;
+		this.customerid = customerid;
 	}
 
-	public int getCustId() {
-		return custId;
+	public String getName() {
+		return name;
 	}
 
-	public void setCustId(int custId) {
-		this.custId = custId;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getCustName() {
-		return custName;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setCustName(String custName) {
-		this.custName = custName;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public String getKana() {
-		return kana;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setKana(String kana) {
-		this.kana = kana;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public String getTel() {
@@ -54,12 +54,12 @@ public class Customer implements Serializable {
 		this.tel = tel;
 	}
 
-	public String getAddress() {
-		return address;
+	public String getCustomerid() {
+		return customerid;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setCustomerid(String customerid) {
+		this.customerid = customerid;
 	}
 
 }

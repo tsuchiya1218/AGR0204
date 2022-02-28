@@ -10,25 +10,27 @@ import java.util.ArrayList;
 import model.Customer;
 
 public class LiveAddDBAccess {
-	// DBとの接続を確立する
-	String result = null;
-
+	String result;
 	// DBとの接続を確立する
 	private Connection createConnection() {
 		Connection con = null;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			// &useSSL=false URLにつけると例外を消せる
-			con = DriverManager.getConnection("jdbc:mysql://127.0.0.1/20jy0238?characterEncoding=UTF-8&useSSL=false", "root",
-					"aini389125");
+			con = DriverManager.getConnection("jdbc:mysql://10.42.129.142/20gr24?characterEncoding=UTF-8&useSSL=false", "20gr24",
+					"20gr24");
 		} catch (ClassNotFoundException e) {
+			result = ":管理者まで連絡してください。";
+			System.out.println("JDBCドライバが見つかりません");
 			e.printStackTrace();
 		} catch (SQLException e) {
-			result = "DB接続時にエラーが発生しました。(Spot)" + "\n" + "ご確認ください。";
+			result = ":管理者まで連絡してください。";
+			System.out.println("DBに接続時にエラーが発生しました。");
 			e.printStackTrace();
 		}
 		return con;
 	}
+
 
 	// DBとの接続を閉じる
 	private void closeConnection(Connection con) {
@@ -46,19 +48,32 @@ public class LiveAddDBAccess {
 
 		Connection con = createConnection();
 		PreparedStatement pstmt = null;
+		int liveItemId = (int)System.currentTimeMillis()/1000;
 		int rs = -1;
 		try {
 			if (con != null) {
-				String sql = "INSERT INTO Live(name,startTime,comment,img)"
-						+ " VALUES(?,?,?,?)";
-				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, data[0]);
-				pstmt.setString(2, data[1]);
-				pstmt.setString(3, data[2]);
-				pstmt.setString(4, data[3]);
-				rs = pstmt.executeUpdate(sql);
+
+				PreparedStatement pstmt2 = null;
+				String itemSql = "INSERT INTO Item VALUES(?,?,?)";
+				pstmt2 = con.prepareStatement(itemSql);
+				pstmt2.setInt(1,liveItemId);
+				pstmt2.setString(2, "1");
+				pstmt2.setString(3, data[5]);
+				rs = pstmt2.executeUpdate();
+
+
+				String liveSql = "INSERT INTO Live(itemid,name,comment,starttime,img,spotid) VALUES(?,?,?,?,?,?)";
+				pstmt = con.prepareStatement(liveSql);
+				pstmt.setInt(1,liveItemId);
+				pstmt.setString(2, data[0]);
+				pstmt.setString(3, data[1]);
+				pstmt.setString(4, data[2]);
+				pstmt.setString(5, data[3]);
+				pstmt.setInt(6, Integer.parseInt(data[4]));
+				rs = pstmt.executeUpdate();
+
 				if (rs == 0) {
-					result = "ライブ観光地は既に存在しています。。" + "\n" + "ご確認ください。";
+					result = "新規観光地は既に存在しています。" + "\n" + "ご確認ください。";
 				} else if (rs == 1) {
 					result = "新規完了しました。";
 				}
@@ -82,10 +97,44 @@ public class LiveAddDBAccess {
 		return result;
 	}
 
-	@SuppressWarnings("null")
-	public String[][] liveUpdata(String data) {
+	public String liveUpdate(String[] data) {
+		Connection con = createConnection();
+		PreparedStatement pstmt = null;
+		int rs = -1;
+		try {
+			if (con != null) {
+				//SQL修正する必要がある
+				String sql = "UPDATE Room SET count = ? , remaind = ? WHERE type = ? AND hotelid = ?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, data[0]);
+				rs = pstmt.executeUpdate(sql);
+				if (rs == 0) {
+					result =  "更新失敗しました。" + "\n" + "ご確認ください。";
+				} else if (rs == 1) {
+					result = "更新完了しました。";
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("DB接続時にエラーが発生しました。(Live)");
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("DB切断時にエラーが発生しました。");
+				e.printStackTrace();
+			}
+		}
+		closeConnection(con);
+		return result;
+	}
 
-		String[][] tableData = null;
+	@SuppressWarnings("null")
+	public String[][] liveSearch(String data) {
+
+		String[][] tableData = new String[3][7];
 		int i = 0;
 
 		Connection con = createConnection();
@@ -93,20 +142,30 @@ public class LiveAddDBAccess {
 		ResultSet rs = null;
 		try {
 			if (con != null) {
-				String sql = "SELECT * FROM Live WHERE hotelName LIKE ?";
+				String sql = "SELECT area.name AS areaName, spot.name AS spotName, live.starttime , live.comment , live.img , "
+						+ "live.itemid , live.name AS liveName , item.price FROM spot "
+						+ "INNER JOIN area ON spot.areaid = area.areaid INNER JOIN live ON "
+						+ "spot.spotid = live.spotid INNER JOIN item ON item.itemid = live.itemid WHERE area.name LIKE ?";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, "%"+data+"%");
-				rs = pstmt.executeQuery(sql);
+				rs = pstmt.executeQuery();
 			}
+
+
+
+
 			while (rs.next()) {
-				tableData[i][0] = rs.getString("liveId");
-				tableData[i][1] = rs.getString("liveTheme");
-				tableData[i][2] = rs.getString("startTime");
-				tableData[i][3] = rs.getString("comment");
-				tableData[i][4] = rs.getString("img");
+				tableData[i][0] = rs.getString("itemid");
+				tableData[i][1] = rs.getString("areaName");
+				tableData[i][2] = rs.getString("spotName");
+				tableData[i][3] = rs.getString("starttime");
+				tableData[i][4] = rs.getString("comment");
+				tableData[i][5] = rs.getString("liveName");
+				tableData[i][6] = rs.getString("price");
+				i++;
 			}
 		} catch (SQLException e) {
-			System.out.println("DB接続時にエラーが発生しました。(Customer)");
+			System.out.println("DB接続時にエラーが発生しました。(Live)");
 			e.printStackTrace();
 		} finally {
 			try {

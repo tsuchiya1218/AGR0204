@@ -1,65 +1,55 @@
 package model;
 
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 
 public class Spot implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private int custId;
-	private String custName;
-	private String kana;
-	private String tel;
+
 	private String address;
 	private String time;
+	private String imgPath;
+	private String access;
+	private String sName;
+	private String spotId;
+	private String comment;
 
 	public Spot() {
 
 	}
 
-	public Spot(int custId, String custName, String kana, String tel, String address,String time) {
-		this.custId = custId;
-		this.custName = custName;
-		this.kana = kana;
-		this.tel = tel;
+	public Spot(String spotId, String sName, String address, String access,String time,String comment,String imgPath) {
+		this.setSpotId(spotId);
+		this.sName = sName;
 		this.address = address;
+		this.access = access;
 		this.time = time;
+		this.comment = comment;
+		this.setImgPath(imgPath);
 	}
 
-	public int getCustId() {
-		return custId;
+
+	public String getAccess() {
+		return access;
 	}
 
-	public void setCustId(int custId) {
-		this.custId = custId;
+	public void setAccess(String access) {
+		this.access = access;
 	}
 
-	public String getCustName() {
-		return custName;
+	public String getsName() {
+		return sName;
 	}
 
-	public void setCustName(String custName) {
-		this.custName = custName;
+	public void setsName(String sName) {
+		this.sName = sName;
 	}
 
-	public String getKana() {
-		return kana;
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
-
-	public void setKana(String kana) {
-		this.kana = kana;
-	}
-
-	public String getTel() {
-		return tel;
-	}
-
-	public void setTel(String tel) {
-		this.tel = tel;
-	}
-
 	public String getAddress() {
 		return address;
 	}
@@ -74,6 +64,31 @@ public class Spot implements Serializable {
 
 	public void setTime(String time) {
 		this.time = time;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public String getImgPath() {
+		return imgPath;
+	}
+
+	public void setImgPath(String imgPath) {
+		List<String> list = Arrays.asList("Z:",imgPath);
+		 this.imgPath = String.join("", list);
+	}
+
+	public String getSpotId() {
+		return spotId;
+	}
+
+	public void setSpotId(String spotId) {
+		this.spotId = spotId;
 	}
 
 }

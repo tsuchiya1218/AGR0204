@@ -56,7 +56,7 @@ public class ReviewsFrame extends JFrame implements ActionListener {
 		lblUserId.setBounds(20, 20, 100, 20);
 		add(lblUserId);
 
-		txtUserId = new JTextField(reviewsCheck.getUserId());
+		txtUserId = new JTextField(reviewsCheck.getCustomerId());
 		txtUserId.setBounds(120, 20, 360, 20);
 		txtUserId.setEditable(false);
 		add(txtUserId);
@@ -65,37 +65,26 @@ public class ReviewsFrame extends JFrame implements ActionListener {
 		lblName.setBounds(20, 50, 100, 20);
 		add(lblName);
 
-		txtName = new JTextField(reviewsCheck.getCustName());
+		txtName = new JTextField(reviewsCheck.getCustomerName());
 		txtName.setBounds(120, 50, 360, 20);
 		txtName.setEditable(false);
 		add(txtName);
 
-		lblItemCode = new JLabel("項目コード");
+		lblItemCode = new JLabel("注文コード");
 		lblItemCode.setBounds(20, 80, 100, 20);
 		add(lblItemCode);
 
-		txtItemCode = new JTextField(reviewsCheck.getItemCode());
+		txtItemCode = new JTextField(reviewsCheck.getOrderId());
 		txtItemCode.setBounds(120, 80, 360, 20);
 		txtItemCode.setEditable(false);
 		add(txtItemCode);
 
-		lblCourse = new JLabel("旅行コース");
-		lblCourse.setBounds(20, 110, 100, 20);
-		add(lblCourse);
-
-		txtCourse = new JTextArea(reviewsCheck.getCourse());
-		txtCourse.setBounds(120, 110, 360, 40);
-		txtCourse.setLineWrap(true);
-		txtCourse.setEditable(false);
-		txtCourse.setWrapStyleWord(true);
-		add(txtCourse);
-
 		lblReviews = new JLabel("レビュー•評価");
-		lblReviews.setBounds(20, 160, 100, 20);
+		lblReviews.setBounds(20, 110, 100, 20);
 		add(lblReviews);
 
-		txtReviews = new JTextArea(reviewsCheck.getComment());
-		txtReviews.setBounds(120, 160, 360, 80);
+		txtReviews = new JTextArea(reviewsCheck.getReview());
+		txtReviews.setBounds(120, 110, 360, 80);
 		txtReviews.setLineWrap(true);
 		txtReviews.setEditable(false);
 		txtReviews.setWrapStyleWord(true);
@@ -105,16 +94,16 @@ public class ReviewsFrame extends JFrame implements ActionListener {
 		lblDate.setBounds(20, 250, 100, 20);
 		add(lblDate);
 
-		txtNum = new JTextField(reviewsCheck.getTime());
+		txtNum = new JTextField(reviewsCheck.getDate());
 		txtNum.setBounds(120, 250, 360, 20);
 		txtNum.setEditable(false);
 		add(txtNum);
-
+		
 		btnReviewsOk = new JButton("許可");
 		btnReviewsOk.setBounds(20, 450, 90, 30);
 		btnReviewsOk.addActionListener(this);
 		add(btnReviewsOk);
-
+		
 		btnReviewsCancel = new JButton("取消");
 		btnReviewsCancel.setBounds(120, 450, 90, 30);
 		btnReviewsCancel.addActionListener(this);
@@ -143,8 +132,15 @@ public class ReviewsFrame extends JFrame implements ActionListener {
 		if (e.getSource() == btnReviewsCancel) {
 
 			try {
+				String customerID = txtUserId.getText();
+				String code = txtItemCode.getText();
+				
+				
+				customerID.replaceAll(" +", "");
+				code.replaceAll(" +", "");
+				
 				//userIdとitemCodeを渡して、レビューをキャンセルする。
-				String[] data = {txtUserId.getText(),txtItemCode.getText()};
+				String[] data = {customerID,code};
 				String result = NewBeeController.reviewsCancel(data);
 				JOptionPane.showMessageDialog(this, result, "【確認】", JOptionPane.INFORMATION_MESSAGE);
 			} catch (Exception ex) {
@@ -154,8 +150,16 @@ public class ReviewsFrame extends JFrame implements ActionListener {
 		} else if (e.getSource() == btnReviewsOk) {
 
 			try {
-			//userIdとitemCodeを渡して、レビューを許可する。
-				String[] data = {txtUserId.getText(),txtItemCode.getText()};
+				String customerID = txtUserId.getText();
+				String code = txtItemCode.getText();
+				
+				
+				customerID.replaceAll(" +", "");
+				code.replaceAll(" +", "");
+				
+				//userIdとitemCodeを渡して、レビューをキャンセルする。
+				String[] data = {customerID,code};
+				
 				String result = NewBeeController.reviewsOk(data);
 				JOptionPane.showMessageDialog(this, result, "【確認】", JOptionPane.INFORMATION_MESSAGE);
 			} catch (Exception ex) {
@@ -169,7 +173,7 @@ public class ReviewsFrame extends JFrame implements ActionListener {
 
 			try {
 
-				NewBeeController.bookingCheckDisplay();
+				NewBeeController.reviewsCheckDisplay();
 
 			} catch (Exception ex) {
 

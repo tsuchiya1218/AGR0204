@@ -1,13 +1,13 @@
 package dao;
 
 import java.sql.Connection;
-
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import model.Customer;
 import model.Reviews;
 
 public class ReviewsSearchDBAccess {
@@ -20,13 +20,15 @@ public class ReviewsSearchDBAccess {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			// &useSSL=false URLにつけると例外を消せる
-			con = DriverManager.getConnection("jdbc:mysql://127.0.0.1/20jy0238?characterEncoding=UTF-8&useSSL=false", "root",
-					"aini389125");
+			con = DriverManager.getConnection("jdbc:mysql://10.42.129.142/20gr24?characterEncoding=UTF-8&useSSL=false", "20gr24",
+					"20gr24");
 		} catch (ClassNotFoundException e) {
+			System.out.println("JDBCドライバが見つかりません");
 			e.printStackTrace();
 		} catch (SQLException e) {
-			result = "DB接続時にエラーが発生しました。(Reviews)" + "\n" + "ご確認ください。";
+			System.out.println("DBに接続時にエラーが発生しました。");
 			e.printStackTrace();
+			result = "DB接続時にエラーが発生しました。(Room)" + "\n" + "ご確認ください。";
 		}
 		return con;
 	}
@@ -47,14 +49,15 @@ public class ReviewsSearchDBAccess {
 
 		Connection con = createConnection();
 		PreparedStatement pstmt = null;
+		
 		int rs = -1;
 		try {
 			if (con != null) {
-				String sql = "DELETE FROM Reviews WHERE userID = ? AND itemId = ?";
+				String sql = "DELETE FROM review WHERE customerid  = ? AND orderid = ?";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, data[0]);
 				pstmt.setString(2, data[1]);
-				rs = pstmt.executeUpdate(sql);
+				rs = pstmt.executeUpdate();
 				if (rs == 0) {
 					result = "error" + "\n" + "ご確認ください。";
 				} else if (rs == 1) {
@@ -87,11 +90,11 @@ public class ReviewsSearchDBAccess {
 		int rs = -1;
 		try {
 			if (con != null) {
-				String sql = "UPDATE Reviews SET flag = 1 WHERE userID = ? AND itemId = ?";
+				String sql = "UPDATE Review SET flag = 1 WHERE customerid = ? AND orderid = ?";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, data[0]);
 				pstmt.setString(2, data[1]);
-				rs = pstmt.executeUpdate(sql);
+				rs = pstmt.executeUpdate();
 				if (rs == 0) {
 					result = "error" + "\n" + "ご確認ください。";
 				} else if (rs == 1) {
@@ -126,17 +129,19 @@ public class ReviewsSearchDBAccess {
 		try {
 			if (con != null) {
 				//SQL文法は変更する必要がある
-				String sql = "SELECT * FROM Reviews";
+				String sql = "SELECT review.customerid, customer.name, order_detail.orderid, review.reviews, review.date, "
+						+ "order_detail.itemid FROM review INNER JOIN customer ON customer.customerid = review.customerid"
+						+ " INNER JOIN order_detail ON review.orderid = order_detail.orderid";
 				pstmt = con.prepareStatement(sql);
 				rs = pstmt.executeQuery();
 				while (rs.next()) {
-					String userId = rs.getString("userId");
-					String custName = rs.getString("CUSTNAME");
-					String itemCode = rs.getString("itemCode");
-					String course = rs.getString("course");
-					String Comment = rs.getString("Comment");
-					String time = rs.getString("time");
-					Reviews reviews = new Reviews(userId, custName, itemCode, course, Comment,time);
+					
+					String customerId = rs.getString("customerid");
+					String customerName = rs.getString("name");
+					String orderId = rs.getString("orderid");
+					String review = rs.getString("reviews");
+					String date = rs.getString("date");
+					Reviews reviews = new Reviews(customerId, customerName, orderId,review,date);
 					list.add(reviews);
 				}
 			}

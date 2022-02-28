@@ -78,6 +78,8 @@ public class VehicleDetailedFrame extends JFrame implements ActionListener {
 	private JTextField txtdtime;
 	private JLabel lblatime;
 	private JTextField txtatime;
+	private JLabel lblPrice;
+	private JTextField txtPrice;
 
 	public VehicleDetailedFrame(VehicleDetailed vehicle) {
 
@@ -127,13 +129,21 @@ public class VehicleDetailedFrame extends JFrame implements ActionListener {
 		txtatime = new JTextField(vehicle.getAtime());
 		txtatime.setBounds(120, 140, 360, 20);
 		add(txtatime);
-	
+
+		lblPrice = new JLabel("価格");
+		lblPrice.setBounds(20, 170, 100, 20);
+		add(lblPrice);
+
+		txtPrice = new JTextField(vehicle.getPrice());
+		txtPrice.setBounds(120, 170, 360, 20);
+		add(txtPrice);
+
 		lblttypeid = new JLabel("種類ID");
-		lblttypeid.setBounds(20, 170, 100, 20);
+		lblttypeid.setBounds(20, 210, 100, 20);
 		add(lblttypeid);
 
 		txtttypeid = new JTextField(vehicle.getTtypeid());
-		txtttypeid.setBounds(120, 170, 360, 20);
+		txtttypeid.setBounds(120, 210, 360, 20);
 		txtttypeid.setEditable(false);
 		add(txtttypeid);
 
@@ -141,7 +151,7 @@ public class VehicleDetailedFrame extends JFrame implements ActionListener {
 		btnRoomRegister.setBounds(20, 450, 90, 30);
 		btnRoomRegister.addActionListener(this);
 		add(btnRoomRegister);
-		
+
 		btnReturn = new JButton("戻る");
 		btnReturn.setBounds(120, 450, 90, 30);
 		btnReturn.addActionListener(this);
@@ -166,15 +176,15 @@ public class VehicleDetailedFrame extends JFrame implements ActionListener {
 			String astation = txtastation.getText();
 			String dtime = txtdtime.getText();
 			String atime = txtatime.getText();
-			String name = txtName.getText();
+			String price = txtPrice.getText();
 			// 入力値の半角スペースと全角スペースを取り除く
 			dstation.replaceAll(" +", "");
 			astation.replaceAll(" +", "");
 			dtime.replaceAll(" +", "");
 			atime.replaceAll(" +", "");
-			name.replaceAll(" +", "");
-			
-			String[] data = {dstation,astation,dtime,atime,name};
+			price.replaceAll(" +", "");
+
+			String[] data = {dstation,astation,dtime,atime,price};
 			try {
 				//変更する。
 				String result = NewBeeController.vehicleUpdate(data);

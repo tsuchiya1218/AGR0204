@@ -9,7 +9,6 @@
 
 package view;
 
-import java.awt.Component;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,13 +20,12 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import model.ControlUtility;
 import control.NewBeeController;
+import model.ControlUtility;
 
 
 public class RoomAddFrame extends JFrame implements ActionListener {
@@ -54,6 +52,11 @@ public class RoomAddFrame extends JFrame implements ActionListener {
 	private JTextField txtRoomNum;
 	private JLabel lblType;
 	private JTextField txtType;
+	String path = null;
+
+	private JLabel lblPrice;
+
+	private JTextField txtPrice;
 
 	public RoomAddFrame() {
 
@@ -61,7 +64,7 @@ public class RoomAddFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 
-		lblName = new JLabel("ホテル名");
+		lblName = new JLabel("ホテルID");
 		lblName.setBounds(60, 20, 180, 20);
 		add(lblName);
 
@@ -93,14 +96,22 @@ public class RoomAddFrame extends JFrame implements ActionListener {
 		txtComment = new JTextArea();
 		txtComment.setBounds(200, 110, 320, 80);
 		add(txtComment);
+		
+		lblPrice = new JLabel("単価");
+		lblPrice.setBounds(60, 200, 180, 20);
+		add(lblPrice);
+
+		txtPrice = new JTextField();
+		txtPrice.setBounds(200, 200, 320, 20);
+		add(txtPrice);
 
 		btnDelete = new JButton("入力消去");
-		btnDelete.setBounds(390, 200, 90, 30);
+		btnDelete.setBounds(390, 230, 90, 30);
 		btnDelete.addActionListener(this);
 		add(btnDelete);
 
 		btnAdd = new JButton("新規追加");
-		btnAdd.setBounds(490, 200, 90, 30);
+		btnAdd.setBounds(490, 230, 90, 30);
 		btnAdd.addActionListener(this);
 		add(btnAdd);
 
@@ -110,16 +121,16 @@ public class RoomAddFrame extends JFrame implements ActionListener {
 		add(btnReturn);
 
 		lblImg = new JLabel("写真");
-		lblImg.setBounds(60, 200, 180, 20);
+		lblImg.setBounds(60, 230, 180, 20);
 		add(lblImg);
 
 		btnImg = new JButton("写真選択");
-		btnImg.setBounds(200, 200, 90, 30);
+		btnImg.setBounds(200, 230, 90, 30);
 		btnImg.addActionListener(this);
 		add(btnImg);
 
 		lblImg2 = new JLabel();
-		lblImg2.setBounds(60, 240, 480, 250);
+		lblImg2.setBounds(60, 250, 480, 250);
 		add(lblImg2);
 
 		setVisible(true);
@@ -136,7 +147,7 @@ public class RoomAddFrame extends JFrame implements ActionListener {
 
 	@SuppressWarnings("unused")
 	public void actionPerformed(ActionEvent e) {
-		String path = null;
+		
 
 		if (e.getSource() == btnDelete) {
 
@@ -144,24 +155,27 @@ public class RoomAddFrame extends JFrame implements ActionListener {
 			txtRoomNum.setText("");
 			txtComment.setText("");
 			txtType.setText("");
+			txtPrice.setText("");
 
 		} else if (e.getSource() == btnImg) {
 
 			path = open();
-
+			String[] str = path.split(":");
+			path = str[1];
 		} else if (e.getSource() == btnAdd) {
 
 			String name = txtName.getText();
 			String num = txtRoomNum.getText();
 			String comment = txtComment.getText();
 			String type = txtType.getText();
+			String price = txtPrice.getText();
 
 			// 入力値の半角スペースと全角スペースを取り除く
 			name.replaceAll(" +", "");
 			num.replaceAll(" +", "");
 			comment.replaceAll(" +", "");
 			type.replaceAll(" +", "");
-			String[] data = { name, num, comment, type, path };
+			String[] data = { type, path, num, comment, name ,price};
 
 			try {
 				if (path != null && name != null && num != null && comment != null && type != null) {

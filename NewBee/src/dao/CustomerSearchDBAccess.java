@@ -10,18 +10,21 @@ import java.util.ArrayList;
 import model.Customer;
 
 public class CustomerSearchDBAccess {
+	String result;
 	// DBとの接続を確立する
 	private Connection createConnection() {
 		Connection con = null;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			// &useSSL=false URLにつけると例外を消せる
-			con = DriverManager.getConnection("jdbc:mysql://127.0.0.1/20jy0238?characterEncoding=UTF-8&useSSL=false", "root",
-					"aini389125");
+			con = DriverManager.getConnection("jdbc:mysql://10.42.129.142/20gr24?characterEncoding=UTF-8&useSSL=false", "20gr24",
+					"20gr24");
 		} catch (ClassNotFoundException e) {
+			result = ":管理者まで連絡してください。";
 			System.out.println("JDBCドライバが見つかりません");
 			e.printStackTrace();
 		} catch (SQLException e) {
+			result = ":管理者まで連絡してください。";
 			System.out.println("DBに接続時にエラーが発生しました。");
 			e.printStackTrace();
 		}
@@ -40,38 +43,28 @@ public class CustomerSearchDBAccess {
 		}
 	}
 
-	public ArrayList<Customer> searchCustomerByTel(String tel) {
+	public String customerUpdate(String data) {
+
 		Connection con = createConnection();
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		ArrayList<Customer> list = new ArrayList<Customer>();
+		int rs = -1;
 		try {
 			if (con != null) {
-				String sql = "SELECT CUSTID,CUSTNAME,KANA,ADDRESS FROM customer WHERE TEL=?";
+				String sql = "update Customer set flag = 1 where customerid = ? ";
 				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, tel);
-				rs = pstmt.executeQuery();
-				while (rs.next()) {
-					int custId = rs.getInt("CUSTID");
-					String custName = rs.getString("CUSTNAME");
-					String kana = rs.getString("KANA");
-					String address = rs.getString("ADDRESS");
-					Customer customer = new Customer(custId, custName, kana, tel, address);
-					list.add(customer);
+				pstmt.setString(1, data);
+				rs = pstmt.executeUpdate();
+				if (rs == 0) {
+					result = "error" + "\n" + "ご確認ください。";
+				} else if (rs == 1) {
+					result = "処理完了しました。";
 				}
 			}
+
 		} catch (SQLException e) {
-			System.out.println("DB接続時にエラーが発生しました。(Customer)");
 			e.printStackTrace();
+
 		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("DB切断時にエラーが発生しました。");
-				e.printStackTrace();
-			}
 			try {
 				if (pstmt != null) {
 					pstmt.close();
@@ -80,75 +73,30 @@ public class CustomerSearchDBAccess {
 				System.out.println("DB切断時にエラーが発生しました。");
 				e.printStackTrace();
 			}
+
 		}
 		closeConnection(con);
-		return list;
+		return result;
 	}
 
-	public ArrayList<Customer> searchCustomerByKana(String kana) {
+	public ArrayList<Customer> searchCustomerByCustomer(String data) {
 		Connection con = createConnection();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		ArrayList<Customer> list = new ArrayList<Customer>();
 		try {
 			if (con != null) {
-				String sql = "SELECT CUSTID,CUSTNAME,KANA,TEL,ADDRESS FROM customer WHERE KANA LIKE ?";
+				String sql = "SELECT customerid,name,email,address,tel FROM Customer WHERE name LIKE ?";
 				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, "%" + kana + "%");
+				pstmt.setString(1, "%" + data + "%");
 				rs = pstmt.executeQuery();
 				while (rs.next()) {
-					int custId = rs.getInt("CUSTID");
-					String custName = rs.getString("CUSTNAME");
+					String customerid = rs.getString("customerid");
+					String name = rs.getString("name");
+					String email = rs.getString("email");
+					String address = rs.getString("address");
 					String tel = rs.getString("tel");
-					String address = rs.getString("ADDRESS");
-					String custKana = rs.getString("KANA");
-					Customer customer = new Customer(custId, custName, custKana, tel, address);
-					list.add(customer);
-				}
-			}
-		} catch (SQLException e) {
-			System.out.println("DB接続時にエラーが発生しました。(Customer)");
-			e.printStackTrace();
-		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("DB切断時にエラーが発生しました。");
-				e.printStackTrace();
-			}
-			try {
-				if (pstmt != null) {
-					pstmt.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("DB切断時にエラーが発生しました。");
-				e.printStackTrace();
-			}
-		}
-		closeConnection(con);
-		return list;
-	}
-
-	public ArrayList<Customer> searchCustomerByCustomer(String tel, String kana) {
-		Connection con = createConnection();
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		ArrayList<Customer> list = new ArrayList<Customer>();
-		try {
-			if (con != null) {
-				String sql = "SELECT CUSTID,CUSTNAME,KANA,ADDRESS FROM customer WHERE TEL=? AND KANA LIKE ?";
-				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, tel);
-				pstmt.setString(2, "%" + kana + "%");
-				rs = pstmt.executeQuery();
-				while (rs.next()) {
-					int custId = rs.getInt("CUSTID");
-					String custName = rs.getString("CUSTNAME");
-					String address = rs.getString("ADDRESS");
-					String custKana = rs.getString("KANA");
-					Customer customer = new Customer(custId, custName, custKana, tel, address);
+					Customer customer = new Customer(customerid,name, email,address,tel);
 					list.add(customer);
 				}
 			}

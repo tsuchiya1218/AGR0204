@@ -12,28 +12,30 @@ package view;
 
 
 import java.awt.Insets;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-import javax.swing.ImageIcon;
+
+
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import model.ControlUtility;
 import control.NewBeeController;
+import dao.Hotel;
 
-@SuppressWarnings("serial")
 public class HotelUpdateFrame extends JFrame implements ActionListener {
 
 
@@ -49,17 +51,15 @@ public class HotelUpdateFrame extends JFrame implements ActionListener {
 
 	private JButton btnReturn;
 
-	private JLabel lblImg2;
-	private JLabel lblTourist;
-	private JButton btnImg;
 	private JButton btnUpdate;
-	private JTextField txtTid;
+
 
 
 	private JLabel lblName;
 
 
 	private JTextField txtName;
+	String[][] tableData = null;
 
 	public HotelUpdateFrame() {
 
@@ -96,10 +96,10 @@ public class HotelUpdateFrame extends JFrame implements ActionListener {
 		add(btnDelete);
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(20, 160, 900, 250);
+		scrollPane.setBounds(20, 160, 800, 250);
 		add(scrollPane);
 
-		String[] columnNames = { "ホテルID", "ホテル名", "所在地", "アクセス", "チェックイン", "チェックアウト", "紹介","写真名"};
+		String[] columnNames = { "ホテルID", "ホテル名", "所在地", "アクセス", "チェックイン", "チェックアウト", "概要"};
 		tableModel = new DefaultTableModel(columnNames, 0);
 		table = new JTable(tableModel);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -112,7 +112,6 @@ public class HotelUpdateFrame extends JFrame implements ActionListener {
 		TableColumn column4 = columnModel.getColumn(4);
 		TableColumn column5 = columnModel.getColumn(5);
 		TableColumn column6 = columnModel.getColumn(6);
-		TableColumn column7 = columnModel.getColumn(7);
 
 		column0.setPreferredWidth(80);
 		column1.setPreferredWidth(100);
@@ -121,15 +120,10 @@ public class HotelUpdateFrame extends JFrame implements ActionListener {
 		column4.setPreferredWidth(90);
 		column5.setPreferredWidth(90);
 		column6.setPreferredWidth(200);
-		column7.setPreferredWidth(100);
 
-
+		table.addMouseListener(new SearchMouseEvent());
 
 		scrollPane.setViewportView(table);
-
-		lblImg2 = new JLabel();
-		lblImg2.setBounds(20, 300, 275, 250);
-		add(lblImg2);
 
 		btnReturn = new JButton("戻る");
 		btnReturn.setBounds(20, 650, 90, 30);
@@ -144,18 +138,15 @@ public class HotelUpdateFrame extends JFrame implements ActionListener {
 		super.addNotify();
 
 		Insets insets = getInsets();
-		setSize(940 + insets.left + insets.right, 700 + insets.top + insets.bottom);
+		setSize(840 + insets.left + insets.right, 700 + insets.top + insets.bottom);
 		setLocationRelativeTo(this);
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		int defaultImg = 0; //0の場合は　写真を変更しない
-		String imgPath = null;
-		String addPath = null;
 
 		if (e.getSource() == btnDelete) {
 
-			txtTid.setText("");
+			txtName.setText("");
 
 		} else if (e.getSource() == btnSearch) {
 
@@ -166,19 +157,23 @@ public class HotelUpdateFrame extends JFrame implements ActionListener {
 
 			try {
 
-				String[][] tableData = 
-						
-						
-						
-						NewBeeController.hotelSearch(name);
+				 tableData = NewBeeController.hotelSearch(name);
 
-				if (tableData != null) {
+				 if (tableData != null) {
 
-					tableModel.setRowCount(0);
+						tableModel.setRowCount(0);
 
-					for (String[] rowData : tableData) {
-							tableModel.addRow(rowData);
-					}
+						int i = 0;
+						for (String[] rowData : tableData) {
+
+							if(tableData[i][0] == null) {
+								break;
+							}else {
+								tableModel.addRow(rowData);
+							}
+							i++;
+
+						}
 
 				} else {
 
@@ -202,42 +197,28 @@ public class HotelUpdateFrame extends JFrame implements ActionListener {
 
 				ControlUtility.systemErrorMessage(this, ex);
 			}
-		} else if (e.getSource() == btnUpdate) {
-			if(defaultImg == 1) {
-				//新しいパスを切り替える
-				imgPath = addPath;
+		}
+	}
+
+	private class SearchMouseEvent extends MouseAdapter {
+
+		public void mouseClicked(MouseEvent e) {
+
+			setVisible(false);
+
+
+			try {
+			int rowIndex = table.getSelectedRow();
+			String hotelId = (String) table.getValueAt(rowIndex, 0);
+
+			for(int i = 0;i < tableData.length; i++ ) {
+				if(hotelId.equals(tableData[i][0])) {
+					new HotelDetailFrame(new Hotel(tableData[i][0],tableData[i][1],tableData[i][2],tableData[i][3],
+							tableData[i][4],tableData[i][5],tableData[i][6]));
+				}
 			}
-			// 更新データをdbに渡すメソッド
-
-
-		} else if (e.getSource() == btnImg) {
-			defaultImg = 1;
-			addPath = open();
+			} catch (Exception ex) {
+			}
 		}
 	}
-
-	private void getImg(String imgPath) {
-
-			ImageIcon icon = new ImageIcon(imgPath);
-			lblImg2.setIcon(icon);
-
-		}
-
-	private String open() {
-		File f = null;
-		JFileChooser fc = new JFileChooser();
-		// 画像ファイルの拡張子を設定
-		fc.setFileFilter(new FileNameExtensionFilter("画像ファイル", "png", "jpg", "Jpeg", "GIF", "bmp"));
-		// ファイル選択ダイアログを表示、戻り値がAPPROVE_OPTIONの場合、画像ファイルを開く
-		if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-			f = fc.getSelectedFile();
-			// アイコンをラベルに設定
-			ImageIcon icon = new ImageIcon(f.getPath());
-			lblImg2.setIcon(icon);
-		}
-		String path = String.valueOf(f);
-		return path;
-
-	}
-
 }
