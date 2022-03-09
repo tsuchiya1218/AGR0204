@@ -59,7 +59,7 @@ public class BookingFrame extends JFrame implements ActionListener {
 		setLayout(null);
 
 		itemId = bookingCheck.getItemid();
-		
+
 		lblTel = new JLabel("電話番号");
 		lblTel.setBounds(20, 20, 100, 20);
 		add(lblTel);
@@ -95,13 +95,13 @@ public class BookingFrame extends JFrame implements ActionListener {
 		txtTime.setBounds(120, 140, 360, 20);
 		txtTime.setEditable(false);
 		add(txtTime);
-		
+
 		lblNum = new JLabel("合計（税込）");
 		lblNum.setBounds(20, 180, 100, 20);
 		add(lblNum);
 
 		txtNum = new JTextField(bookingCheck.getPrice()+"円");
-		txtNum.setBounds(120, 170, 360, 20);
+		txtNum.setBounds(120, 180, 360, 20);
 		txtNum.setEditable(false);
 		add(txtNum);
 
@@ -114,7 +114,7 @@ public class BookingFrame extends JFrame implements ActionListener {
 		btnOrderCancel.setBounds(120, 450, 90, 30);
 		btnOrderCancel.addActionListener(this);
 		add(btnOrderCancel);
-		
+
 		btnReturn = new JButton("戻る");
 		btnReturn.setBounds(220, 450, 90, 30);
 		btnReturn.addActionListener(this);
@@ -147,7 +147,7 @@ public class BookingFrame extends JFrame implements ActionListener {
 			}
 
 		} else if (e.getSource() == btnOrderRegister) {
-			
+
 			try {
 				String[] data = {itemId,txtOrderCode.getText()};
 				String result = NewBeeController.executeRegister(data);

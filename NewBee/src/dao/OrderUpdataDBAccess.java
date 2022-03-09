@@ -45,16 +45,24 @@ public class OrderUpdataDBAccess {
 
 		Connection con = createConnection();
 		PreparedStatement pstmt = null;
+		PreparedStatement pstmt1 = null;
 		int rs = -1;
 		try {
 			if (con != null) {
-				String sql = "UPDATE Order_detail SET starttime = ?, endtime = ? WHERE itemid = ? AND orderid = ?";
+				String sql = "UPDATE item SET price = ? WHERE itemid = ?";
 				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, data[0]);
-				pstmt.setString(2, data[1]);
-				pstmt.setString(3, data[2]);
-				pstmt.setString(4, data[3]);
+				pstmt.setString(1, data[2]);
+				pstmt.setString(2, data[3]);
 				rs = pstmt.executeUpdate();
+
+
+				String sql2 = "UPDATE Order_detail SET starttime = ?, endtime = ? WHERE itemid = ? AND orderid = ?";
+				pstmt1 = con.prepareStatement(sql2);
+				pstmt1.setString(1, data[0]);
+				pstmt1.setString(2, data[1]);
+				pstmt1.setString(3, data[3]);
+				pstmt1.setString(4, data[4]);
+				rs = pstmt1.executeUpdate();
 				if (rs == 0) {
 					result = "変更失敗しました。" + "\n" + "ご確認ください。";
 				} else if (rs == 1) {

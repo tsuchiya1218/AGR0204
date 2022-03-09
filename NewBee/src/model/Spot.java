@@ -79,8 +79,7 @@ public class Spot implements Serializable {
 	}
 
 	public void setImgPath(String imgPath) {
-		List<String> list = Arrays.asList("Z:",imgPath);
-		 this.imgPath = String.join("", list);
+		this.imgPath = imgPath;
 	}
 
 	public String getSpotId() {

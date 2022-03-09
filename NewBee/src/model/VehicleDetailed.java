@@ -11,10 +11,11 @@ public class VehicleDetailed implements Serializable{
 	private String atime;
 	private String ttypeid;
 	private String price;
+	private String imteid;
 
 	public VehicleDetailed(String name, String dstation, String astation,
 			String dtime, String atime,
-			String ttypeid,String price) {
+			String ttypeid,String price,String imteid ) {
 		// TODO 自動生成されたコンストラクター・スタブ
 		this.name = name;
 		this.dstation = dstation;
@@ -23,6 +24,7 @@ public class VehicleDetailed implements Serializable{
 		this.atime = atime;
 		this.ttypeid = ttypeid;
 		this.setPrice(price);
+		this.setImteid(imteid);
 	}
 
 	public String getName() {
@@ -83,6 +85,14 @@ public class VehicleDetailed implements Serializable{
 
 	public void setPrice(String price) {
 		this.price = price;
+	}
+
+	public String getImteid() {
+		return imteid;
+	}
+
+	public void setImteid(String imteid) {
+		this.imteid = imteid;
 	}
 
 

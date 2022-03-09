@@ -95,7 +95,7 @@ public class LiveUpdateFrame extends JFrame implements ActionListener {
 		scrollPane.setVerticalScrollBarPolicy( JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		add(scrollPane);
 
-		String[] columnNames = { "ライブID","エリア", "ライブ観光コース", "開始日時", "概要","代金"};
+		String[] columnNames = { "ライブID","エリア", "ライブ観光コース", "開始日時", "概要","価格"};
 		tableModel = new DefaultTableModel(columnNames, 0);
 		table = new JTable(tableModel);
 
@@ -112,7 +112,7 @@ public class LiveUpdateFrame extends JFrame implements ActionListener {
 		column2.setPreferredWidth(100);
 		column3.setPreferredWidth(100);
 		column4.setPreferredWidth(100);
-		column4.setPreferredWidth(100);
+		column5.setPreferredWidth(100);
 		table.addMouseListener(new SearchMouseEvent());
 
 
@@ -205,8 +205,8 @@ public class LiveUpdateFrame extends JFrame implements ActionListener {
 
 			for(int i = 0; i < tableData.length; i++) {
 				if(livetId.equals(tableData[i][0])) {
-					new LiveDetailFrame(new Live(tableData[i][0],tableData[i][1],tableData[i][2],tableData[i][5],
-							tableData[i][3],tableData[i][4],tableData[i][6]));
+					new LiveDetailFrame(new Live(tableData[i][0],tableData[i][1],tableData[i][2],tableData[i][3],
+							tableData[i][4],tableData[i][5],tableData[i][6],tableData[i][7]));
 				}
 			}
 			setVisible(false);

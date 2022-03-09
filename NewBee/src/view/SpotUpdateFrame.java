@@ -85,18 +85,13 @@ public class SpotUpdateFrame extends JFrame implements ActionListener {
 		lblKanaNotes.setBounds(120, 50, 300, 20);
 		add(lblKanaNotes);
 
-		btnSearch = new JButton("一覧表示");
+		btnSearch = new JButton("検索");
 		btnSearch.setBounds(40, 100, 90, 30);
 		btnSearch.addActionListener(this);
 		add(btnSearch);
 
-		btnSearch = new JButton("検索");
-		btnSearch.setBounds(150, 100, 90, 30);
-		btnSearch.addActionListener(this);
-		add(btnSearch);
-
 		btnDelete = new JButton("入力消去");
-		btnDelete.setBounds(260, 100, 90, 30);
+		btnDelete.setBounds(150, 100, 90, 30);
 		btnDelete.addActionListener(this);
 		add(btnDelete);
 
@@ -125,6 +120,7 @@ public class SpotUpdateFrame extends JFrame implements ActionListener {
 		TableColumn column3 = columnModel.getColumn(3);
 		TableColumn column4 = columnModel.getColumn(4);
 		TableColumn column5 = columnModel.getColumn(5);
+
 
 		column0.setPreferredWidth(60);
 		column1.setPreferredWidth(120);

@@ -44,12 +44,12 @@ public class ReviewsSearchDBAccess {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public String reviewsCancel(String[] data) {
 
 		Connection con = createConnection();
 		PreparedStatement pstmt = null;
-		
+
 		int rs = -1;
 		try {
 			if (con != null) {
@@ -61,7 +61,7 @@ public class ReviewsSearchDBAccess {
 				if (rs == 0) {
 					result = "error" + "\n" + "ご確認ください。";
 				} else if (rs == 1) {
-					result = "削除完了しました。";
+					result = "取消完了しました。";
 				}
 			}
 
@@ -119,7 +119,7 @@ public class ReviewsSearchDBAccess {
 		closeConnection(con);
 		return result;
 	}
-	
+
 	@SuppressWarnings("null")
 	public ArrayList<Reviews> reviewsSearch() {
 		Connection con = createConnection();
@@ -131,11 +131,11 @@ public class ReviewsSearchDBAccess {
 				//SQL文法は変更する必要がある
 				String sql = "SELECT review.customerid, customer.name, order_detail.orderid, review.reviews, review.date, "
 						+ "order_detail.itemid FROM review INNER JOIN customer ON customer.customerid = review.customerid"
-						+ " INNER JOIN order_detail ON review.orderid = order_detail.orderid";
+						+ " INNER JOIN order_detail ON review.orderid = order_detail.orderid WHERE review.flag = 0 ";
 				pstmt = con.prepareStatement(sql);
 				rs = pstmt.executeQuery();
 				while (rs.next()) {
-					
+
 					String customerId = rs.getString("customerid");
 					String customerName = rs.getString("name");
 					String orderId = rs.getString("orderid");

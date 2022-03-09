@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -45,6 +46,9 @@ public class ReviewsFrame extends JFrame implements ActionListener {
 	private JLabel lblDate;
 	private JButton btnReviewsOk;
 	private JButton btnReviewsCancel;
+
+
+	private JTextArea txtComment;
 
 	public ReviewsFrame(Reviews reviewsCheck) {
 
@@ -83,13 +87,15 @@ public class ReviewsFrame extends JFrame implements ActionListener {
 		lblReviews.setBounds(20, 110, 100, 20);
 		add(lblReviews);
 
-		txtReviews = new JTextArea(reviewsCheck.getReview());
-		txtReviews.setBounds(120, 110, 360, 80);
-		txtReviews.setLineWrap(true);
-		txtReviews.setEditable(false);
-		txtReviews.setWrapStyleWord(true);
-		add(txtReviews);
-		
+		txtComment = new JTextArea(reviewsCheck.getReview());
+		txtComment.setLineWrap(true);
+		txtComment.setWrapStyleWord(true);
+
+		JScrollPane jsp = new JScrollPane(txtComment);
+		jsp.setBounds(120, 110, 360, 120);
+		jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		add(jsp);
+
 		lblDate = new JLabel("日付");
 		lblDate.setBounds(20, 250, 100, 20);
 		add(lblDate);
@@ -98,17 +104,17 @@ public class ReviewsFrame extends JFrame implements ActionListener {
 		txtNum.setBounds(120, 250, 360, 20);
 		txtNum.setEditable(false);
 		add(txtNum);
-		
+
 		btnReviewsOk = new JButton("許可");
 		btnReviewsOk.setBounds(20, 450, 90, 30);
 		btnReviewsOk.addActionListener(this);
 		add(btnReviewsOk);
-		
+
 		btnReviewsCancel = new JButton("取消");
 		btnReviewsCancel.setBounds(120, 450, 90, 30);
 		btnReviewsCancel.addActionListener(this);
 		add(btnReviewsCancel);
-		
+
 		btnReturn = new JButton("戻る");
 		btnReturn.setBounds(220, 450, 90, 30);
 		btnReturn.addActionListener(this);
@@ -134,11 +140,11 @@ public class ReviewsFrame extends JFrame implements ActionListener {
 			try {
 				String customerID = txtUserId.getText();
 				String code = txtItemCode.getText();
-				
-				
+
+
 				customerID.replaceAll(" +", "");
 				code.replaceAll(" +", "");
-				
+
 				//userIdとitemCodeを渡して、レビューをキャンセルする。
 				String[] data = {customerID,code};
 				String result = NewBeeController.reviewsCancel(data);
@@ -152,14 +158,14 @@ public class ReviewsFrame extends JFrame implements ActionListener {
 			try {
 				String customerID = txtUserId.getText();
 				String code = txtItemCode.getText();
-				
-				
+
+
 				customerID.replaceAll(" +", "");
 				code.replaceAll(" +", "");
-				
+
 				//userIdとitemCodeを渡して、レビューをキャンセルする。
 				String[] data = {customerID,code};
-				
+
 				String result = NewBeeController.reviewsOk(data);
 				JOptionPane.showMessageDialog(this, result, "【確認】", JOptionPane.INFORMATION_MESSAGE);
 			} catch (Exception ex) {

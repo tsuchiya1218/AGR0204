@@ -45,7 +45,6 @@ public class BookingDBAccess {
 		}
 	}
 
-	@SuppressWarnings("null")
 	public String[][] bookingAll() {
 
 		String[][] tableData = new String[10][6];
@@ -56,7 +55,7 @@ public class BookingDBAccess {
 		ResultSet rs = null;
 		try {
 			if (con != null) {
-				String sql = "SELECT customer.tel ,customer.name , order_code.orderid ,order_code.orderdate ,item.price ,customer.customerid ,order_detail.itemid FROM order_code INNER JOIN customer ON order_code.customerid = customer.customerid INNER JOIN Order_detail ON Order_detail.orderid = order_code.orderid INNER JOIN item ON item.itemid = order_detail.itemid";
+				String sql = "SELECT customer.tel ,customer.name , order_code.orderid ,order_code.orderdate ,item.price ,customer.customerid ,order_detail.itemid FROM order_code INNER JOIN customer ON order_code.customerid = customer.customerid INNER JOIN Order_detail ON Order_detail.orderid = order_code.orderid INNER JOIN item ON item.itemid = order_detail.itemid WHERE order_detail.flag = 0";
 				pstmt = con.prepareStatement(sql);
 				rs = pstmt.executeQuery();
 			}
@@ -103,7 +102,7 @@ public class BookingDBAccess {
 		try {
 			if (con != null) {
 				String sql ="DELETE FROM Order_detail where itemid = ? AND orderid = ?";
-						
+
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, data[0]);
 				pstmt.setString(2, data[1]);
@@ -131,7 +130,7 @@ public class BookingDBAccess {
 		closeConnection(con);
 		return result;
 	}
-	
+
 	public String executeRegister(String[] data) {
 
 
@@ -168,5 +167,5 @@ public class BookingDBAccess {
 		closeConnection(con);
 		return result;
 	}
-	
+
 }

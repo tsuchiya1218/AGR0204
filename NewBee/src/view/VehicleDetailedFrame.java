@@ -80,12 +80,14 @@ public class VehicleDetailedFrame extends JFrame implements ActionListener {
 	private JTextField txtatime;
 	private JLabel lblPrice;
 	private JTextField txtPrice;
-
+	String itemId;
 	public VehicleDetailedFrame(VehicleDetailed vehicle) {
 
 		setTitle("【交通手段詳細】 NewBee 業務システム");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
+
+		itemId = vehicle.getImteid();
 
 		lblName = new JLabel("便名");
 		lblName.setBounds(20, 20, 100, 20);
@@ -102,7 +104,6 @@ public class VehicleDetailedFrame extends JFrame implements ActionListener {
 
 		txtdstation = new JTextField(vehicle.getDstation());
 		txtdstation.setBounds(120, 50, 360, 20);
-		txtdstation.setEditable(false);
 		add(txtdstation);
 
 		lblastation = new JLabel("到着駅");
@@ -111,7 +112,6 @@ public class VehicleDetailedFrame extends JFrame implements ActionListener {
 
 		txtastation = new JTextField(vehicle.getAstation());
 		txtastation.setBounds(120, 80, 360, 20);
-		txtastation.setEditable(false);
 		add(txtastation);
 
 		lbldtime = new JLabel("出発日時");
@@ -184,7 +184,7 @@ public class VehicleDetailedFrame extends JFrame implements ActionListener {
 			atime.replaceAll(" +", "");
 			price.replaceAll(" +", "");
 
-			String[] data = {dstation,astation,dtime,atime,price};
+			String[] data = {dstation,astation,dtime,atime,price,itemId};
 			try {
 				//変更する。
 				String result = NewBeeController.vehicleUpdate(data);

@@ -95,8 +95,10 @@ public class RoomAddFrame extends JFrame implements ActionListener {
 
 		txtComment = new JTextArea();
 		txtComment.setBounds(200, 110, 320, 80);
+		txtComment.setLineWrap(true);
+		txtComment.setWrapStyleWord(true);
 		add(txtComment);
-		
+
 		lblPrice = new JLabel("単価");
 		lblPrice.setBounds(60, 200, 180, 20);
 		add(lblPrice);
@@ -147,7 +149,7 @@ public class RoomAddFrame extends JFrame implements ActionListener {
 
 	@SuppressWarnings("unused")
 	public void actionPerformed(ActionEvent e) {
-		
+
 
 		if (e.getSource() == btnDelete) {
 

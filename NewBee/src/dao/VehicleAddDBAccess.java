@@ -49,19 +49,29 @@ public class VehicleAddDBAccess {
 
 		Connection con = createConnection();
 		PreparedStatement pstmt = null;
+		PreparedStatement pstmt1 = null;
 		int rs = -1;
+
 		try {
 			if (con != null) {
-				String sql = "UPDATE Transportation SET dstation = ? , "
-						+ "astation = ?, dtime = ?, atime = ? WHERE name = ?)"
-						+ " VALUES(?,?,?,?,?,?)";
+
+				String sql = "UPDATE item SET price = ? WHERE itemid = ?";
 				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, data[0]);
-				pstmt.setString(2, data[1]);
-				pstmt.setString(3, data[2]);
-				pstmt.setString(4, data[3]);
-				pstmt.setString(3, data[4]);
+				pstmt.setString(1, data[4]);
+				pstmt.setString(2, data[5]);
 				rs = pstmt.executeUpdate();
+
+
+				String sql2 = "UPDATE transportation SET dstation = ? , "
+						+ "astation = ?, dtime = ?, atime = ?"
+						+ " WHERE itemid = ?";
+				pstmt1 = con.prepareStatement(sql2);
+				pstmt1.setString(1, data[0]);
+				pstmt1.setString(2, data[1]);
+				pstmt1.setString(3, data[2]);
+				pstmt1.setString(4, data[3]);
+				pstmt1.setString(5, data[5]);
+				rs = pstmt1.executeUpdate();
 				if (rs == 0) {
 					result = "既に存在しています。" + "\n" + "ご確認ください。";
 				} else if (rs == 1) {
@@ -145,7 +155,7 @@ public class VehicleAddDBAccess {
 	@SuppressWarnings("null")
 	public String[][] vehicleSearch(String data) {
 
-		String[][] tableData = new String[10][7];
+		String[][] tableData = new String[20][8];
 		int i = 0;
 
 		Connection con = createConnection();
@@ -153,7 +163,7 @@ public class VehicleAddDBAccess {
 		ResultSet rs = null;
 		try {
 			if (con != null) {
-				String sql = "SELECT name,dstation,astation,dtime,atime,ttypeid,item.price FROM Transportation INNER JOIN item ON item.itemid = transportation.itemid"
+				String sql = "SELECT name,dstation,astation,dtime,atime,ttypeid,item.price, Transportation.itemid FROM Transportation INNER JOIN item ON item.itemid = transportation.itemid"
 						+ " WHERE name LIKE ?";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, "%"+data+"%");
@@ -167,6 +177,8 @@ public class VehicleAddDBAccess {
 				tableData[i][4] = rs.getString("atime");
 				tableData[i][5] = rs.getString("ttypeid");
 				tableData[i][6] = rs.getString("price");
+				tableData[i][7] = rs.getString("itemid");
+				i++;
 			}
 		} catch (SQLException e) {
 			System.out.println("DB接続時にエラーが発生しました。(Customer)");

@@ -57,10 +57,14 @@ public class OrderFrame extends JFrame implements ActionListener {
 	private JTextField txtTel;
 	private String itemId;
 
+	private JLabel lblPrice;
+
+	private JTextField txtPrice;
+
 	public OrderFrame(OrderChange orderchange) {
 
 		itemId = orderchange.getItemId();
-		
+
 		setTitle("【注文内容変更】 NewBee 業務システム");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
@@ -93,27 +97,28 @@ public class OrderFrame extends JFrame implements ActionListener {
 		add(txtOrderCode);
 
 		lblStartTime = new JLabel("開始日");
-		lblStartTime.setBounds(20, 180, 100, 20);
+		lblStartTime.setBounds(20, 120, 100, 20);
 		add(lblStartTime);
 
 		txtStartTime = new JTextField(orderchange.getStartTime());
-		txtStartTime.setBounds(120, 180, 360, 20);
+		txtStartTime.setBounds(120, 120, 360, 20);
 		add(txtStartTime);
 
 		lblEndTime = new JLabel("終了日");
-		lblEndTime.setBounds(20, 210, 100, 20);
+		lblEndTime.setBounds(20, 160, 100, 20);
 		add(lblEndTime);
 
 		txtEndTime = new JTextField(orderchange.getEndTime());
-		txtEndTime.setBounds(120, 210, 360, 20);
+		txtEndTime.setBounds(120, 160, 360, 20);
 		add(txtEndTime);
-		
-		lblNum = new JLabel("合計（税込）");
-		lblNum.setBounds(20, 240, 100, 20);
 
-		txtNum = new JTextField(orderchange.getPrice());
-		txtNum.setBounds(120, 240, 360, 20);
-		add(txtNum);
+		lblPrice = new JLabel("合計（税込）");
+		lblPrice.setBounds(20, 200, 100, 20);
+		add(lblPrice);
+
+		txtPrice = new JTextField(orderchange.getPrice());
+		txtPrice.setBounds(120, 200, 360, 20);
+		add(txtPrice);
 
 		btnOrderRegister = new JButton("注文変更");
 		btnOrderRegister.setBounds(20, 450, 90, 30);
@@ -142,15 +147,17 @@ public class OrderFrame extends JFrame implements ActionListener {
 			String startTime = txtStartTime.getText();
 			String endTime = txtEndTime.getText();
 			String orderCode = txtOrderCode.getText();
+			String price = txtPrice.getText();
 
 			// 入力値の半角スペースと全角スペースを取り除く
 			startTime.replaceAll(" +", "");
 			endTime.replaceAll(" +", "");
 			orderCode.replaceAll(" +", "");
-			String[] data = { startTime, endTime, itemId,orderCode};
+			price.replaceAll(" +", "");
+			String[] data = { startTime, endTime, price,itemId,orderCode};
 
 			try {
-				
+
 					String result = NewBeeController.orderChange(data);
 					JOptionPane.showMessageDialog(this, result, "【確認】", JOptionPane.INFORMATION_MESSAGE);
 			} catch (Exception ex) {

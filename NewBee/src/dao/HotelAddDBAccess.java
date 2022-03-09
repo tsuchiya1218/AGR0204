@@ -52,7 +52,7 @@ public class HotelAddDBAccess {
 		try {
 			if (con != null) {
 
-				String sql = "INSERT INTO Hotel(hotelid,name,address,comment,access,checkin,checkout,img,spotid)"
+				String sql = "INSERT INTO Hotel(hotelid,name,address,comment,access,checkin,checkout,img,areaid)"
 						+ " VALUES(?,?,?,?,?,?,?,?,?)";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setInt(1, hotelItemId);
@@ -102,11 +102,11 @@ public class HotelAddDBAccess {
 				String sql = "UPDATE hotel SET address = ? , comment = ?,access = ? , checkin = ?, checkout = ? WHERE hotelid = ?";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, data[1]);
-				pstmt.setString(1, data[2]);
-				pstmt.setString(1, data[3]);
-				pstmt.setString(1, data[4]);
-				pstmt.setString(1, data[5]);
-				pstmt.setString(1, data[0]);
+				pstmt.setString(2, data[2]);
+				pstmt.setString(3, data[3]);
+				pstmt.setString(4, data[4]);
+				pstmt.setString(5, data[5]);
+				pstmt.setString(6, data[0]);
 				rs = pstmt.executeUpdate();
 				if (rs == 0) {
 					result =  "更新失敗しました。" + "\n" + "ご確認ください。";
@@ -115,7 +115,7 @@ public class HotelAddDBAccess {
 				}
 			}
 		} catch (SQLException e) {
-			System.out.println("DB接続時にエラーが発生しました。(Live)");
+			System.out.println("DB接続時にエラーが発生しました。(hotel)");
 			e.printStackTrace();
 		} finally {
 			try {
@@ -133,7 +133,7 @@ public class HotelAddDBAccess {
 
 	public String[][] hotelSearch(String data) {
 
-		String[][] tableData = new String[10][7];
+		String[][] tableData = new String[20][8];
 		int i = 0;
 
 		Connection con = createConnection();
@@ -144,7 +144,7 @@ public class HotelAddDBAccess {
 				String sql = "SELECT * FROM hotel WHERE name LIKE ?";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, "%"+data+"%");
-				rs = pstmt.executeQuery(sql);
+				rs = pstmt.executeQuery();
 			}
 			while (rs.next()) {
 				tableData[i][0] = rs.getString("hotelid");
@@ -154,7 +154,8 @@ public class HotelAddDBAccess {
 				tableData[i][4] = rs.getString("access");
 				tableData[i][5] = rs.getString("checkin");
 				tableData[i][6] = rs.getString("checkout");
-
+				tableData[i][7] = rs.getString("img");
+				i++;
 			}
 		} catch (SQLException e) {
 			System.out.println("DB接続時にエラーが発生しました。(Hotel)");

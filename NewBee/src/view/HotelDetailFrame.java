@@ -91,11 +91,11 @@ public class HotelDetailFrame extends JFrame implements ActionListener {
 
 		lblName= new JLabel("ホテル名");
 		lblName.setBounds(60, 60, 180, 20);
-		lblName.setEnabled(false);
 		add(lblName);
 
 		txtName = new JTextField(hotel.getName());
 		txtName.setBounds(200, 60, 320, 20);
+		txtName.setEnabled(false);
 		add(txtName);
 
 		lblAddress = new JLabel("所在地");
@@ -142,6 +142,17 @@ public class HotelDetailFrame extends JFrame implements ActionListener {
 		jsp.setVerticalScrollBarPolicy( JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		add(jsp);
 
+
+		lblImg = new JLabel("写真");
+		lblImg.setBounds(60, 370, 180, 20);
+		add(lblImg);
+
+		ImageIcon icon = new ImageIcon("Y:\\卒業制作A\\Gr4\\卒業製作"+hotel.getImg());
+		System.out.println(icon);
+		lblImg2 = new JLabel(icon);
+		lblImg2.setBounds(60, 410, 480, 200);
+		add(lblImg2);
+
 		btnDelete = new JButton("入力消去");
 		btnDelete.setBounds(390, 370, 90, 30);
 		btnDelete.addActionListener(this);
@@ -153,7 +164,7 @@ public class HotelDetailFrame extends JFrame implements ActionListener {
 		add(btnAdd);
 
 		btnReturn = new JButton("戻る");
-		btnReturn.setBounds(30, 600, 90, 30);
+		btnReturn.setBounds(30, 650, 90, 30);
 		btnReturn.addActionListener(this);
 		add(btnReturn);
 
@@ -170,7 +181,7 @@ public class HotelDetailFrame extends JFrame implements ActionListener {
 		super.addNotify();
 
 		Insets insets = getInsets();
-		setSize(600 + insets.left + insets.right, 650 + insets.top + insets.bottom);
+		setSize(600 + insets.left + insets.right, 700 + insets.top + insets.bottom);
 		setLocationRelativeTo(this);
 	}
 

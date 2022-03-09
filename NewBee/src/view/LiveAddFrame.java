@@ -21,7 +21,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -98,10 +98,13 @@ public class LiveAddFrame extends JFrame implements ActionListener {
 		add(lblComment);
 
 		txtComment = new JTextArea();
-		txtComment.setBounds(200, 110, 320, 90);
 		txtComment.setLineWrap(true);
 		txtComment.setWrapStyleWord(true);
-		add(txtComment);
+
+		JScrollPane jsp = new JScrollPane(txtComment);
+		jsp.setBounds(200, 110, 320, 80);
+		jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		add(jsp);
 
 		lblPrice = new JLabel("代金");
 		lblPrice.setBounds(60, 210, 180, 20);

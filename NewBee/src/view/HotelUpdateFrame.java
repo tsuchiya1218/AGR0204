@@ -79,12 +79,6 @@ public class HotelUpdateFrame extends JFrame implements ActionListener {
 		lblKanaNotes.setBounds(160, 50, 180, 20);
 		add(lblKanaNotes);
 
-		btnUpdate = new JButton("更新");
-		btnUpdate.setBounds(840, 100, 80, 30);
-		btnUpdate.addActionListener(this);
-		add(btnUpdate);
-
-
 		btnSearch = new JButton("検索");
 		btnSearch.setBounds(40, 100, 90, 30);
 		btnSearch.addActionListener(this);
@@ -96,10 +90,10 @@ public class HotelUpdateFrame extends JFrame implements ActionListener {
 		add(btnDelete);
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(20, 160, 800, 250);
+		scrollPane.setBounds(20, 160, 660, 250);
 		add(scrollPane);
 
-		String[] columnNames = { "ホテルID", "ホテル名", "所在地", "アクセス", "チェックイン", "チェックアウト", "概要"};
+		String[] columnNames = { "ホテルID", "ホテル名", "所在地" , "概要", "アクセス", "チェックイン", "チェックアウト"};
 		tableModel = new DefaultTableModel(columnNames, 0);
 		table = new JTable(tableModel);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -114,12 +108,12 @@ public class HotelUpdateFrame extends JFrame implements ActionListener {
 		TableColumn column6 = columnModel.getColumn(6);
 
 		column0.setPreferredWidth(80);
-		column1.setPreferredWidth(100);
-		column2.setPreferredWidth(120);
-		column3.setPreferredWidth(120);
+		column1.setPreferredWidth(80);
+		column2.setPreferredWidth(80);
+		column3.setPreferredWidth(80);
 		column4.setPreferredWidth(90);
 		column5.setPreferredWidth(90);
-		column6.setPreferredWidth(200);
+		column6.setPreferredWidth(160);
 
 		table.addMouseListener(new SearchMouseEvent());
 
@@ -138,7 +132,7 @@ public class HotelUpdateFrame extends JFrame implements ActionListener {
 		super.addNotify();
 
 		Insets insets = getInsets();
-		setSize(840 + insets.left + insets.right, 700 + insets.top + insets.bottom);
+		setSize(700 + insets.left + insets.right, 700 + insets.top + insets.bottom);
 		setLocationRelativeTo(this);
 	}
 
@@ -214,7 +208,7 @@ public class HotelUpdateFrame extends JFrame implements ActionListener {
 			for(int i = 0;i < tableData.length; i++ ) {
 				if(hotelId.equals(tableData[i][0])) {
 					new HotelDetailFrame(new Hotel(tableData[i][0],tableData[i][1],tableData[i][2],tableData[i][3],
-							tableData[i][4],tableData[i][5],tableData[i][6]));
+							tableData[i][4],tableData[i][5],tableData[i][6],tableData[i][7]));
 				}
 			}
 			} catch (Exception ex) {

@@ -149,14 +149,21 @@ public class VehicleUpdateFrame extends JFrame implements ActionListener {
 				String data = name;
 				tableData = NewBeeController.vehicleSearch(data);
 
-				if (tableData != null) {
+				 if (tableData != null) {
 
-					tableModel.setRowCount(0);
+						tableModel.setRowCount(0);
 
-					for (String[] rowData : tableData) {
+						int i = 0;
+						for (String[] rowData : tableData) {
 
-						tableModel.addRow(rowData);
-					}
+							if(tableData[i][0] == null) {
+								break;
+							}else {
+								tableModel.addRow(rowData);
+							}
+							i++;
+
+						}
 
 				} else {
 
@@ -198,7 +205,7 @@ public class VehicleUpdateFrame extends JFrame implements ActionListener {
 			for(int i = 0;i < tableData.length; i++ ) {
 				if(vehicleName.equals(tableData[i][0])) {
 					new VehicleDetailedFrame(new VehicleDetailed(tableData[i][0],tableData[i][1],tableData[i][2],tableData[i][3],
-							tableData[i][4],tableData[i][5],tableData[i][6]));
+							tableData[i][4],tableData[i][5],tableData[i][6],tableData[i][7]));
 				}
 			}
 			} catch (Exception ex) {

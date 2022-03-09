@@ -22,7 +22,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -111,10 +111,13 @@ public class SpotAddFrame extends JFrame implements ActionListener {
 		add(lblComment);
 
 		txtComment = new JTextArea();
-		txtComment.setBounds(200, 170, 320, 80);
 		txtComment.setLineWrap(true);
 		txtComment.setWrapStyleWord(true);
-		add(txtComment);
+
+		JScrollPane jsp = new JScrollPane(txtComment);
+		jsp.setBounds(200, 170, 320, 80);
+		jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		add(jsp);
 
 		btnDelete = new JButton("入力消去");
 		btnDelete.setBounds(390, 260, 90, 30);

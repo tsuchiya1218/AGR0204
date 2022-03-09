@@ -100,14 +100,26 @@ public class LiveAddDBAccess {
 	public String liveUpdate(String[] data) {
 		Connection con = createConnection();
 		PreparedStatement pstmt = null;
+		PreparedStatement pstmt1 = null;
 		int rs = -1;
+
 		try {
 			if (con != null) {
-				//SQL修正する必要がある
-				String sql = "UPDATE Room SET count = ? , remaind = ? WHERE type = ? AND hotelid = ?";
+
+				String sql = "UPDATE item SET price = ? WHERE itemid = ?";
 				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, data[0]);
-				rs = pstmt.executeUpdate(sql);
+				pstmt.setString(1, data[4]);
+				pstmt.setString(2, data[0]);
+				rs = pstmt.executeUpdate();
+
+				//SQL修正する必要がある
+				String sql2 = "UPDATE live SET name = ? , starttime = ? ,comment = ? WHERE itemid = ?";
+				pstmt1 = con.prepareStatement(sql2);
+				pstmt1.setString(1, data[1]);
+				pstmt1.setString(2, data[2]);
+				pstmt1.setString(3, data[3]);
+				pstmt1.setString(4, data[0]);
+				rs = pstmt1.executeUpdate();
 				if (rs == 0) {
 					result =  "更新失敗しました。" + "\n" + "ご確認ください。";
 				} else if (rs == 1) {
@@ -134,7 +146,7 @@ public class LiveAddDBAccess {
 	@SuppressWarnings("null")
 	public String[][] liveSearch(String data) {
 
-		String[][] tableData = new String[3][7];
+		String[][] tableData = new String[20][8];
 		int i = 0;
 
 		Connection con = createConnection();
@@ -143,7 +155,7 @@ public class LiveAddDBAccess {
 		try {
 			if (con != null) {
 				String sql = "SELECT area.name AS areaName, spot.name AS spotName, live.starttime , live.comment , live.img , "
-						+ "live.itemid , live.name AS liveName , item.price FROM spot "
+						+ "live.itemid , live.name AS liveName , item.price , live.img FROM spot "
 						+ "INNER JOIN area ON spot.areaid = area.areaid INNER JOIN live ON "
 						+ "spot.spotid = live.spotid INNER JOIN item ON item.itemid = live.itemid WHERE area.name LIKE ?";
 				pstmt = con.prepareStatement(sql);
@@ -160,8 +172,9 @@ public class LiveAddDBAccess {
 				tableData[i][2] = rs.getString("spotName");
 				tableData[i][3] = rs.getString("starttime");
 				tableData[i][4] = rs.getString("comment");
-				tableData[i][5] = rs.getString("liveName");
-				tableData[i][6] = rs.getString("price");
+				tableData[i][5] = rs.getString("price");
+				tableData[i][6] = rs.getString("liveName");
+				tableData[i][7] = rs.getString("img");
 				i++;
 			}
 		} catch (SQLException e) {

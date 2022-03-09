@@ -15,6 +15,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
@@ -151,7 +153,8 @@ public class SpotDetailFrame extends JFrame implements ActionListener {
 		lblImg.setBounds(60, 320, 180, 20);
 		add(lblImg);
 
-		ImageIcon icon = new ImageIcon(spot.getImgPath());
+		ImageIcon icon = new ImageIcon("Y:\\卒業制作A\\Gr4\\卒業製作"+spot.getImgPath());
+		System.out.println(icon);
 		lblImg2 = new JLabel(icon);
 		lblImg2.setBounds(60, 360, 480, 200);
 		add(lblImg2);

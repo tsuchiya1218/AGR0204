@@ -22,6 +22,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -111,12 +112,21 @@ public class HotelAddFrame extends JFrame implements ActionListener {
 		add(lblComment);
 
 		txtComment = new JTextArea();
-		txtComment.setBounds(200, 220, 320, 80);
-		add(txtComment);
+		txtComment.setLineWrap(true);
+		txtComment.setWrapStyleWord(true);
 
-		lblSpotId= new JLabel("観光地ID");
+		JScrollPane jsp = new JScrollPane(txtComment);
+		jsp.setBounds(200, 220, 320, 80);
+		jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		add(jsp);
+
+		lblSpotId= new JLabel("エリアID");
 		lblSpotId.setBounds(60, 320, 180, 20);
 		add(lblSpotId);
+
+		txtSpotId = new JTextField();
+		txtSpotId.setBounds(200,320,320,20);
+		add(txtSpotId);
 
 		btnDelete = new JButton("入力消去");
 		btnDelete.setBounds(390, 360, 90, 30);
@@ -129,12 +139,12 @@ public class HotelAddFrame extends JFrame implements ActionListener {
 		add(btnAdd);
 
 		btnReturn = new JButton("戻る");
-		btnReturn.setBounds(30, 600, 90, 30);
+		btnReturn.setBounds(30, 700, 90, 30);
 		btnReturn.addActionListener(this);
 		add(btnReturn);
 
 		lblImg = new JLabel("写真");
-		lblImg.setBounds(60, 360, 180, 20);
+		lblImg.setBounds(60, 360, 320, 100);
 		add(lblImg);
 
 		btnImg = new JButton("写真選択");
@@ -154,7 +164,7 @@ public class HotelAddFrame extends JFrame implements ActionListener {
 		super.addNotify();
 
 		Insets insets = getInsets();
-		setSize(600 + insets.left + insets.right, 650 + insets.top + insets.bottom);
+		setSize(600 + insets.left + insets.right, 750 + insets.top + insets.bottom);
 		setLocationRelativeTo(this);
 	}
 

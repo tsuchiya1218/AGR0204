@@ -45,7 +45,7 @@ public class ReviewsCheckFrame extends JFrame implements ActionListener {
 	private JButton btnOk;
 	private JButton btnCancel;
 	String[][] tableData;
-	
+
 	public ReviewsCheckFrame() {
 
 		setTitle("【レビュー•評価をチェック】 NEWBEE TRAVEL 業務システム");
@@ -62,7 +62,7 @@ public class ReviewsCheckFrame extends JFrame implements ActionListener {
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		add(scrollPane);
 
-		
+
 		String[] columnNames = { "ユーザーID","ユーザ名","注文コード","レビュー•評価内容","日付"};
 		tableModel = new DefaultTableModel(columnNames, 0);
 		table = new JTable(tableModel);
@@ -149,11 +149,11 @@ public class ReviewsCheckFrame extends JFrame implements ActionListener {
 
 			setVisible(false);
 
-			
+
 			try {
 			int rowIndex = table.getSelectedRow();
 			String tel = (String) table.getValueAt(rowIndex, 0);
-			
+
 			for(int i = 0;i < tableData.length; i++ ) {
 				if(tel.equals(tableData[i][0])) {
 					new ReviewsFrame(new Reviews(tableData[i][0],tableData[i][1],tableData[i][2],tableData[i][3],

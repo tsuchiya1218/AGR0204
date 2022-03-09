@@ -71,10 +71,12 @@ public class LiveDetailFrame extends JFrame implements ActionListener {
 	private JLabel lblTime;
 	private JTextField txtPrice;
 	private JLabel lblPrice;
+	private JLabel lblLive;
+	private JTextField txtLive;
 
 	public LiveDetailFrame(Live live) {
 
-		setTitle("【観光地詳細】 NEWBEE TRAVEL 業務システム");
+		setTitle("【ライブ観光地詳細】 NEWBEE TRAVEL 業務システム");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 
@@ -82,7 +84,7 @@ public class LiveDetailFrame extends JFrame implements ActionListener {
 		lblId.setBounds(60, 20, 180, 20);
 		add(lblId);
 
-		txtId = new JTextField(live.getLiveId());
+		txtId = new JTextField(live.getItemid());
 		txtId.setBounds(200, 20, 320, 20);
 		add(txtId);
 		txtId.setEnabled(false);
@@ -91,31 +93,33 @@ public class LiveDetailFrame extends JFrame implements ActionListener {
 		lblName.setBounds(60, 50, 180, 20);
 		add(lblName);
 
-		txtName = new JTextField(live.getArea());
+		txtName = new JTextField(live.getAreaName());
 		txtName.setBounds(200, 50, 320, 20);
+		txtName.setEnabled(false);
 		add(txtName);
 
 		lblName = new JLabel("ライブ観光コース");
 		lblName.setBounds(60, 80, 180, 20);
 		add(lblName);
 
-		txtName = new JTextField(live.getlName());
+		txtName = new JTextField(live.getSpotName());
 		txtName.setBounds(200, 80, 320, 20);
+		txtName.setEnabled(false);
 		add(txtName);
 
-		lblName = new JLabel("配信者");
-		lblName.setBounds(60, 110, 180, 20);
-		add(lblName);
+		lblLive = new JLabel("配信者");
+		lblLive.setBounds(60, 110, 180, 20);
+		add(lblLive);
 
-		txtName = new JTextField(live.getName());
-		txtName.setBounds(200, 110, 320, 20);
-		add(txtName);
+		txtLive = new JTextField(live.getLiveName());
+		txtLive.setBounds(200, 110, 320, 20);
+		add(txtLive);
 
 		lblTime = new JLabel("開始日時");
 		lblTime.setBounds(60, 140, 180, 20);
 		add(lblTime);
 
-		txtTime = new JTextField(live.getTime());
+		txtTime = new JTextField(live.getStarttime());
 		txtTime.setBounds(200, 140, 320, 20);
 		add(txtTime);
 
@@ -132,13 +136,23 @@ public class LiveDetailFrame extends JFrame implements ActionListener {
 		jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		add(jsp);
 
-		lblPrice = new JLabel("代金");
+		lblPrice = new JLabel("価格");
 		lblPrice.setBounds(60, 280, 180, 20);
 		add(lblPrice);
 
 		txtPrice = new JTextField(live.getPrice());
 		txtPrice.setBounds(200, 280, 320, 20);
 		add(txtPrice);
+
+		lblPrice = new JLabel("写真");
+		lblPrice.setBounds(60, 320, 180, 20);
+		add(lblPrice);
+
+		ImageIcon icon = new ImageIcon("Y:\\卒業制作A\\Gr4\\卒業製作"+live.getImg());
+		System.out.println(icon);
+		lblImg2 = new JLabel(icon);
+		lblImg2.setBounds(60, 360, 480, 200);
+		add(lblImg2);
 
 		btnDelete = new JButton("入力消去");
 		btnDelete.setBounds(390, 320, 90, 30);
@@ -173,18 +187,18 @@ public class LiveDetailFrame extends JFrame implements ActionListener {
 		if (e.getSource() == btnAdd) {
 
 			String id = txtId.getText();
-			String name = txtName.getText();
+			String live = txtLive.getText();
 			String time = txtTime.getText();
 			String comment = txtComment.getText();
 			String price = txtPrice.getText();
 			// 入力値の半角スペースと全角スペースを取り除く
 			id.replaceAll(" +", "");
-			name.replaceAll(" +", "");
+			live.replaceAll(" +", "");
 			time.replaceAll(" +", "");
 			comment.replaceAll(" +", "");
 			price.replaceAll(" +", "");
 
-			String[] data = {id,name,time,comment};
+			String[] data = {id,live,time,comment,price};
 			try {
 				//変更する。
 				String result = NewBeeController.liveUpdate(data);
